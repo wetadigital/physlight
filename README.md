@@ -1,8 +1,11 @@
 # PhysLight
 
-This repository contains example materials for Weta Digital's *PhysLight* system.
+This repository contains example materials for Weta Digital's *PhysLight* system as presented in the Siggraph 2020 Talk *PhysLight: An End-to-End Pipeline for Scene-Referred Lighting*. [Slides can be found here.](https://drive.google.com/file/d/1a2jGciAmfH9yPdJCXNuNNEs_U07znp9C/view?usp=sharing)
 
-First, the [imaging notebook](https://github.com/wetadigital/physlight/blob/master/physlight_imaging.ipynb) shows a simple example of calculating the imaging ratio and checking that it gives the correct response for an idealized camera system.
+![teaser image](img/teaser_gmp.jpg)
+
+
+The [imaging notebook](https://github.com/wetadigital/physlight/blob/master/physlight_imaging.ipynb) shows a simple example of calculating the imaging ratio and checking that it gives the correct response for an idealized camera system.
 
 The `data` directory contains the spectral sensitivity curves of a number of cameras as measured with our 'lightsaber' system. It also contains [a notebook](https://github.com/wetadigital/physlight/blob/master/data/plot_curves.ipynb) that loads the data and plots the curves for visual inspection.
 
