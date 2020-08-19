@@ -1,0 +1,23 @@
+# Copyright © 2020, Weta Digital, Ltd.
+# SPDX-License-Identifier: Apache-2.0
+[tool.poetry]
+name = "physlight"
+version = "1.0.0"
+description = "Weta Digital's PhysLight system as presented in the Siggraph 2020 Talk PhysLight: An End-to-End Pipeline for Scene-Referred Lighting."
+license = "Apache-2.0"
+authors = [ "Weta Digital" ]
+maintainers = [ "Weta Digital" ]
+readme = 'README.md'
+repository = "https://github.com/wetadigital/physlight"
+homepage = "https://www.wetafx.co.nz/"
+
+[tool.poetry.dependencies]
+python = "^3.5"
+colour-science = { version = "0.3.15" }
+jupyter = { version = "*"}
+matplotlib = { version = "*"}
+requests = { version = "*"}
+
+[build-system]
+requires = [ "poetry>=0.12" ]
+build-backend = "poetry.masonry.api"
