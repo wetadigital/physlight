@@ -1,0 +1,121 @@
+\chapter{Handling color}\label{ch:color}
+
+\section{Spectral basis representation}
+
+In contrast to traditional RGB renderers, many contemporary renderers implement 
+spectral light transport: they represent color values as functions of wavelength
+internally, instead of relying purely on tristimulus values.
+This allows effects such
+as dispersion at dielectric boundaries to be reproduced with much higher fidelity.
+
+Since input data is often provided to the renderer in some \gls{RGB} space,
+a spectral lifting procedure is required. Such a procedure takes
+tristimulus color values as an input and produces a spectrum that
+corresponds to the same color.
+
+The conversion from a spectrum $S(\lambda)$ to tristimulus values 
+$(X, Y, Y)$ amounts to a projection onto a basis $(\bar x, \bar y, \bar z)(\lambda)$:
+\begin{equation}
+    \begin{pmatrix}X\\Y\\Z\end{pmatrix}
+        = \int_\Lambda S(\lambda)\; 
+    \begin{pmatrix}
+        \bar x(\lambda)\\
+        \bar y(\lambda)\\
+        \bar z(\lambda)
+    \end{pmatrix}
+    \d\lambda
+    \label{eqn:color_matching}
+\end{equation}
+While this operation is unique in the sense that there exists exactly one
+value $(X,Y,Z)$ for any given spectrum $S(\lambda)$ and any particular basis
+$(\bar x,\bar y, \bar z)$, the inverse operation is not. This phenomenon is called
+\emph{metamerism}: spectra that are metameric to each other correspond to the
+same tristimulus color value with respect to the given basis.
+
+As a simple example, consider the family of box spectra
+\begin{equation*}
+    S_i(\lambda) = \begin{cases}
+        i / 200, &\lambda \in [ (500-100/i)\si{\nano\meter}, (500+100/i)\si{\nano\meter}],\\
+        0, &\text{otherwise}
+    \end{cases}
+\end{equation*}
+for $i \geq 1 $ and the sensitivity function
+\begin{equation*}
+    \bar x(\lambda) = 1.
+\end{equation*}
+There are infinitely many such $S_i$, but for each of them,
+\begin{equation*}
+    \int_{380\si{\nano\meter}}^{780\si{\nano\meter}} S_i(\lambda) \bar x(\lambda)\d\lambda
+    = 
+    \int_{(500-100/i)\si{\nano\meter}}^{(500+100/i)\si{\nano\meter}} S(\lambda)\d\lambda
+    = \frac{i}{200} \cdot \frac{200}{i} = 1,
+\end{equation*}
+and so these spectra are metamers with respect to $\bar x$.
+
+This ambiguity is the main problem that needs to be solved in spectral
+lifting procedures: out of the infinitely many spectra that, in general,
+correspond to any given tristimulus value, one needs to be selected.
+
+One possible selection criterion is spectrum smoothness, because naturally occuring
+reflectance spectra are generally smooth functions of wavelength~\citep{maloney86}. 
+The widely
+used technique by~\citet{smits99} therefore attempts to find spectra that
+maximize a specific smoothness criterion in an expensive precomputation.
+The precomputation is run for seven colors: the sRGB primaries 
+Red$(\lambda)$, Green$(\lambda)$, and Blue$(\lambda)$, 
+their complements
+Cyan$(\lambda)$, Magenta$(\lambda)$, and Yellow$(\lambda)$, and White$(\lambda)$. 
+Smits uses a run-time interpolation scheme
+that, for any given input color, attempts to use as much as possible 
+of the smoothest available spectrum by first mixing in the white spectrum, 
+then one of the complement color spectra, and only then a primary spectrum.
+
+As an example, consider the input color $c_0=(0.9, 0.4, 0.1)_\text{sRGB}$:
+\begin{align*}
+    \min(c_{0,r}, c_{0,g}, c_{0,b}) &= 0.1\\
+    c_1 &= c_0 - 0.1\cdot(1,1,1)_\text{sRGB} = (0.7, 0.3, 0)_\text{sRGB}\\
+    \min(c_{1,r}, c_{1,g}) &= 0.3\\
+    c_2 &= c_1 - 0.3\cdot(1,1,0)_\text{sRGB} = (0.4, 0.0, 0)_\text{sRGB}
+\end{align*}
+The result of this scheme is the interpolated spectrum
+\begin{equation}
+    S(\lambda) = 0.1\cdot \text{White}(\lambda)
+               + 0.3\cdot \text{Yellow}(\lambda)
+               + 0.4\cdot \text{Red}(\lambda),
+\end{equation}
+which corresponds to the input color since Equation~\ref{eqn:color_matching} is linear.
+
+This technique is bound to the sRGB color space, and the sparse sampling with only
+seven precomputed spectra can lead to poor results if a wider-gamut color space is
+used, instead~\citep{meng2015}: saturated primary colors correspond to narrow
+band spectra, which in turn produce mixtures of narrow band spectra in Smits' lifting
+procedure. This can limit the maximum attainable reflectance if per-wavelength energy conservation
+is required~\citep{schroedinger19}, and can be detrimental in rendering systems based
+on random or quasi-random Monte Carlo integration.
+
+\citet{meng2015} generalize the method using a much denser sampling of the xy chromaticity
+space, decoupling the spectral lifting method from the input color space.
+
+Other authors have argued that a simple smoothness criterion can be problematic
+in scenes with dominant indirect illumination: 
+General smoothness simply ensures that the spectrum
+will be reasonably well-behaved under reflection as even narrow band incident lighting is
+reflected by a wide band reflectance spectrum. However, in the presence of multiple
+reflections, intricate color shifts may occur in natural materials.
+\citet{otsu2017} therefore attempt to extract, for any given input color, a metameric spectrum 
+a principle component analysis on measured spectral reflectance data.
+
+This approach might benefit from domain-specific measured data sets: For example, there might
+be a set of measured spectra for leaves that is used when an artist wants to recreate the
+appearance of leaves.
+
+% Naturally other means of injecting spectral data in the renderer are possible,
+% such as interpreting a texture as points in a
+% low-dimensional linear subspace of the space of spectral distribution, such as a PCA
+% decomposition of some space of reflectances. The basis could be passed to the
+% renderer both via the header of the texture itself, or some other appropriate mean.
+% The linearity of the subspace would mean that the normal machinery for texture
+% filtering and mipmapping would be applicable without change to such textures of coefficients.
+
+
+

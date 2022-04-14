@@ -1,0 +1,347 @@
+\chapter{Calculation sheets}\label{ch:calcsheets}
+
+This section will list examples for the required calculations when implementing
+support for \physLight\ in a rendering pipeline.
+
+\section{Imaging}\label{ch:calc_calibration}
+
+We will use the following camera Inputs for our calibration scenario described
+in Chapter~\ref{ch:imaging}:
+\begin{itemize}
+\item Film speed $S = \SI{100}{\iso}$
+\item Focal length $f = \SI{24}{\milli\meter}$
+\item Focus distance $o = \SI{1}{\meter}$
+\item Iris aperture $N = \SI{8}{\fnumber}$
+\item Exposure time $t = \SI{1/60}{\second}$
+\item Sensor width/height $\SI{27.7 x 14.6}{\milli\meter}$ (RED Epic Mysterium-X)
+\item Image resolution $\SI{5120 x 2700}{\pixel}$ (RED Epic Mysterium-X 5K)
+\item Pixel area $A_{pxl} \simeq \SI{29.25}{\square\micro\meter}$
+\item Calibration constant $C = 312.5$
+\end{itemize}
+
+\paragraph{Incident Light Meter Exposure}
+Compute illuminance $E_v$ at $P$ given imaging parameters:
+\begin{align*}
+E_v& = C\frac{N^2}{t S}\\
+&= 312.5\frac{8\cdot 8 \cdot 60}{100} = \SI{12000}{\lux}
+\end{align*}
+
+\paragraph{Reflected Luminance}
+Compute the reflected luminance with $18\%$ reflective Lambertian plane:
+\begin{align*}
+L_v& = E_v\cdot \frac{\rho}{\pi} \\
+&= \num{12480} \cdot \frac{0.18}{\pi}
+\simeq \SI{715.0}{\nit}
+\end{align*}
+
+\paragraph{Entrance pupil distance}
+
+Compute the distance $a$ from the entrance pupil to the filmback given:
+\begin{itemize}
+\item Focal length $f = \SI{24}{\milli\meter}$
+\item Focus distance $o = \SI{1}{\meter}$
+\end{itemize}
+
+The lens equation in our case has the form
+\begin{displaymath}
+\frac1f = \frac1a + \frac1{o - a}
+\end{displaymath}
+solving for $a$ gives us a quadratic equation $a^2 - a o + f o = 0$ for which we
+choose the solution closest to the filmback:
+\begin{displaymath}
+a = \frac{o-\sqrt{o^2 - 4fo}}2
+\end{displaymath}
+
+Substituting our data into this expression yields
+\begin{displaymath}
+a = \frac{1-\sqrt{1 - 4 \cdot 0.024}}2 \;\si{\meter} \simeq \SI{24.6}{\milli\meter}
+\end{displaymath}
+
+\ifomit
+\subsection{Luminous energy}
+
+\begin{itemize}
+\item Sensitivity $S = \SI{100}{\iso}$
+\item Focal length $f = \SI{24}{\milli\meter}$
+\item Iris aperture $N = \SI{8}{\fnumber}$
+\item Exposure time $t = \SI{1/60}{\second}$
+\item Calibration constant $C = 312.5$
+\end{itemize}
+
+That gives us:
+\begin{align*}
+\theta = \arctan\frac{f}{2N(o-a)}, && L_v = \frac{\rho}{\pi}\cdot
+C\frac{N^2}{\Delta t S},
+\end{align*}
+
+\begin{displaymath}
+E_v = 312.5\frac{8\cdot 8 \cdot 60}{100} = \SI{12000}{\lux}
+\end{displaymath}
+
+
+With this $k_i$ can be calculated as:
+\begin{displaymath}
+k_i = \frac{Y}{\cdots}
+\end{displaymath}
+
+\begin{figure}
+\input{figures/raydiff-1.tikz}
+\caption{Footprint at $P$ through perspective projection}
+\end{figure}
+
+Compute luminous energy $Q_v$ at a certain pixel given the exposure parameters:
+
+\begin{itemize}
+\item Sensitivity $S = \SI{100}{\iso}$
+\item Aperture distance $a = \SI{25}{\milli\meter}$
+\item Iris aperture $N = \SI{8}{\fnumber}$
+\item Exposure time $t = \SI{1/60}{\second}$
+\item Focus distance $o = \SI{1}{\meter}$
+\item Illuminance $E = \SI{12480}{\lux}$
+\item Pixel area $A_{pxl} = \SI{18.5}{\square\micro\meter}$
+\end{itemize}
+
+\begin{figure}
+\input{figures/opposite-angle.tikz}
+\caption{Pixel footprint computation}
+\label{fig:opposite-angle}
+\end{figure}
+
+A pixel receives energy from an area $A_P$ around $P$ which is computed as follows: let $\alpha_1$ and $\alpha_2$ be the angles spanned by a ray $r$ through $P$ and the center of the pixel, and a rays through the border of the same pixel along $x$ (in raster coordinates) in the positive and negative direction, these last rays intersect  the plane at $P$ in two points $P_1$ and $P_2$ respectively, at angles $\beta_1$ and $\beta_2$.
+
+From Figure~\ref{fig:opposite-angle} it can be seen how to compute the length of segment $PP_2$ from the length of segment $PF$ and the angles $\alpha_2$ and $\theta$. It is immediately seen that:
+\begin{displaymath}
+\overline{PH_2} = \overline{FP}\sin\alpha_2 \qquad \overline{PP_2} = \frac{\overline{PH_2}}{\sin\beta_2}
+\end{displaymath}
+it is also easily seen that $\beta_2 = \pi - \alpha_2 - (\pi/2 + \theta)$ which implies $\sin\beta_2 = \cos(\theta-\alpha_2)$. Substituting and reasoning similarly for segment $PP_1$ we obtain
+\begin{displaymath}
+\overline{P_1P_2} = \overline{PF}
+	\left(\frac{\sin\alpha_1}{\cos(\theta+\alpha_1)} +
+	      \frac{\sin\alpha_2}{\cos(\theta-\alpha_2)}\right)
+\end{displaymath}
+
+In the case in which $\alpha_1 = \alpha_2 = \alpha/2$ we obtain with some manipulation
+\begin{displaymath}
+\overline{P_1P_2} = \overline{PF}
+	\frac{2\cos\theta\sin\alpha}{1+\cos2\theta\cos\alpha}
+\end{displaymath}
+
+
+This lets us approximate the area $A_P$ of the footprint of a pixel projected around $P$ as $\overline{P_1P2}^2$, under the approximation that a pixel subtends equal angles $\alpha$ in the two raster directions, so that
+\begin{displaymath}
+A_P \simeq \overline{PF}^2
+    \left( \frac{2\cos\theta\sin\alpha}{1+\cos2\theta\cos\alpha} \right)^2
+\end{displaymath}
+
+To compute $Q_v$ we need to integrate luminance over $A_P$,
+the solid angle $\Delta\omega$ subtended by the aperture as seen from $P$
+and the exposure time.
+
+To compute $\Delta\omega$ we consider the angle $\gamma$ formed by $PF$ and the
+optical axis of the system. This lets us compute
+\begin{displaymath}
+\Delta\omega =  \pi \left(\frac f{2N}\right)^2 \frac{\cos\gamma}{\overline{PF}^2}
+\end{displaymath}
+which takes us to our expression for $Q_v$:
+\begin{align*}
+Q_v & = L_o(\omega_o)\cdot A_P \cdot\Delta\omega \cdot t \\
+    & = L_o(\omega_o) \cdot \overline{PF}^2
+    \left( \frac{2\cos\theta\sin\alpha}{1+\cos2\theta\cos\alpha} \right)^2 \cdot \pi \left(\frac f{2N}\right)^2 \frac {\cos\gamma}{\overline{PF}^2} \cdot t \\
+    & = L_o(\omega_o) \cdot \left( \frac{2\cos\theta\sin\alpha}{1+\cos2\theta\cos\alpha} \right)^2 \cdot \pi \left(\frac f{2N}\right)^2 \cos\gamma \cdot t
+\end{align*}
+
+If the surface is Lambertian at $P$, it illuminates equally in all directions:
+
+\begin{displaymath}
+L_v = \frac\rho\pi E_v = \frac{0.18}{3.14159}12\,480 = \SI{715.0}{\nit}
+\end{displaymath}
+substituting the parameters we obtain:
+\begin{align*}
+Q_v & = L_o(\omega_o) \cdot \left( \frac{2\cos\theta\sin\alpha}{1+\cos2\theta\cos\alpha} \right)^2 \cdot \pi \left(\frac f{2N}\right)^2 \cos\gamma \cdot t \\
+    & = 715 \cdot 18.5\cdot10^{-12} \cdot \frac{975\cdot10^{-3}}{25\cdot10^{-3}} 3.14159 \left(\frac{24}{8}\right)^2\frac{1}{975^2\cdot 10^{-6}} \frac{1}{60} \\
+    & = \SI{2.5574e-7}{\talbot}
+\end{align*}
+
+\fi
+
+\paragraph{Solid Angle of the Aperture}
+Calculate $\Omega_{obj}$ the solid angle of the aperture seen from point in object space:
+\begin{align*}
+\Omega_p^{obj} &\simeq \frac{\pi r^2}{(o-a)^2}\\
+&= \frac{f^2}{4N^2(o-a)^2}\\
+&\simeq  \SI{0.74296e-5}{\steradian}
+\end{align*}
+
+\paragraph{Luminous energy from Y value}
+
+Given a pixel $Y$ value we can calculate the luminous energy density in \si{\lux} for this pixel by
+\begin{align*}
+Y_v &= \frac{Y\cdot K_m}{ k_i\cdot S \cdot \Delta t} \\
+&= \frac{Y\cdot C}{ 4\cdot S \cdot \Delta t} \left(\frac{f}{a}\right)^2
+\qquad [\si{\lux}]
+\end{align*}
+For $Y=0.18$ and the given input specifications we get:
+\begin{align*}
+Y_v &= \frac{Y\cdot C}{ 4\cdot S \cdot \Delta t} \left(\frac{f}{a}\right)^2 \\
+&= \frac{0.18\cdot 312.5}{ 4\cdot 100 \cdot 1/60} \left(\frac{0.024}{0.0246}\right)^2 \;\si{\lux} \\
+&= \SI{8.030934}{\lux}
+\end{align*}
+
+\section{Emission constant}
+
+\subsection{Area Light}
+Given following input parameters for an area light:
+\begin{itemize}
+\item luminous power $\Phi_v=\SI{1000}{\lumen}$
+\item area $|A|= \SI{2 x 2}{\meter} = \SI{4}{\square\meter}$
+\item Lambertian angular distribution $D = \frac1{\pi}$
+\item emitter: black body radiator at $T=\SI{6500}{\kelvin}$
+\end{itemize}
+we want to compute the light constant $k_e$. From Chapter~\ref{ch:specification} we can  have:
+\begin{displaymath}
+ k_e = \frac{\Phi_v}{K_m \cdot |A| \cdot \|D\| \cdot \langle \|T_{col}\|, \|col\cdot\hat{L}\|_{\bar y} \rangle }
+\end{displaymath}
+
+\paragraph{Area Light Without Texturing} Without a tint function this reduces to
+\begin{displaymath}
+k_e = \frac{\Phi_v}{K_m \cdot |A| \cdot \|D\| \cdot \|\hat{L}\|_{\bar y} }
+\end{displaymath}
+with $\|\hat{L}\|_{\bar y} = \|B_T\|_{\bar y}$ which can be precomputed with the
+closed-form expression in Chapter~\ref{ch:illuminants}. This gives us
+\begin{align*}
+\|\hat{L}\|_{\bar y} &= \|B_{6500}\|_{\bar y} \simeq 2826.5 \\
+k_e &= \frac{1000}{683 \cdot 4 \cdot 2826.5 } \simeq 1.295 \cdot 10^{-4}
+\end{align*}
+
+\paragraph{Area Light With Texturing}
+Using the same input parameters but adding a texture as a tint function,
+we have to calculate the following integrals:
+\begin{displaymath}
+\|T_{col}\| = \int T_{col}(x) \d x
+\end{displaymath}
+
+Under the assumption that the texture coordinate mapping onto the light has no area
+distortion, this integral reduces to average of the \gls{RGB} values of the
+texture map scaled by the light area $A$:
+\begin{align*}
+\|T_{rgb}\| = A \overline{T}_{rgb}
+\end{align*}
+where $\overline{T}_{rgb}$ is the average of the the pixel values in the
+texture,
+a value that can be precomputed and stored in the header of the texture.
+
+The reduced luminous power vector $\|col\cdot \hat L\|_{\bar y}$ can also
+be precomputed for the black body radiator at the given temperature.
+\begin{displaymath}
+\|col\cdot \hat L\|_{\bar y} = \int col(\lambda) \cdot B_T(\lambda) \cdot \bar y
+(\lambda) \d\lambda
+\end{displaymath}
+where $col$ are the basis functions of the space used to convert the texture's
+\gls{RGB} data into its spectral representation.
+This gives us
+\begin{align*}
+ k_e &= \frac{\Phi_v}{K_m \cdot |A| \cdot \|D\| \cdot \langle \overline{T}_{rgb}, \|col\cdot\hat{L}\|_{\bar y} \rangle } \\
+&= \frac{1000}{683 \cdot 4 \cdot \langle \overline{T}_{rgb}, \|col\cdot\hat{L}\|_{\bar y} \rangle  }
+\end{align*}
+where $\langle \bar T, \phi \rangle = \bar T_r|\phi_r| + \bar T_g|\phi_g| + \bar T_b|\phi_b| $
+in the simple case of a simplistic three basis functions lifting to spectral.
+
+Other, more plausible ways of lifting \gls{RGB} data to the spectral domain
+are possible, as explained in Section~\ref{sec:spec_basis}.
+
+For example, if using the algorithm proposed by Brian Smits in~\cite{smits99},
+the expression $\langle \bar T, \phi \rangle$ this would be computed as follows:
+the various $col$ functions will correspond to the seven basis functions of the
+Smits basis $w(λ), c(λ), m(λ), y(λ), r(λ), g(λ), b(λ)$, yielding seven integrals
+$\phi_w, \phi_c, \phi_m, \phi_y, \phi_r, \phi_g, \phi_b$ corresponding to
+$\phi_w =  \|w\cdot\hat{L}\|_{\bar y}$ and so on.
+
+The the algorithm produces a vector $\bar T \in \R^7$ in which at most three
+components are non-zero as follows: the first entry $T_0$ is the smallest component
+of $\overline{T_{rgb}}$, say that this was the green component. Then the basis
+vector from the secondaries is chosen (cyan, magenta and yellow: $c(\lambda), m(\lambda), y(\lambda)$)
+and its corresponding value (one of $T_1, T_2, T_3$) is set to the difference
+between the smallest value and the middle value. Lastly, the primary corresponding
+to the largest value is chosen (red, green, and blue: $r(\lambda), g(\lambda), b(\lambda)$)
+and its corresponding component (one of $T_4, T_5, T_6$) is set to the difference
+between the largest and middle values.
+
+For example if $\overline{T_{rgb}} = (0.3, 0.1, 0.7)$ then $T_0$ is set to $0.1$,
+then magenta is the complementary, so $T_2$ is set to $0.3-0.1 = 0.2$, then
+blue is the primary, so $T_6$ is set to $0.7 - 0.3 = 0.4$, yielding
+$\overline{T} = (0.1, 0, 0.2, 0, 0, 0, 0.4)$. An implementation in code of
+this algorithm is available in Section~\ref{sec:implementation:texturemaps}.
+
+\section{Surface interaction}
+
+Compute the exitant radiance $L_{o\lambda}(\omega_o, \lambda)$ from a point
+$P_s$ on a surface of normal $N$, given the incident radiance
+$L_{i\lambda}(\omega_i, \lambda)$ and the object’s BRDF $f(\omega_i, \omega_o, \lambda)$.
+Let us assume that the surface at $P_s$ is made of Lambertian material of reflectance $\rho=0.18$, i.e., $f(\omega_i, \omega_o, \lambda) = \frac \rho \pi$. 
+
+\begin{displaymath}
+\begin{split}
+    L_{o,v}(\omega_o) &= K_m \int_\lambda \int_\Omega L_{i,\lambda}(\omega_i, \lambda) f(\omega_i, \omega_o, \lambda) \d \omega^{\bot} \bar y(\lambda) \d\lambda \\
+    &= K_m \int_\lambda \int_0^\pi \int_0^{\frac \pi 2}  L_{i,\lambda}(\omega_i, \lambda)\;f(\omega_i, \omega_o, \lambda)\, \bar y(\lambda)\, \cos\theta \sin\theta \d\theta \d\phi \d\lambda \\
+    &= \int_0^\pi \int_0^{\frac \pi 2}  L_{i,v}(\omega_i)\;f(\omega_i, \omega_o)\cos\theta \sin\theta \d\theta \d\phi
+\end{split}
+\end{displaymath}
+
+Let's say that the light is a portion of a sphere of radius $r = \SI{1}{\meter}$, centered
+around our surface point $P_s$, extending in $\theta$ from $\frac\pi6$ to $\frac\pi3$ and in
+$\phi$ from $0$ to $\frac\pi2$, and having Lambertian emission towards our
+surface of $L_{i,v} = \SI{300}{\lumen\per\square\meter\per\steradian}$.
+In this configuration we obtain:
+
+\begin{align*}
+L_{o,v} &= \int_{\theta = \frac\pi 6}^\frac\pi 3 \int _{\phi = 0}^\frac\pi
+2 L_{i,v} \frac\rho\pi \cos\theta \sin\theta \d\theta \d\phi \\
+             &= 300\cdot \frac{0.18}\pi \int_{\theta = \frac\pi 6}^\frac\pi 3 \int _{\phi = 0}^\frac\pi 2 \cos\theta \sin\theta \d\theta \d\phi \\
+             &= 54 \left.\frac{-\cos^2\theta}{2}\right|_{\frac\pi 6}^\frac\pi 3 \\
+             &= \SI{13.5}{\lumen\per\square\meter\per\steradian}
+\end{align*}
+
+\section{Light to sensor interaction}
+
+Given camera parameters $S=100$, $N=5.6$, $\Delta t = \frac 1 {60}$
+and an infinitesimally small light source oriented towards a
+Lambertian plane parallel to the light source with distance
+$d = \SI{0.4}{\meter}$. If the luminance $Y(p)$ at the pixel corresponding
+to the center of the projection $p$ equals the albedo $\rho$ of the plane,
+what is the luminous power $\Phi_v$ of the light source?
+\begin{figure}[t]
+    \centering
+    \def\svgwidth{0.9\linewidth}
+    \import{figures/}{emitter_surface.pdf_tex}
+    \caption{Integration over area light.}
+\end{figure}
+
+According to Equation~\eqref{eqn:imaging_Ev} the illuminance at the plane must be 
+\begin{displaymath}
+  E_v = \frac{C\;N^2}{\Delta t\; S} = 5880\; \si{\lux}.
+\end{displaymath}
+Say the light source has a cosine powered distribution
+$L_v^{\uparrow,light}(\omega) = \alpha \cos^n \theta'$, where
+$\theta'$ denotes the angle between emission direction $\omega$ and
+the light normal, then due to
+\begin{displaymath}
+  M_v = \int_\Omega L_v^{\uparrow,light}(\omega) \; \d \omega^\bot \stackrel{\eqref{eq:powered_cosine}}= \alpha \frac{2\pi}{n+2}
+\end{displaymath}
+and $M_v = \Phi_v / |A|$
+we have
+\begin{equation}\label{eq:light_exitance}
+  L_v^{\uparrow,light}(\omega) = \frac{\Phi_v}{|A|} \frac{n+2}{2\pi} \cos^n \theta'.
+\end{equation}
+The illuminance at $p$ is
+\begin{multline*}
+  E_v = \int_\Omega L_v^{\downarrow,obj}(\omega) \d\omega^{\bot} = \int_A L_v^{\uparrow,light}(x\to p) \frac{\cos \theta\; \cos \theta'}{|x-p|^2} \d x \\
+  \stackrel{\eqref{eq:light_exitance}} =  \frac{\Phi_v}{|A|} \frac{n+2}{2\pi} \int_A  \frac{\cos^{n+1} \theta\; \cos \theta'}{|x-p|^2} \d x
+  \approx |A| \frac{ \Phi_v }{|A|\; d^2} \frac{n+2}{2\pi} \d x  \stackrel{n=0} \approx \frac{\Phi_v}{\pi\;d^2}
+\end{multline*}
+where the approximation holds if the light source is sufficiently small, hence the cosines are $\approx 1$ and assuming a Lambertian emission ($n=0$).
+Putting this together, it follows 
+\begin{displaymath}
+  \Phi_v = \pi \; 0.4^2 \si{\square\meter}\cdot 5880\; \si{\lux} = 2955.61\; \si{\lumen}.
+\end{displaymath}
+
+Simple geometric setups like these can be reproduced in a render and are hence useful for validation purposes.

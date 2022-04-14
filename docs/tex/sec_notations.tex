@@ -1,0 +1,64 @@
+\chapter*{Notations}
+
+\paragraph{Scalar product}
+
+Given two vectors $x,y \in R^n$ we will indicate their components using a
+subscript index,
+for example for $n=2$ we would have $x = (x_1, x_2)$.
+We will write their \textsl{scalar product} using angle bracket notation
+$\langle \cdot, \cdot \rangle$:
+\begin{displaymath}
+\langle x, y \rangle = \sum_{i=1}^n x_i y_i = xy^t,
+\end{displaymath}
+where the second equality signifies row-vector notation (vectors are thought
+of as matrices of one row). Sometimes it's useful to inject an $n\times n$ matrix $M$ ``in the middle''
+of a scalar product, defined as follows $\langle x, y \rangle_M := \langle M x, M y \rangle$.
+
+An often useful construct is the following relation: given
+three vectors $x,y,z \in \R^n$
+\begin{displaymath}
+\langle x,y \rangle \langle y,z \rangle
+  = \left(x y^t\right)\left(y z^t\right)
+  = x \big(y \otimes y\big) z^t
+  = \langle x, z\rangle_y
+\end{displaymath}
+where the symbol $\otimes$ indicates the \textsl{outer product} defined as $x\otimes y :=
+x^t y$. Here is an example in $\R^3$:
+\begin{displaymath}
+x\otimes y =
+\left[
+\begin{array}{ccc}
+x_1 y_1 & x_1 y_2 & x_1 y_3 \\
+x_2 y_1 & x_2 y_2 & x_2 y_3 \\
+x_3 y_1 & x_3 y_2 & x_3 y_3 \\
+\end{array}
+\right].
+\end{displaymath}
+
+
+\paragraph{Scalar product of functions}
+Given two functions $f,g:X\to\R$ we define their scalar product
+$\langle f, g \rangle$ as
+\begin{displaymath}
+\langle f, g \rangle := \int_X f(x)g(x) \d x, \qquad \langle f, g \rangle_\mu := \int_X f(x)g(x)\mu(x) \d x.
+\end{displaymath}
+
+\paragraph{Norm of a function}
+Given a function $f(x): X\to\R$ we will often speak about the integral norm over its
+domain $X$, sometimes after weighting with a second positive valued function
+$\mu(x): X\to\R^+$, this will be notated as follows
+\begin{displaymath}
+\|f\| := \int_X |f(x)| \d x, \qquad \|f\|_\mu := \int_X |f(x)| \mu(x) \d x
+\end{displaymath}
+it is sometimes useful to consider the $p$-norm of a function $f$:
+\begin{displaymath}
+\|f\|^p := \sqrt[p]{\int_X |f(x)|^p \d x}, \qquad \|f\|_\mu^p := \sqrt[p]{\int_X |f(x)|^p \mu(x)\d dx}.
+\end{displaymath}
+
+In the case of a function $g(x): X\to\R^n$ valued in $\R^n$ we apply the
+relations above to
+each component separately, for example, in the case of $n = 2$ we would have
+$g(x) = (g_1(x), g_2(x))$, where $g_1,g_2:X\to\R$
+\begin{displaymath}
+\|g\|_\mu := \left(\|g_1\|_\mu, \|g_2\|_\mu\right) \in \R^2.
+\end{displaymath}

@@ -1,0 +1,6 @@
+# Used as the root plugInfo for including all other plugInfo(s).
+{
+    "Includes": [
+        "*/resources/"
+    ]
+}

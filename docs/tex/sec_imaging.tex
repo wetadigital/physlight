@@ -1,0 +1,296 @@
+\chapter{Imaging and lighting models}\label{ch:lighting}
+\section{Describing imaging}\label{ch:imaging}
+
+Imaging is the process of transforming the radiant power of a specific scene
+configuration into pixel values. This is done by creating a camera and sensor
+or film model and computing their response to the energy flow in the scene.
+The imaging parameters are:
+\begin{itemize}
+\item $f$ -- focal length $[\si{\milli\meter}]$
+\item $N$ -- aperture number $[\si{\fnumber}]$  (artificially valid for
+non-DoF renders)
+\item $o$ -- focus distance $[\si{\meter}]$
+\item $\Delta t$ -- exposure time $[\si{\second}]$
+\item $S$ -- film speed $[\si{\iso}]$
+\item $T$ -- white point as a temperature $[\si{\kelvin}]$  (from black body
+chromaticity)
+\item filmback size $[\si{\square\meter}]$
+\item pixel resolution $[\si{\pixel}]$
+\end{itemize}
+
+The pixels in the image being synthesized are typically stored as triples of
+floating point numbers, also known as \textsl{tristimulus values}, their
+magnitudes being linear in the spectral radiant energy reaching the area of each
+pixel.
+This process can be modelled by introducing the notion of \textsl{film response
+function} $W(x,\lambda): \R^2\times\R \to \R^3$ to model the correspondence
+between spectral radiance $L^{\downarrow img}_{\lambda}(x, \omega, \lambda, t)$
+reaching a given pixel $p^{img}$ and the tristimulus data $C_{col}(p^{img})$ for
+that pixel in color space $col$:
+\begin{equation}\label{eqn:imaging1}
+C_{col}(p^{img})  = \frac1{A_p^{img}}\int_{\lambda} \int_{A_p^{img}}
+\int_{\Omega^{img}_a} \int_{\Delta t} W(x, \lambda) L^{\downarrow
+img}_{\lambda}(x, \omega, \lambda, t) \cos\theta\d x\d\omega\d\lambda\d t
+\end{equation}
+where $A_p^{img}$ is the area spanned by pixel $p^{img}$ on the image plane and
+$\Omega^{img}_a$ is the solid angle spanned by the aperture $a$ as seen from
+the image side.
+Note that this formulation means that the image stores values that are
+resolution independent, which is achieved by means of the division by
+$A_p^{img}$. In the case in which $W(x, \lambda)$ is the identity function, the
+result of the integral would be measured in $[\si{\joule\per\square\meter}]$,
+wheras using $W(x, \lambda) = K_m \bar y(\lambda)$ would result in quantities
+measured in $[\si{\lux\second}]$.
+
+\begin{inconstruction}
+ Details on pixel filtering to be inserted here
+\end{inconstruction}
+
+The film response function $W(x, \lambda)$ is typically modeled as a product of
+components potentially dependent on wavelength and position, which we formulate
+as follows
+\begin{equation}
+W(x,\lambda) = k_i S W_{loc}(x) W_{col}(\lambda)
+\end{equation}
+where $k_i$ is the \textsl{imaging constant}, $S$ is the film speed,
+$W_{loc}(x)$ describes the \textsl{local response} of the filmback and
+$W_{col}(\lambda)$ describes its \textsl{spectral response}.
+
+% TODO: use \sRGBl here
+\paragraph{Spectral response}
+A common approach in digital image synthesis to construct a spectral sensor
+response function is to use the function $W_{XYZ}(\lambda)$ defined as:
+\begin{equation}
+W_{XYZ}(\lambda) = \big(\bar x(\lambda), \bar y (\lambda), \bar z(\lambda)\big)
+\end{equation}
+to obtain tristimulus values in \gls{CIE} \gls{XYZ} space.
+Multiplication by the $M_{sRGB}$ color space conversion matrix is now all
+that's needed to obtain a linear, scene referred \gls{sRGB} image
+$W_{sRGB}(\lambda) = M_{sRGB} W_{XYZ}(\lambda)$
+(details on this and other color space transformations are available in
+Chapter~\ref{ch:implementation}).
+
+Although using \gls{CIE} \gls{XYZ} spectral response is common practice
+in digital image synthesis (see for example \cite{pharr2010, jakob2010,
+ward1994}), it is the recommendation of this document to instead use spectral
+response functions matching the spectral response of the cameras used on set.
+This is done in the interest of trying to match the metamerism of the camera in
+order to minimize changes of appearance of photographed versus synthesized
+objects under varying lighting conditions. This means that a more desirable
+spectral response function $W_{col}(\lambda)$ would actually be
+\begin{equation}
+W_{camera}(\lambda) = \big(\bar r_{camera}(\lambda), \bar g_{camera}(\lambda),
+\bar b_{camera}(\lambda)\big)
+\end{equation}
+Conversion into \gls{sRGB} or other working spaces would then be done employing
+a similar process to the on the raw data from the cameras, further details are
+outlined in Chapter~\ref{ch:implementation}.
+
+
+\paragraph{Local response}
+As spectral radiance $L^{\downarrow img}_{\lambda}(x, \omega, \lambda, t)$ lands
+on a pixel away from the center of the image, it decreases by a factor
+$\cos\theta$ due to its angle of incidence on the filmback, a phenomenon that
+dominates the appearance of vignetting. In digital image synthesis this is often
+compensated away using a position dependent component of the sensor response
+function
+\begin{equation}
+W_{loc}(x) = \frac{1}{\cos\theta_x}
+\end{equation}
+
+\paragraph{Imaging constant}
+
+The remaining factor in the sensor response function $W(x,\lambda)$ is the
+imaging constant $k_i$, which is defined as
+\begin{equation}\label{eqn:imaging_ki}
+ k_i = \frac{4K_m}{C} \simeq \frac{4\cdot683}{312.5} = 8.7424.
+\end{equation}
+The constant $C$ (valued at $312.5$ in this document) is sometimes called the \textsl{light meter
+calibration constant} and effectively defines the units for the film speed $S$.
+
+
+\section{Luminance and sensor response}
+
+We initially posed the question of how a given pixel value concretely
+relates to the measurement. As we will derive below,
+Equation~\eqref{eqn:imaging1} can be simplified to the following
+compact form.
+\begin{equation}\label{eqn:imaging_response}
+  Y(p^{img}) \approx \frac{ \pi\;\Delta t\;S}{C\; N^2} L_v^{\uparrow obj},
+\end{equation}
+which directly relates the luminance emitted towards the camera pupil
+with the luminance of the corresponding sensor response value. This approximation
+is valid for distant to mid-field objects for which angular variation
+is insignificant. For simplicity we confine ourselves here to luminance, although in
+reality the sensor response is carried out in camera RGB. However, the
+analysis can be carried out analogously by applying the camera
+response curves instead of $\bar y$. Furthermore, due to physical
+constraints and limited storage precision, physical camera sensors
+obey the linearity of \eqref{eqn:imaging_response} only within certain
+ranges of incoming light.
+
+From this it directly becomes obvious that if the aperture number $N$,
+exposure time $\Delta t$, and film speed $S$ are set to satisfy the
+so-called \emph{exposure equation}
+\begin{equation}\label{eqn:imaging_Ev}
+E_v = C \frac{N^2}{\Delta t\; S} = \frac{C\; 2^{EV}}S
+\end{equation}
+the image of a Lambertian reflector with albedo $\rho$ (i.e.,
+$L_v^{\uparrow obj} = E_v \frac \rho \pi$) at the center of the sensor
+will have luminance $Y(p^{img}) = \rho$ if the illuminance incident on
+the reflector is $E_v$. Or in other words, given a measured scene
+illuminance, camera exposure values chosen to satisfy the exposure
+equation thus yields pixel values in a reasonable range.
+
+\begin{figure}[t]
+    \centering
+    \def\svgwidth{0.9\linewidth}
+    \import{figures/}{exposure_equation_setup.pdf_tex}
+    \caption{\label{fig:exposure_equation_setup}%
+        Setup for our proof about the exposure equation. The Lambertian reflector with albedo $\rho$ is parallel to 
+        the image plane, and the incident illumination is $E_v$. }
+\end{figure}
+
+To see why Equation~\eqref{eqn:imaging_response} is true, first consider that in the center of the sensor,
+$W_{loc}(x) = 1$. The sensitivity then reduces to $W(x,\lambda) = k_i\;S\;\bar y(\lambda)$,
+and we can rewrite Equation~\eqref{eqn:imaging1} in terms of luminance
+$L_v^{\downarrow img}$ passing through the aperture:
+\begin{equation}\label{eqn:imaging_y}
+Y(p^{img}) 
+           = \frac{k_i\; \Delta t \; S}{K_m\;A^{img}_p} \;
+             \int_{A_p^{img}} 
+             \int_{\Omega_a^{img}} 
+                L^{\downarrow img}_{v}(x, \omega) \;
+                \cos\theta \d x \d\omega.
+\end{equation}
+The integration along the time dimension $t$ reduces to a multiplication
+by $\Delta t$ due to the illumination field being constant in time. 
+
+%\begin{figure} 
+%\input{figures/aperture_distance.tikz}
+%\caption{Entrance pupil distance}
+%\label{fig:aperture_distance}
+%\end{figure}
+
+Each point $p^{img}$ on the filmback corresponds to a point $p^{obj}$ on the
+focus plane in object space. Energy conservation demands that the luminous flux
+$\Phi_{av}$ through the aperture must have the same value when computed from the
+sensor side or the object side. Assuming the aperture is a disk parallel to 
+the filmback plane, and using the luminance $L_v^{\uparrow obj}$ reflected off
+the Lambertian surface into the imaging system,
+\begin{equation}\label{eqn:imaging_energyconservation}
+    \begin{split}
+    \Phi_{av} &= \int_{A_p^{img}} \int_{\Omega_a^{img}} L_v^{\downarrow img}(x,\omega) \cos\theta \d\omega \d x \\
+              &= \int_{A_p^{obj}} \int_{\Omega_a^{obj}} L_v^{\uparrow obj}(x,\omega) \cos\theta \d\omega \d x  \\
+              &= A_p^{obj} \Omega_a^{obj} L_v^{\uparrow obj} 
+    \end{split}
+\end{equation}
+The last equality assumed that $L_v^{\uparrow obj}(x,\omega)$ has
+negligible variation over $(x,\omega)\in A_p^{obj}\times\Omega^{obj}_a$
+and $\cos\theta \simeq 1$ for all $\omega\in\Omega^{obj}_a$. 
+In other words, the aperture is small as seen from $p^{obj}$
+and $p^{obj}$ is very near the optical axis of the system. 
+Consequently,
+\begin{equation}
+    \int_{A_p^{img}} \int_{\Omega_a^{img}} L_v^{\downarrow img}(x,\omega) \cos\theta \d\omega \d x 
+     = A_p^{obj} \Omega_a^{obj}L_v^{\uparrow obj}.
+\end{equation}
+Substituting into Equation~\eqref{eqn:imaging_y}, we obtain
+\begin{equation}\label{eqn:pixel_value_area_solidangle}
+  Y(p^{img}) = \frac{k_i\; \Delta t \; S}{K_m\;A^{img}_p} \; A_p^{obj} \Omega_a^{obj}L_v^{\uparrow obj}.
+\end{equation}
+
+\begin{figure}[t]
+    \centering
+    \def\svgwidth{0.9\linewidth}
+    \import{figures/}{a_img_obj.pdf_tex} 
+    \caption{\label{fig:aperture_distance}%
+        Relating image and object size in a camera where the aperture is small compared to the distance
+        $o-a$ between the aperture and the object.}
+\end{figure}
+
+At this point, in order to compute $Y(p^{img})$ we need to compute the ratio of
+areas $A_p^{obj}/A_p^{img}$, and the solid angle $\Omega_a^{obj}$. Let $a$ be the distance between the filmback and the
+aperture on the optical axis and $o$ the distance between filmback and focus
+plane. From Figure~\ref{fig:aperture_distance}, we can see that
+\begin{equation*}
+    \frac{A_p^{obj}}{A^{img}_p}
+    = \frac{r_o^2}{r_i^2}
+    = \frac{t_o^2 \sin^2\theta}{t_i^2 \sin^2\theta}
+    = \frac{t_o^2}{t_i^2} \cdot 1
+    = \frac{t_o^2 \cos^2\theta}{t_i^2 \cos^2\theta}
+    = \frac{(o-a)^2}{a^2}.
+\end{equation*}
+The solid angle $\Omega_p^{obj}$ can be computed assuming that the radius of the
+aperture 
+\begin{equation}\label{eqn:aperture_radius}
+    r = \frac{f}{2\;N}
+\end{equation}
+is much smaller than the distance $o-a$ between the object
+and the center of the aperture. In this configuration we have simply
+\begin{equation}\label{eqn:imaging_omegapobj}
+\Omega_p^{obj} \simeq \frac{\pi r^2}{(o-a)^2} \qquad r \ll o-a.
+\end{equation}
+Substituting both results into Equation~\eqref{eqn:pixel_value_area_solidangle}, we obtain
+\begin{equation}\label{eqn:imaging_y2}
+Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_m\;} \frac{(o-a)^2}{a^2} \frac{\pi\;r^2}{(o-a)^2}\; L_v^{\uparrow obj}.
+\end{equation}
+If the object distance $o$ is far greater than the focal length $f$ we have
+\begin{equation}
+f \ll o \Rightarrow  f \simeq a
+\end{equation}
+and thus
+\begin{equation}
+  Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_m\;} \frac{\pi\;r^2}{a^2}\; L_v^{\uparrow obj} \stackrel{\eqref{eqn:aperture_radius}}{=}
+   \frac{\pi\; k_i\; \Delta t \; S}{4\;N^{\,2}\;K_m} L_v^{\uparrow obj} 
+\end{equation}
+which using Equation~\eqref{eqn:imaging_ki} concludes our proof. \hfill $\square$
+
+%%
+%   \begin{inconstruction}
+%   
+%   \paragraph{Physical units of pixel values}
+%   An expression similar to the formula for $Y$ lets us determine illuminance at a pixel:
+%   \begin{equation}
+%   Y_v(p^{img}) = \frac{1}{A_p^{img}} \int_{A_p^{img}} \int_{\Omega_a^{img}}
+%   K_m \int_\lambda L_{\lambda}^{\downarrow img}(x,\omega,\lambda) \bar y (\lambda) \cos\theta \d\omega \d x \d\lambda
+%   \qquad [\si{\lux}]
+%   \end{equation}
+%   \end{inconstruction}
+
+\paragraph{Applying white balance}
+White balance is a color correction step intended to give a certain spectral distribution 
+ neutral gray coordinates in the target color space.
+The whitepoint is often specified using the \gls{CCT} of the given color,
+sometimes augmented by a second value called \textsl{tint} that is intended to represent a color shift 
+in some other direction in the chromaticity plane. 
+    
+    Conceptually the idea is that
+color temperature correction yields an adjustment along an orange-blue axis, and tint provides
+a mean to correct along the remaining dimension of the chromaticity space, which is a green-magenta shift.
+
+Unfortunately there is little agreement in the implementations as to how exactly this should be performed:
+the color correction temperature seems to be mostly understood as the color of a blackbody emitter for
+temperatures below $4000\si{\kelvin}$ and of \gls{CIE} Illuminant D above that. 
+
+The case of the tint correction is somewhat more complicated with various interpretations 
+of how such an axis should be oriented: in some descriptions the axis is orthogonal to the 
+spectral locus of the blackbody emitter, so that the orientation depends on the specific 
+\gls{CCT} chosen. In others, it has a constant orientation. 
+
+Further, the amount of color shift along the tint axis has various ranges such as $[0,1]$, 
+$[-100,100]$ and various interpretation as to whether the amount of apparent adjustment should be 
+uniform along the range or not.
+
+On the other hand, there seems to be consensus that white balance be implemented as a component-wise
+division performed in camera \gls{RGB} coordinates, meant to divide out the coloration of the target
+whitepoint from the image. In order to not introduce excessive brightness alterations
+to the image, the correction color is adjusted to have either unit luminance $Y$ in \gls{CIE} \gls{XYZ} 
+coordinates or unit camera \gls{RGB} green component, an approximation of unit brightness, 
+useful for compute-constrained devices such as digital cameras. 
+
+This means that the image would be computed in camera \gls{RGB} coordinates, divided by the color of 
+the whitepoint in camera \gls{RGB} coordinates, and then multiplied by the camera \gls{RGB} values 
+obtained by inverse transforming $(1,1,1)$ from the target \gls{RGB} space to the camera \gls{RGB} 
+space.
+

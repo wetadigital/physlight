@@ -1,0 +1,725 @@
+\chapter{Reference implementation}\label{ch:implementation}
+
+Although light transport simulations are fundamentally spectral, at present
+the majority of the commercially available image synthesis systems have been
+based on tristimulus \gls{RGB} transport.
+In recent times, especially as facilitated by the increasing availability of the
+OpenColorIO library, these systems have evolved to implement an ability to receive
+data in a number of different color spaces, transforming it all into a common
+color space used for computation, and then being able to produce images in a
+target color space specified by the user. Some of these systems are also
+capable of transforming spectral data into tristimulus values.
+In the spectral approach, all light transport computations happen in the
+spectral domain and the transformation into the imaging color space
+happens at the end of the pipeline. This requires a facility to lift \gls{RGB}
+input data to the renderer to some spectral representation to handle inputs
+that are \gls{RGB} to start with, such as common texture maps.
+
+There are various reasons why one might choose an approach versus the other,
+and image synthesis systems that have had a long history are most often
+tristimulus-based. Further, as the computational and storage requirements
+of a tristimulus approach tend to be somewhat lighter, this is convenient on
+less powerful machines or systems that are otherwise constrained in compute
+resources, or maybe need a very high frame rate and can
+sacrifice some accuracy to gain performance. On the other
+hand, a number of light phenomena such as dispersion or an accurate accounting
+of metameric effects are expensive to simulate accurately in a tristimulus-based
+system, while they simply happen as a part of the system in a spectral system.
+
+\section{Tristimulus rendering}
+
+\def\colspacefont#1{\texttt{#1}}
+\def\camRGBl{\ensuremath{\colspacefont{cameraRGB}_\ell}}
+\def\sRGBl{\ensuremath{\colspacefont{sRGB}_\ell}}
+\def\sRGBg{\ensuremath{\colspacefont{sRGB}_\gamma}}
+\def\RecSONl{\ensuremath{\colspacefont{Rec709}_\ell}}
+\def\RecSONg{\ensuremath{\colspacefont{Rec709}_\gamma}}
+
+
+
+All the following assumes the \gls{RGB} working space is \colspacefont{sRGB}
+linear scene referred, which will be indicates \sRGBl. When gamma corrected
+values are used, their color space will be subscripted with a $\gamma$ such as
+\sRGBg. As \colspacefont{sRGB} and \colspacefont{Rec709} use the same primaries,
+\sRGBl\ is effectively the same as \RecSONl, whereas \sRGBg\ and \RecSONg\
+differ due to the different definition of their gamma correction formulation.
+
+
+\subsection{Area lights}
+
+\paragraph{Tint vector}
+
+The tint vector is the average value of the texture map, computed in \sRGBl\
+space. Assuming the file actually contains data \sRGBl\ space, this can be
+obtained either with a \gls{RSL} call like
+
+\begin{rslcode}
+color tint = texture(
+                filename,
+                0.5, 0.5,         // access at center
+                "blur", 1.0,      // filter the entire texture into the result
+                "filter", "box"); // use box filtering (compute average)
+\end{rslcode}
+or the average value can be computed with code similar to the following, in
+which the incremental average formulation from~\cite{knuth97} is used
+
+\begin{c++code}
+// assume type float3 supports standard vector-like arithmetic operators
+float3* image = ...;
+float3 tint = float3(0.f, 0.f, 0.f);
+
+for (int i = 0; i < pixelcount; ++i)
+{
+    tint += (image[i] - tint) / float(i+1);
+}
+\end{c++code}
+
+\paragraph{Reduced luminance vector}
+
+Introduce sensitivity primaries here
+
+Compute $\|col\cdot \hat L\|_{\bar y}$: we know that $col$ is
+our \texttt{CameraRGB} space $col = (\bar r(\lambda), \bar g(\lambda), \bar b(\lambda))$,
+so the integrals can be precomputed for the supported cases with
+code like this (for example in the case of $\hat L(\lambda)$ being Illuminant D50):
+
+\begin{pythoncode}
+# load spectral sensitivity of the camera
+# this is effectively $col$
+camera = Camera.Camera("Red_Mysterium_X")
+# get CIE 1931 Color Matching Functions
+cmf = CIE.CMF_1931
+# get Illuminant D50 data: Illuminant D at 5003 K
+# this is $\hat{L}$
+illuminant = SPD.IlluminantD.at(cmf.lnms, 5003)
+# reduced luminance vector $\|col\cdot \hat{L}\|_{\bar{y}}$
+redlum_camRGB = [0,0,0]
+
+# tp\_integral() is the triple product integral
+# $\int \bar{r}(\lambda) ill(\lambda) \bar{y}(\lambda) \d\lambda$
+redlum_camRGB[0] = tp_integral(camera.rbar, illuminant, cmf.ybar)
+redlum_camRGB[1] = tp_integral(camera.gbar, illuminant, cmf.ybar)
+redlum_camRGB[2] = tp_integral(camera.bbar, illuminant, cmf.ybar)
+
+# now transform into \sRGBl\ primaries, M is CameraRGB to \sRGBl
+M = [[  1.369,  0.0137, -0.3068],
+ [  -0.18,   1.326, -0.1541],
+ [0.01454, -0.5008,   1.331]]
+redlum_sRGB = M * redlum_camRGB
+
+\end{pythoncode}
+
+
+\paragraph{Angular norm}
+
+From Section~\ref{sec:angular_norm} we see that the angular norm $\|D\|$ of
+$\langle \omega, \hat n \rangle^n$ is $2\pi / (n+2)$, which is easily
+implemented as
+
+\begin{c++code}
+float cospower = /* from light parameters */
+float angularnorm = (2.f * M_PI) / (2.f + cospower);
+\end{c++code}
+
+\Gls{IES} profiles can be integrated using 2-dimensional Newton-Cotes quadrature
+of degree 1 (also called \textsl{trapezium rule}) because the error introduced
+in the sampling of the luminaire dominates the error in the sampling of the
+$\cos\theta\sin\theta$ factor in the integral. What's called ``vertical angle''
+in the \gls{IES} profile specification corresponds to angle $\theta$ and what's
+called ``horizontal angle'' corresponds to $\phi$, this means the rows in the
+``candela values'' data in the file are constant-$\phi$ measurements of the
+described luminaire.
+
+\paragraph{Emission constant}
+
+The emission constant \Verb|k_e| is computed as
+
+\begin{c++code}
+const float K_m = 683.002;
+
+float Phi_v = /* luminous power from light parameters */;
+float A     = /* area of the light from geometry */;
+
+float  angularnorm = /* computed as above */;
+float3 tint        = /* computed as above */;
+float3 redlum_sRGB = /* computed as above */;
+
+float k_e = Phi_v / (K_m * A * angularnorm * dot(tint, redlum_sRGB));
+\end{c++code}
+
+
+\paragraph{Reduced radiance}
+
+To compute radiance we need to first compute the reduced radiance $\|col\cdot
+\hat L\|$: we know that $col$ is our \camRGBl\ space $col = (\bar r(\lambda),
+\bar g(\lambda), \bar b(\lambda))$, so the integrals can be precomputed for the
+supported cases with code like this (for example in the case of $\hat
+L(\lambda)$ being Illuminant D50):
+
+\begin{pythoncode}
+# load spectral sensitivity of the camera
+camera = Camera.Camera("Red_Mysterium_X")
+# get CIE 1931 Color Matching functions
+cmf = CIE.CMF_1931
+# get Illuminant D50 data, Illuminant D at 5003 K
+illuminant = SPD.IlluminantD.at(cmf.lnms, 5003)
+# reduced radiance vector, r, g, b components
+redrad_camRGB = [0,0,0]
+
+# p\_integral() is the product integral
+redrad_camRGB[0] = p_integral(camera.rbar, illuminant)
+redrad_camRGB[1] = p_integral(camera.gbar, illuminant)
+redrad_camRGB[2] = p_integral(camera.bbar, illuminant)
+
+# now transform into sRGB primaries, M is CameraRGB to sRGB
+M = [[  1.369,  0.0137, -0.3068],
+ [  -0.18,   1.326, -0.1541],
+ [0.01454, -0.5008,   1.331]]
+redrad_sRGB = M * redrad_camRGB
+
+\end{pythoncode}
+
+\paragraph{Radiance from the source}
+
+At this point the radiance \Verb/radiance/ from this source is simply
+
+\begin{rslcode}
+float k_e = /* computed as above */;
+color redrad_sRGB = /* computed as above */;
+
+color radiance =
+    k_e *
+    texture(filename, s, t) *
+    redrad_sRGB *
+    pow(normalize(L).normalize(N), cospower);
+\end{rslcode}
+
+\subsection{Image Based Lighting sources}
+
+\begin{inconstruction}
+    Add code defining what is in \Verb|radiance|
+
+    \paragraph{Irradiance coloration vector}
+
+    Compute the average of the \gls{IBL} map times $\cos\theta$ in \sRGBl. Be
+    careful with long sums, mipmapping can't be used. Use Knuth-style
+    incremental averaging (probably in double for accuracy).
+
+    \paragraph{Tint vector}
+
+    Compute $\|T \cdot col\|_{\bar y}$
+\end{inconstruction}
+
+\subsection{Sun lights}
+
+\begin{inconstruction}
+Add code defining what is in \Verb|radiance|
+
+    \paragraph{Angular norm}
+
+    The norm of $D_{\omega_c}$ need to be computed, write down a few common
+    cases
+
+    \paragraph{Tint vector}
+
+    Compute the average of the tint texture map in \gls{sRGB}.
+    Be careful with long sums, either use mipmapping or Knuth-style
+    incremental averaging (probably in double for accuracy).
+
+    \paragraph{Reduced illuminance vector}
+
+    Compute $\|col\cdot \hat L\|_{\bar y}$: we know that $col$ is
+    \gls{CIE} \gls{XYZ} space, so the integrals can be precomputed
+    for the supported cases, and stored somewhere.
+    This needs some attention to detail
+\end{inconstruction}
+
+
+\subsection{Materials}
+
+Materials in \gls{RGB} renderers operate as if there were only three wavelenghts in
+the world, that is picking \sRGBl\ data from the textures, converting it to the
+working color space and proceeding to multiply component by component such values
+with the incoming radiance to produce outgoing radiance.
+
+%\begin{inconstruction}
+% Give an example showing how to compute \Verb|Ci| for a simple material
+%\end{inconstruction}
+
+\subsection{Imaging}
+
+This section outlines how to apply the imaging parameters to the resulting value
+\Verb|Ci| containing the \gls{RGB} radiance flowing towards the image place.
+White balance is achieved diving out the whitepoint color in \camRGBl coordinates.
+This is implemented as a matrix multiply for convenience, which does in one go
+the whole operation of going from working space, to camera space, multiplying by
+ the inverse of the white point, and transforming back. Such matrix is built in
+ the helper method
+\Verb|buildWhitebalanceTransform()| outlined below.
+
+The binding in a \productname{RenderMan} system can be implemented by means of a
+pixel-sample imager shader, bound with the call \Verb|RiPixelSampleImager()|
+
+A minimal version of such a shader follows, built on the convention that the
+incoming \Verb|Ci| contains radiance, as above. The code of the shader has been
+separated into a few code sections for clarity.
+
+\begin{rslcode}
+class physLightImaging(
+    // camera focal length, in mm
+    float focalLength = 24;
+    // focus distance, in scene units
+    float focusDistance = 100;
+    // aperture f-number
+    float apertureNumber = 8;
+    // exposure time, in seconds.
+    // -1 picks it up from the RIB
+    float exposureTime = -1;
+    // film speed, ISO/ASA
+    float filmSpeed = 100;
+    // white point, in Kelvin
+    float whitepoint_T = 6500;
+)
+{
+    constant matrix c_whitebalance;
+    constant float  c_imagingRatio;
+
+    // return the color of a blackbody of temperature T
+    // in cameraRGB\_l space
+    color blackBody2CameraRGBl(float T) { /* ... */ }
+
+    // return the size of one meter in scene units
+    float getOneMeter() { /* ... */ }
+
+    // get the exposure time from a shader parameter or from the RIB
+    float getExposureTime() { /* ... */ }
+
+    // get the aperture distance
+    float getApertureDistance(float f; float o) { /* ... */ }
+
+    // build a tranformation to apply whitebalance in cameraRGB\_l space
+    matrix buildWhitebalanceTransform() { /* ... */ }
+
+    // rebalance the color for a white point at the given temperature
+    color apply_whitebalance(color C)
+    {
+        return (color) transform(c_whitebalance, (point) C);
+    }
+
+    public void construct() { /* ... */ }
+
+    public void imager(output varying color Ci, Oi)
+    {
+        // apply whitebalance
+        Ci = apply_whitebalance(Ci);
+        // apply exposure parameters
+        Ci *= c_imagingRatio;
+    }
+}
+\end{rslcode}
+
+
+The \Verb|construct()| method initializes the white balance transform and the
+imaging ratio. These are then used in the \Verb|imager()| method to convert
+incoming radiance into appropriately scaled irradiance at the filmback.
+
+\begin{rslcode}
+public void construct()
+{
+    c_whitebalance = buildWhitebalanceTransform();
+
+    float oneMeter = getOneMeter();
+    float exposureTime = getExposureTime();
+    float f = focalLength / 1000;
+    float o = focusDistance / oneMeter;
+    float a = getApertureDistance(f, o);
+    float r = f / (2 * apertureNumber);
+    float apertureRatio = PI * r*r / (a*a);
+
+    // the imaging constant, Equation \ref{eqn:imaging_ki}
+    float k_i = 4 * 683 / 312.5;
+
+    // scale as per Equation \ref{eqn:imaging_y2}
+    // note the missing division by $K_m$ as here Ci is already in
+    // radiometric units
+    c_imagingRatio = c_exposureTime * k_i * filmSpeed * c_apertureRatio;
+}
+\end{rslcode}
+
+The helper method \Verb|getOneMeter()| returns the number of scene units in a
+meter using the \gls{RIB} option \Verb|units:length|
+
+\begin{rslcode}
+// get the size of one meter in scene units
+float getOneMeter()
+{
+    float lengthscale = .01;
+    option("units:length", lengthscale);
+    return 1 / lengthscale;
+}
+\end{rslcode}
+
+
+The helper method \Verb|getApertureDistance()| computes the distance of the
+aperture from the filmback, in the notation of Chapter~\ref{ch:imaging}
+
+\begin{rslcode}
+// get the aperture distance
+// f - the focal length
+// o - the focus distance, from the filmback
+float getApertureDistance(float f; float o)
+{
+    o /= 2;
+    return o - sqrt(o*o - 2 * f * o);
+}
+\end{rslcode}
+
+
+The helper method \Verb|getExposureTime()| computes the exposure time using
+either the \gls{RIB} option \Verb|units:time| or the shader parameter
+\Verb|exposureTime| in case it's not the sentinel value \Verb|-1|
+
+\begin{rslcode}
+// get the exposure time from a shader parameter or from the RIB
+float getExposureTime()
+{
+    float result = exposureTime;
+    if (result == -1)
+    {
+        float timescale = 1/24;
+        option("units:time", timescale);
+        float shutter[2] = {0,0};
+        option("Ri:Shutter", shutter);
+        result = (shutter[1] - shutter[0]) * timescale;
+    }
+
+    return result;
+}
+\end{rslcode}
+
+
+White balance is achieved transforming into \camRGBl, divide component by
+component by color of illuminant (also in \camRGBl) and transforming back into
+\sRGBl.
+
+\begin{rslcode}
+matrix buildWhitebalanceTransform()
+{
+    // this is M\_MysteriumX from Section B.2, transposed because
+    // RenderMan is row-vectors
+    uniform matrix cam2sRGB = {  1.369,  -0.18,   0.01454, 0,
+                                 0.0137,  1.326, -0.5008,  0,
+                                -0.3068, -0.1541, 1.331,   0,
+                                 0,       0,      0,       1};
+
+    uniform matrix sRGB2cam = 1 / cam2sRGB;
+
+    // white point, in cameraRGB
+    uniform color whitepoint = 1 / blackBody2CameraRGB_l(whitepoint_T);
+    uniform matrix wpm = {  whitepoint[0], 0,  0,  0,
+                            0,  whitepoint[1], 0,  0,
+                            0,  0,  whitepoint[2], 0,
+                            0,  0,  0,             1};
+
+    c_whitebalance = cam2sRGB * wpm * sRGB2cam;
+}
+\end{rslcode}
+
+The \Verb|blackBody2CameraRGB_l| method returns the color of a black body
+radiator in \camRGBl\ space and is here in python:
+
+\begin{pythoncode}
+# return the color of a blackbody of temperature T
+# in cameraRGB\_l
+def blackBody2CameraRGB_l(T):
+    camera = Camera.Camera("Red_Mysterium_X")
+
+    illuminant = SPD.BlackBody.at(camera.lnms, 6500)
+    illuminantE = SPD.IlluminantE.at(camera.lnms)
+    illXYZ = ColorSpace.XYZ_lv(camera.lnms, illuminant)
+    illEXYZ = ColorSpace.XYZ_lv(camera.lnms, illuminantE)
+
+    illuminant /= illXYZ[1]
+    illuminant *= illEXYZ[1]
+
+    bbCameraRGB = ColorSpace.RGB_lv(camera.lnms, illuminant, camera)
+    bbCameraRGB /=  ColorSpace.RGB_lv(camera.lnms, illuminantE, camera)
+
+    return bbCameraRGB
+\end{pythoncode}
+
+
+
+\section{Spectral setting}
+
+The typical assumption in the tristimulus setting is that transformations
+between the various color spaces has no adverse effects, and that it is
+appropriate to use the \gls{CIE} $\bar x(\lambda), \bar y(\lambda), \bar z(\lambda)$
+color matching curves to map from spectral to tristimulus \gls{XYZ} space.
+
+We introduce the use of \colspacefont{cameraRGB} color space, the color space
+determined by spectral response curves coming from a physical camera, together
+with a matrix to map this space into \gls{CIE} \gls{XYZ} (or \sRGBl). Examples
+of such data are given in the appendix, Section~\ref{sec:cameradata}.
+
+
+\subsection{Lights}
+
+\begin{inconstruction}
+
+Integrals to store:
+\begin{itemize}
+\item $\|D\|$ angular norm
+\item $\|T_*\|$ store tint with texture
+\item precomputed integrals for common illuminants
+\end{itemize}
+
+\paragraph{Angular norm}
+angular distributions should be normalized to integrate to 1.
+
+\paragraph{Texture norms}
+\begin{displaymath}
+|T_\star| = \int_A T_\star(x) \d x
+\end{displaymath}
+where A is the area of the light. The integral is actually an average of the
+pixel values scaled with the light area. we can precompute the average of the
+per channel pixel values and store them in the header of the file.
+
+\paragraph{Reduced quantities}
+
+Precompute
+\begin{align*}
+|\phi_\star| = \int_\lambda \star(\lambda) E(\lambda) \bar y(\lambda) \d\lambda\\
+|\phi| = \int_\lambda E(\lambda) \bar y(\lambda) \d\lambda\\
+\end{align*}
+
+for the most common radiators. (black body, illuminant $D_{65}$, ..)
+
+\end{inconstruction}
+
+
+\section{Color space conversion code}
+
+\subsubsection{Color spaces}
+
+Quick summary of useful color space conversions
+
+\paragraph{xyY to XYZ}
+
+If $Y = 0$ the result is $(0,0,0)$, otherwise
+
+\begin{align*}
+X &= Y \frac{x}{y} \\
+Y &= Y \\
+Z &= Y \frac{1-x-y}{y} \\
+\end{align*}
+
+
+\begin{pythoncode}
+# Computes XYZ coordinates from the given xy coordinates
+# and Y value, assumes xy to be not imaginary
+def XYZ(xy, Y):
+    x, y = xy
+    X = Y * x / y
+    Z = Y * (1 - x - y) / y
+    return (X, Y, Z)
+\end{pythoncode}
+
+
+\paragraph{XYZ to xy}
+
+\begin{align*}
+x &= \frac {X}{X+Y+Z} \\
+y &= \frac {Y}{X+Y+Z}
+\end{align*}
+
+
+\begin{pythoncode}
+# Computes xy coordinates from the given XYZ coordinates
+def xy(XYZ):
+    X, Y, Z = XYZ
+    x = X / (X+Y+Z)
+    y = Y / (X+Y+Z)
+    return (x,y)
+\end{pythoncode}
+
+
+\paragraph{XYZ to sRGB/Rec. 709 primaries, linear}
+
+\begin{displaymath}
+C_{Rec709} = M_{Rec709} C_{XYZ} = \left[\begin{array}{r@{.}lr@{.}lr@{.}l}
+ 3&2404542 & -1&5371385 & -0&4985314 \\
+-0&9692660 &  1&8760108 &  0&0415560 \\
+ 0&0556434 & -0&2040259 &  1&0572252 \\
+\end{array}\right] C_{XYZ}
+\end{displaymath}
+
+\ifomit
+\paragraph{XYZ to LMS/CAT02}
+
+\begin{figure}
+\centering
+\input{figures/cielms2006.pgf}
+\caption{CIE LMS2006 Color Space curves}
+\label{fig:cielms2006}
+%\vskip 1mm
+%{\footnotesize\it }
+\end{figure}
+
+\begin{displaymath}
+C_{LMS} = M_{CAT02} C_{XYZ}  = \left[\begin{array}{r@{.}lr@{.}lr@{.}l}
+ 0&7328 & 0&4296 & -0&1624 \\
+-0&7036 & 1&6975 &  0&0061 \\
+ 0&0030 & 0&0136 &  0&9834 \\
+\end{array}\right] C_{XYZ}
+\end{displaymath}
+\fi
+
+
+\begin{pythoncode}
+# Computes XYZ coordinates from the given set of
+# color matching functions
+# l - list of wavelengths
+# v - list of values
+# xyzcmf an object containing
+# .lnms - list of wavelengths
+# .xbar - values for $\bar{x}(\lambda)$
+# .ybar - values for $\bar{y}(\lambda)$
+# .zbar - values for $\bar{z}(\lambda)$
+def XYZ_lv(l, v, xyzcmf = CIE.CMF_1931):
+    X = _integrate(l, v, xyzcmf.lnms, xyzcmf.xbar)
+    Y = _integrate(l, v, xyzcmf.lnms, xyzcmf.ybar)
+    Z = _integrate(l, v, xyzcmf.lnms, xyzcmf.zbar)
+
+    return numpy.array([X, Y, Z])
+\end{pythoncode}
+
+
+\section{Texture maps}
+\label{sec:implementation:texturemaps}
+
+\subsection{RGB to spectrum conversions}
+
+It's common practice to use \gls{RGB} texture maps to encode various
+kind of spatially varying spectral distributions. In order to use them
+in a spectral pipeline, a way is needed to try and reconstruct a plausible
+spectrum from the data in these files. Chapter~\ref{ch:lighting} introduced
+the idea of discussing spatially varying spectra in terms of $n$-dimensional
+vectors in a color basis called generically $col(\lambda)$ for which a
+simple example was given for a naive reconstruction from \gls{RGB} as
+\begin{displaymath}
+M(p,\lambda) = \big\langle M_{rgb}(p), rgb(\lambda) \big\rangle
+\end{displaymath}
+
+Although appealing in its simplicity, this way of reconstructing a spectral
+distribution from a texture would turn out to be only appropriate to model
+emissive objects, for example some kind of \gls{RGB} monitor, but would be
+a fairly poor approach to represent richer, more natural reflectance or
+transmittance spectra.
+In absence of sidecar information regarding what kind or class of spectral
+distribution should be use to perform a reconstruction from a given texture,
+a more believable way to rebuild spectral distributions from \gls{RGB} triples
+is the algorithm proposed by Brian Smits in~\cite{smits99}: given $7$
+spectra for white, cyan, magenta, yellow, red, green, blue:
+\begin{displaymath}
+smits(\lambda) = \big(w(\lambda), c(\lambda), m(\lambda), y(\lambda), r(\lambda), g(\lambda), b(\lambda)\big): \R^+\to\R^7
+\end{displaymath}
+a simple procedure is described to build a vector
+\begin{displaymath}
+M_{smits} = \big(M_w, M_c, M_m, M_y, M_r, M_g, M_b\big) \in \R^7
+\end{displaymath}
+in which at most three coordinates are non-zero.
+Then the resulting spectrum would be
+\begin{displaymath}
+M(p,\lambda) = \big\langle M_{smits}(p), smits(\lambda) \big\rangle
+\end{displaymath}
+Spectra recovered this way have some desirable guarantees in terms of
+smoothness, and the algorithm lends itself to a very efficient implementation.
+The data presented here is based on a 10 bin spectral representation from
+\SI{380}{\nano\meter} to \SI{720}{\nano\meter}. The bins are all equal size,
+the function \Verb|bin()| return the bin index from a given wavelength
+
+
+\begin{c++code}
+const uint32_t c_numBins = 10;
+const uint32_t c_numSpectra = 7;
+const float    c_minWavelength = 380.f;
+const float    c_maxWavelength = 720.f;
+
+uint32_t bin(float wavelength)
+{
+    using std::min;
+    using std::max;
+
+    float binWidth = (c_maxWavelength - c_minWavelength) / c_numBins;
+
+    uint32_t bin = static_cast<unit32_t>(
+                        (wavelength - c_minWavelength) / binWidth);
+
+    return min(max(bin, 0u), c_numBins - 1);
+}
+\end{c++code}
+
+
+Follows the table of Smits' original data
+
+\begin{c++code}
+const float c_table[c_numBins * c_numSpectra] =
+{
+//  bin    white    cyan     magenta  yellow   red      green    blue
+/*  0  */  1.0000f, 0.9710f, 1.0000f, 0.0001f, 0.1000f, 0.0000f, 1.0000f,
+/*  1  */  1.0000f, 0.9426f, 1.0000f, 0.0000f, 0.0515f, 0.0000f, 1.0000f,
+/*  2  */  0.9999f, 1.0007f, 0.9685f, 0.1088f, 0.0000f, 0.0273f, 0.8916f,
+/*  3  */  0.9993f, 1.0007f, 0.2229f, 0.6651f, 0.0000f, 0.7937f, 0.3323f,
+/*  4  */  0.9992f, 1.0007f, 0.0000f, 1.0000f, 0.0000f, 1.0000f, 0.0000f,
+/*  5  */  0.9998f, 1.0007f, 0.0458f, 1.0000f, 0.0000f, 0.9418f, 0.0000f,
+/*  6  */  1.0000f, 0.1564f, 0.8369f, 0.9996f, 0.8325f, 0.1719f, 0.0003f,
+/*  7  */  1.0000f, 0.0000f, 1.0000f, 0.9586f, 1.0149f, 0.0000f, 0.0369f,
+/*  8  */  1.0000f, 0.0000f, 1.0000f, 0.9685f, 1.0149f, 0.0000f, 0.0483f,
+/*  9  */  1.0000f, 0.0000f, 0.9959f, 0.9840f, 1.0149f, 0.0025f, 0.0496f
+};
+\end{c++code}
+
+and a helper function \Verb|evalBin()| which contains the core of Smits's
+algorithm
+
+
+\begin{c++code}
+float evalBin(float r, float g, float b, uint32_t bin)
+{
+    const float* const row = c_table + bin * c_numSpectra;
+
+    if (r <= g && r <= b) // red is smallest
+        return     r * row[0] + ((g <= b) ? // white
+            ((g - r) * row[1] +             // cyan
+             (b - g) * row[6]) :            // blue
+            ((b - r) * row[1] +             // cyan
+             (g - b) * row[5]));            // green
+
+    if (g <= r && g <= b) // green is smallest
+        return     g * row[0] + ((r <= b) ? // white
+            ((r - g) * row[2] +             // magenta
+             (b - r) * row[6]) :            // blue
+            ((b - g) * row[2] +             // magenta
+             (r - b) * row[4]));            // red
+
+    // blue is smallest
+    return         b * row[0] + ((r <= g) ? // white
+            ((r - b) * row[3] +             // yellow
+             (g - r) * row[5]) :            // green
+            ((g - b) * row[3] +             // yellow
+             (r - g) * row[4]));            // red
+}
+\end{c++code}
+
+
+The last remaining function is \Verb|evalSpectrum()| which relies on the seven
+basis functions being piecewise constant
+
+
+\begin{c++code}
+float evalSpectrum(float3 rgb, float wavelength)
+{
+    return evalBin(rgb[0], rgb[1], rgb[2], bin(wavelength));
+}
+\end{c++code}

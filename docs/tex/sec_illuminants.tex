@@ -1,0 +1,431 @@
+\chapter{Illuminants}\label{ch:illuminants}
+
+\section{Spectral Distribution Functions}
+
+\subsection{Black body radiator}
+
+\begin{figure}
+{
+\small
+\centering
+\input{figures/blackbody.pgf}
+\caption{Spectral distributions of black body radiator at various temperatures}
+\label{fig:blackbody}
+}
+\vskip 1mm
+{\footnotesize\it Plots of spectral distribution of black body
+radiator at temperatures of $2855.54$, $3200$, $4500$, $5000$,
+$5500$, $6500$, $7500$ degrees Kelvin.
+In the rendition, the color of each curve is taken from the
+sRGB coordinates for the corresponding color,
+normalized so that the maximum sRGB linear value is $0.7$}
+\end{figure}
+
+Black body spectral radiance as per Planck's law~\cite{planck14}:
+\begin{equation}
+B_T(\lambda) = \frac{2 h c^2}{\lambda^5} \frac 1{e^{\frac{hc}{\lambda k
+T}}-1}
+\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\end{equation}
+where relevant constants and variables are:
+
+\begin{center}
+\begin{tabular}{c l l}
+$k$                & Boltzmann constant        & \SI{1.3806488e-23}{\joule\per\kelvin}  \\
+$h$                & Planck constant           & \SI{6.62606957e-34}{\joule\second}  \\
+$c$                & speed of light in vacuum  & \SI{2.99792458e8}{\meter\per\second} \\
+$T$                & temperature in kelvin     & $[\si{\kelvin}]$    \\
+$\lambda$          & wavelength in meter       & $[\si{\meter}]$    \\
+$T_{kK}$           & temperature in kilokelvin & $[\si{\kilo\kelvin}]$ \\
+$\lambda_{\mu m}$  & wavelength in micrometers & $[\si{\micro\meter}]$ \\
+\end{tabular}
+\end{center}
+
+Substitute values in, and rescale for numerical accuracy:
+
+\begin{equation}
+B_T(\lambda) = \frac{119.104}{\lambda_{\mu m}^5} \frac
+1{e^{\frac{14.3878}{\lambda_{\mu m} T_{kK}}}-1}
+\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\end{equation}
+
+\paragraph{Chromaticity}
+
+\begin{figure}
+{
+\centering
+\begin{minipage}{.4\textwidth}
+\input{figures/chromas.pgf}
+\end{minipage}
+\begin{minipage}{.4\textwidth}
+\input{figures/chromas_enlarge.pgf}
+\end{minipage}
+
+\caption{Comparison of CCTs for black body and Illuminant D}
+\label{fig:blackbodychroma}
+}
+\vskip 1mm
+{\footnotesize\it Red crosses show actual chromaticity for a black body
+emitter, green crosses show the result from the approximation in
+\cite{kang02}, blue crosses show the chromaticity of CIE Standard
+Illuminant D. The plot on the right is an enlargement of the
+central region of the plot on the left, the triangle in the left plot
+is the sRGB gamut}
+\end{figure}
+
+White point for black body radiator. Black body's approximate chromaticity
+coordinates in CIE $xy$ space can be computed following \cite{kang02} as:
+
+\begin{equation}
+\begin{array}{rcll}
+w & = & 1/T_{kK} \qquad \text{inverse of temperature in kiloKelvin} & \\
+x & = & \begin{cases}
+     - .2991239\,w^3 -  .234358 \,w^2  +  .8776956\,w  + .17991  & T_{kK} \in [1.667, 4] \\
+     -3.0258469\,w^3 + 2.1070379\,w^2  +  .2226347\,w  + .240390 & T_{kK} \in [4, 25]
+    \end{cases} \\
+y & = & \begin{cases}
+     -1.1063814\,x^3 - 1.34811020\,x^2 + 2.18555832\,x - .20219683 & T_{kK} \in [1.667, 2.222] \\
+     - .9549476\,x^3 - 1.37418593\,x^2 + 2.09137015\,x - .16748867 & T_{kK} \in [2.222, 4] \\
+      3.081758 \,x^3 - 5.8733867 \,x^2 + 3.75112997\,x - .37001483 & T_{kK} \in [4, 25]
+      \end{cases}
+\end{array}
+\end{equation}
+
+\paragraph{Luminance}
+
+Luminance of blackbody radiator $\|B_T\|_{\bar y} = \int B_T(\lambda)\bar y(\lambda) d\lambda$,
+this can be approximately computed as
+
+\begin{equation}
+\|B_T\|_{\bar y} = \frac{\num{50471.2}}{e^{\frac{14.3878}{\num{0.0384919} +
+\num{0.541533} T_{kK}}}-1}
+\quad \left\{\begin{array}{cl}
+\pm 0.375\% & T_{kK} \in [1.6, 2.5] \\
++0.23\% \pm 0.1\% & T_{kK} \in [2.5, 3.3] \\
+\pm 0.155\% & T_{kK} \in [3.3, 8.5] \\
+\pm 0.11\%  & T_{kK} \in [9, 25] \\
+\end{array}\right.
+\quad \left[\si{\watt\per\square\meter\per\steradian}\right]
+\end{equation}
+
+\subsection{CIE Standard Illuminants}
+
+A standard illuminant is a theoretical source of visible light with a profile
+(its spectral
+power distribution) which is published. Standard illuminants provide a basis for
+comparing
+images or colors recorded under different lighting. Standard Illuminants A, B,
+and C were
+introduced in 1931, with the intention of respectively representing average
+incandescent light,
+direct sunlight, and average daylight. Illuminants D represent phases of
+daylight, Illuminant E
+is the equal-energy illuminant, while Illuminants F represent fluorescent lamps
+of various
+composition, data for these illuminants is available in \cite{stdilluminants}.
+
+\begin{figure}
+{
+\small
+\centering
+\input{figures/commonilluminants.pgf}
+\caption{Spectral distributions of common Standard Illuminants}
+\label{fig:illumspectra}
+}
+\vskip 1mm
+{\footnotesize\it Plots of spectral distribution of
+Standard Illuminants $A$, $D_{50}$, $D_{55}$, $D_{65}$, $D_{75}$,
+normalized to equal luminance.
+In the rendition, the color of each curve is taken from the
+sRGB coordinates for the corresponding color,
+normalized so that the maximum sRGB linear value is $0.7$.
+The CIE color matching function $\bar y (\lambda)$ is also plotted in
+black dashed line for reference}
+\end{figure}
+
+\paragraph{Standard Illuminant A}
+
+The standard illuminant A defined by the \gls{CIE} is intended to
+represent typical, domestic, tungsten-filament lighting.
+Its relative spectral power distribution is that of a black body radiator at a
+temperature of approximately \SI{2855.54}{\kelvin}.
+Standard illuminant A should be used in all applications of colorimetry
+involving the use of incandescent lighting, unless there are specific reasons
+for
+using a different illuminant. Using our previous expression for black body radiation we have
+\begin{equation}
+S_{A}(\lambda_{\mu m}) = B_{2855.54}(\lambda_{\mu m}) =
+\frac{119.104}{\lambda_{\mu m}^5} \frac 1{e^{\frac{5.03855}{\lambda_{\mu m}}}-1}
+\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\end{equation}
+where $\lambda_{\mu m}$ is the wavelength in micrometer.
+
+\paragraph{Standard Illuminant D series}
+
+The D series of illuminants were derived by Judd, MacAdam, and Wyszecki, from a
+large number of measurements of natural daylight. Although they are rather
+difficult sources to build accurately in real life, they are based on a simple
+PCA decomposition of the data gathered during the measurements, making them
+very convenient to work with numerically.
+
+The spectral distribution $S_D(\lambda, T)$ is defined in terms of three tabulated spectral
+distributions $S_0(\lambda)$, $S_1(\lambda)$ and $S_2(\lambda)$ (data is tabulated
+and plotted in the appendix):
+\begin{equation}
+S_D(\lambda, T) = S_0(\lambda) + M_1(T) S_1(\lambda) + M_2(T) S_2(\lambda)
+\end{equation}
+where the weighting functions $M_1(T)$ and $M_2(T)$ are defined in terms of the
+\gls{CIE} chromaticity coordinates $x_D, y_D$ as follows:
+\begin{align*}
+M   &= 0.0241 + 0.2562 x_D - 0.7341 y_D \\
+M_1 &= \frac{-1.3515 - 1.7703 x_D + 5.9114 y_D}{M} \\
+M_2 &= \frac{0.03 - 31.4424 x_D + 30.0717 y_D}{M} \\
+\end{align*}
+
+Due to changes in constants that have happened since 1931, Standard Illuminant $D_{65}$
+corresponds to a temperature of \SI{6504}{\kelvin} and Standard Illuminant $D_{50}$
+to a temperature of \SI{5003}{\kelvin}.
+
+\paragraph{Chromaticity}
+For D-series standard illuminants, \gls{CIE} xy coordinates are:
+
+\begin{equation}
+\begin{array}{rcl}
+w & = & 1/T_{kK} \qquad \text{inverse of temperature in kiloKelvin}  \\
+x & = & \begin{cases}
+         - 4.6070\,w^3 + 2.9678 \,w^2 + .09911\,w + .244063  & T_{kK} \in [4, 7] \\
+         - 2.0064\,w^3 + 1.9018\,w^2  +  .24748\,w + .237040 & T_{kK} \in [7, 25]
+    \end{cases} \\
+y & = & -3\,x^2  + 2.87\,x - .275
+\end{array}
+\end{equation}
+
+
+\paragraph{Standard Illuminant E}
+
+Standard Illuminant E is simply $S_E(\lambda) = 1$, an equal energy radiator
+
+\paragraph{Standard Illuminant F series}
+
+\begin{figure}
+\small
+\centering
+\input{figures/illuminantf1-6.pgf}
+\caption{Spectral distributions of CIE Standard Fluorescent Illuminants}
+\label{fig:illumfspectrastd}
+\vskip 1mm
+{\footnotesize\it Plots of spectral distribution of
+Standard Illuminants $F_1$ to $F_6$, standard spectra.
+In the rendition, the color of each curve is taken from the
+sRGB coordinates for the corresponding color,
+normalized so that the maximum sRGB linear value is $0.85$.
+}
+\end{figure}
+
+\begin{figure}
+{
+\small
+\centering
+\input{figures/illuminantf7-9.pgf}
+\caption{Spectral distributions of CIE Broadband Fluorescent Illuminants}
+\label{fig:illumfspectrabroad}
+}
+\vskip 1mm
+{\footnotesize\it Plots of spectral distribution of
+Standard Illuminants $F_7$ to $F_9$, broadband spectra.
+In the rendition, the color of each curve is taken from the
+sRGB coordinates for the corresponding color,
+normalized so that the maximum sRGB linear value is $0.85$.
+}
+\end{figure}
+
+\begin{figure}
+{
+\small
+\centering
+\input{figures/illuminantf10-12.pgf}
+\caption{Spectral distributions of CIE Narrowband Fluorescent Illuminants}
+\label{fig:illumfspectranarrow}
+}
+\vskip 1mm
+{\footnotesize\it Plots of spectral distribution of
+Standard Illuminants $F_{10}$ to $F_{12}$, narrowband spectra.
+In the rendition, the color of each curve is taken from the
+sRGB coordinates for the corresponding color,
+normalized so that the maximum sRGB linear value is $0.85$.
+}
+\end{figure}
+
+The F series of standard illuminants represent various types of fluorescent lighting.
+$F_1$--$F_6$ ``standard'' fluorescent lamps consist of two semi-broadband
+emissions of
+antimony and manganese activations in calcium halophosphate phosphor, these are
+plotted in Figure~\ref{fig:illumfspectrastd}. $F_4$ is of
+particular interest since it was used for calibrating the \gls{CIE} \gls{CRI}
+(the \gls{CRI} formula was chosen such that $F_4$ would have a \gls{CRI} of
+$51$).
+$F_7$--$F_9$ are ``broadband'' (full-spectrum light) fluorescent lamps with
+multiple phosphors, and higher \glspl{CRI}, plotted in
+Figure~\ref{fig:illumfspectrabroad}. Finally, $F_{10}$--$F_{12}$ are narrow
+triband illuminants consisting of three ``narrowband'' emissions (caused by
+ternary
+compositions of rare-earth phosphors) in the R,G,B regions of the visible
+spectrum, plotted in Figure~\ref{fig:illumfspectranarrow}.
+The phosphor weights can be tuned to achieve the desired \gls{CCT}.
+The spectra of these illuminants are published in \cite{ciecolorimetry}.
+
+
+\section{Standard Illuminants}\label{ch:stdilldata}
+
+\subsection{Illuminant D}
+
+Data for CIE Standard Illuminant D, the three functions
+are $S_0(\lambda)$ in red, $S_1(\lambda)$ in green, $S_2(\lambda)$ in blue
+
+%\begin{table}
+{
+\small
+\centering
+
+\input{figures/illuminantd.pgf}
+{
+\centering
+\begin{minipage}{.3\textwidth}
+\begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
+$\lambda$ & \multicolumn{2}{c|}{$S_0(\lambda)$} &  \multicolumn{2}{c|}{$S_1(\lambda)$} &  \multicolumn{2}{c}{$S_2(\lambda)$} \\
+\hline
+\smsl 300 & \smsl  0&\smsl 04 & \smsl  0&\smsl 02 & \smsl 0& \\
+\smsl 310 & \smsl  6&         & \smsl  4&\smsl 50 & \smsl 2& \\
+\smsl 320 & \smsl 29&\smsl 60 & \smsl 22&\smsl 40 & \smsl 4& \\
+\smsl 330 & \smsl 55&\smsl 30 & \smsl 42&         & \smsl 8&\smsl 50 \\
+\smsl 340 & \smsl 57&\smsl 30 & \smsl 40&\smsl 60 & \smsl 7&\smsl 80 \\
+\smsl 350 & \smsl 61&\smsl 80 & \smsl 41&\smsl 60 & \smsl 6&\smsl 70 \\
+\smsl 360 & \smsl 61&\smsl 50 & \smsl 38&         & \smsl 5&\smsl 30 \\
+\smsl 370 & \smsl 68&\smsl 80 & \smsl 42&\smsl 40 & \smsl 6&\smsl 10 \\
+380 &  63&40 & 38&50 &  3& \\
+390 &  65&80 & 35&   &  1&20 \\
+400 &  94&80 & 43&40 & -1&10 \\
+410 & 104&80 & 46&30 & -0&50 \\
+420 & 105&90 & 43&90 & -0&70 \\
+430 &  96&80 & 37&10 & -1&20 \\
+440 & 113&90 & 36&70 & -2&60 \\
+450 & 125&60 & 35&90 & -2&90 \\
+460 & 125&50 & 32&60 & -2&80 \\
+470 & 121&30 & 27&90 & -2&60 \\
+\end{tabular}
+\end{minipage}\hskip3mm
+\begin{minipage}{.3\textwidth}
+\begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
+$\lambda$ & \multicolumn{2}{c|}{$S_0(\lambda)$} &  \multicolumn{2}{c|}{$S_1(\lambda)$} &  \multicolumn{2}{c}{$S_2(\lambda)$} \\
+\hline
+480 & 121&30 &  24&30 & -2&60 \\
+490 & 113&50 &  20&10 & -1&80 \\
+500 & 113&10 &  16&20 & -1&50 \\
+510 & 110&80 &  13&20 & -1&30 \\
+520 & 106&50 &   8&60 & -1&20 \\
+530 & 108&80 &   6&10 & -1&   \\
+540 & 105&30 &   4&20 & -0&50 \\
+550 & 104&40 &   1&90 & -0&30 \\
+560 & 100&   &   0&   &  0&   \\
+570 &  96&   &  -1&60 &  0&20 \\
+580 &  95&10 &  -3&50 &  0&50 \\
+590 &  89&10 &  -3&50 &  2&10 \\
+600 &  90&50 &  -5&80 &  3&20 \\
+610 &  90&30 &  -7&20 &  4&10 \\
+620 &  88&40 &  -8&60 &  4&70 \\
+630 &  84&00 &  -9&50 &  5&10 \\
+640 &  85&10 & -10&90 &  6&70 \\
+650 &  81&90 & -10&70 &  7&30 \\
+\end{tabular}
+\end{minipage}\hskip3mm
+\begin{minipage}{.3\textwidth}
+\begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
+$\lambda$ & \multicolumn{2}{c|}{$S_0(\lambda)$} &  \multicolumn{2}{c|}{$S_1(\lambda)$} &  \multicolumn{2}{c}{$S_2(\lambda)$} \\
+\hline
+660 & 82&60 & -12&   &  8&60 \\
+670 & 84&90 & -14&   &  9&80 \\
+680 & 81&30 & -13&60 & 10&20 \\
+690 & 71&90 & -12&   &  8&30 \\
+700 & 74&30 & -13&30 &  9&60 \\
+710 & 76&40 & -12&90 &  8&50 \\
+720 & 63&30 & -10&60 &  7&00 \\
+\smsl 730 & \smsl 71&\smsl 70 & \smsl -11&\smsl 60 & \smsl 7&\smsl 60 \\
+\smsl 740 & \smsl 77& & \smsl -12&\smsl 20 & \smsl 8&\smsl 00 \\
+\smsl 750 & \smsl 65&\smsl 20 & \smsl -10&\smsl 20 & \smsl 6&\smsl 70 \\
+\smsl 760 & \smsl 47&\smsl 70 & \smsl -7&\smsl 80 & \smsl 5&\smsl 20 \\
+\smsl 770 & \smsl 68&\smsl 60 & \smsl -11&\smsl 20 & \smsl 7&\smsl 40 \\
+\smsl 780 & \smsl 65& & \smsl -10&\smsl 40 & \smsl 6&\smsl 80 \\
+\smsl 790 & \smsl 66& & \smsl -10&\smsl 60 & \smsl 7&\smsl 00 \\
+\smsl 800 & \smsl 61& & \smsl -9&\smsl 70 & \smsl 6&\smsl 40 \\
+\smsl 810 & \smsl 53&\smsl 30 & \smsl -8&\smsl 30 & \smsl 5\smsl &50 \\
+\smsl 820 & \smsl 58&\smsl 90 & \smsl -9&\smsl 30 & \smsl 6&\smsl 10 \\
+\smsl 830 & \smsl 61&\smsl 90 & \smsl -9&\smsl 80 & \smsl 6&\smsl 50
+\end{tabular}
+\end{minipage}
+%\caption{Spectral power distribution data for Standard Illuminant D}
+\vskip 1mm
+}
+\label{tab:spdillD}
+}
+%
+
+
+
+\section{Angular distributions}\label{sec:angular_norm}
+
+\subsection{Powered cosine}
+
+The angular norm $\|D\|$ of $\langle \omega, \hat n \rangle^n$ is
+\begin{multline}\label{eq:powered_cosine}
+\|D(\omega)\|
+   = \int_{\Omega^+} \langle \omega, \hat n \rangle \cos\theta \d\omega
+   = \int_{\phi = 0}^{2\pi} \int_{\theta = 0}^{\pi/2} \cos^n\theta \cos\theta
+     \sin\theta \d\theta \d\phi \\
+   = 2\pi \left.\frac{-\cos^{n+2}\theta}{n+2}\right|_0^{\pi/2}
+   = \frac{2\pi}{n+2}
+\end{multline}
+
+\subsection{IES profiles}
+
+The \gls{IES} has a standard file format called \texttt{LM-63} (available in
+three revisions \texttt{LM-63-1986}, \texttt{LM-63-1991} and
+\texttt{LM-63-1995}) for photometric data describing luminaires. These files
+are often called \gls{IES} profiles and are freely available from most
+manufacturers. For the purposes of this document, an \gls{IES} profile
+is simply an (unnormalized) intensity distribution map $D(\omega) =
+D_{IES}(\theta,\phi)$, intended to be a bilinear interpolation of the data in
+the corresponding tabulation from the file. As such it can simply be integrated
+numerically evaluating the angular norm integral
+\begin{equation}
+\|D(\omega)\|
+   = \int_{\Omega^+}  D_{IES}(\theta,\phi) \cos\theta \d\omega
+   = \int_{\phi = 0}^{2\pi} \int_{\theta = 0}^{\pi/2}
+        D_{IES}(\theta,\phi) \cos\theta \sin\theta \d\theta \d\phi
+\end{equation}
+implementation details are in Chapter~\ref{ch:implementation}.
+
+\section{Tint functions}
+
+\subsection{Texture maps}
+Explain texture maps, their primaries, how to use custom primaries.
+Explain differences between textured emitters and transmittance/reflectance data
+
+
+\subsection{Tabulated spectral data}
+Sometimes tabulated data is available for various gels or filters, figure~\ref{fig:roscolux}
+includes plots of a subset of Rosco's \emph{RoscoLux} series of gels.
+
+\begin{figure}
+{
+\centering
+\includegraphics{figures/roscolux.pdf}
+\caption{Spectral transmittance of \emph{RoscoLux} gel series}
+\label{fig:roscolux}
+}
+\vskip 1mm
+{\footnotesize\it Transmittance of the \emph{RoscoLux} series of gels from
+Rosco. The coloration of the curve is the color of the gel as seen in front
+of a D65 illuminant}
+\end{figure}
+
+

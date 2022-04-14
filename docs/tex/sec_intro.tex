@@ -1,0 +1,473 @@
+\chapter{Introduction}
+
+\section{Why physical units?}
+
+
+One of the reasons physically-based image synthesis has become such an
+indispensable ingredient for pushing realism and consistency in very
+complex scenarios is predictability. Material modelling is based on
+physical properties and thus allows to reproduce increasingly complex
+natural phenomena. In traditional rendering systems, control of the
+look was often owned by the shading system, often allowing artistic
+control knobs for artificial emission or non-physical behavior to
+compensate for lighting, for example missing indirect illumination.
+
+The physically-based rendering paradigm dictates that materials,
+lighting and camera response are completely independent entities and
+must hence always be controlled with this separation in mind. This
+on one hand makes digital assets more universally usable, and on the
+other hand allows to achieve consistency when integrating digital with
+live action footage.
+
+Naturally, since a wide range of different effects interplay with each
+other in complex and subtle ways, it is absolutely crucial that all
+components are accurately represented by their digital analogues to be
+able to reproduce real-world footage realistically. Furthermore, it is
+very important that the description of the digital scene is based on
+real-world quantities, which enables easier control and verification.
+
+In this document we focus on the specification of illuminants and
+sensors and advocate using the same conventions and physical units as
+lighters and photographers on set. For example, it is preferable in
+terms of predictability to think about brightness in terms of
+photometric units, i.e., units which represent perceived brightness as
+seen by a human observer, rather than radiometric power (wattage)
+which depending on the spectral emission profile can have highly
+varying brightness. We specify a system of units and models, such that
+provided the digital scene is modelled after a real-world counterpart,
+specifying the same illuminants via physical units and using the same
+camera settings the renderer will replicate the same pixel values as a
+real camera. Naturally, for reproducing color, we will not only need
+to develop an accurate understanding of brightness but also be aware
+of how spectral data flows through the pipeline.
+
+
+In short, this document introduces the use of physical units in the
+Weta pipeline for the treatment of lighting and imaging.  The
+objective is to formalize a system of physical absolute units to be used
+when describing lighting, materials and imaging across Weta's
+processes of digital image synthesis in order to bring them in line
+with real life measurements taken on set and facilitate integration of
+live action footage and digitally created content.the specification of
+how units from the \gls{si} are injected in the pipeline and the
+mathematics that corresponds to the quantities described.
+
+
+This document is divided in parts: Part \ref{part:models}
+contains an introduction on basic quantities that are relevant in
+light transport simulation and review the relation of photometric and
+radiometric units and describes the modelling aspects. In Chapter
+\ref{ch:lighting} we describe imaging and light models and propose the
+relevant sets of parameters to specify them accurately.  Chapter
+\ref{ch:calcsheets} provides some examples on how to derive some of
+the described quantities from real world examples.
+
+Part~\ref{part:ref} provides a reference of various concrete types of
+illuminants (Chapter~\ref{ch:illuminants}) and cameras (Chapter~\ref{ch:sensors})
+as well as a reference implementation (Chapter~\ref{ch:implementation}).
+
+Part~\ref{part:app} contains the appendices: Appendix~\ref{ch:color} discusses
+various considerations on color in the tristimulus versus spectral setting,
+Appendix~\ref{ch:wcl} describes an implementation of a color manipulation library
+and Appendix~\ref{ch:radiance} is an extensive excerpt from Frederic Nicodemus's 
+excellent 1963 paper~\cite{nicodemus63} in which the concept of \textsl{radiance}
+is introduced: unsurprisingly we found his explanation far clearer than what we 
+had been able to come up with, so we decided to retype his text, and limit ourselves
+to adjust his notation to contemporary conventions.
+
+\section{Pipeline integration}
+
+As a digital movie making pipeline is comprised of many parts, from content creation, to
+scene assembly and asset management, there is a need to
+be certain that all interpretations of values match across the various components.
+
+Components that will likely need adaptation or revision are:
+
+\begin{itemize}
+\item Host applications (such as Maya, Motion Builder, Katana)
+\item Scene translation bridges
+\item Light management systems
+\item Shader libraries
+\item Renderers
+\end{itemize}
+this is a fairly direct consequence of common custom so far. Until this point, it has been
+fairly common to use physical units in simulation systems, but not for lighting descriptions.
+Much like cameras have their focal length specified in millimiters in the user interface,
+similar adaptations will be needed for various other quantities, such as film back, light 
+sensitivity and so on. Similarly, as the renderers will be adapted to receive data
+referred to physical units, the bridges would need to make sure they are capable of transporting
+and translating such data appropriately, and various shading libraries might need various levels
+of adaptation for correctness. These changes are discussed in detail in the rest of this document:
+while Chapter~\ref{ch:imaging} focuses on the theretical background for these revisions,
+Chapter~\ref{ch:implementation} has code reference for the specifics of a working implementation.
+
+\paragraph{Scene representation}
+
+Scene representations will now need bindings from scene units to \gls{si} units,
+so the renderer is aware of the physical dimensions of the entities involved.
+
+For example, in \gls{RIB} this might look like this:
+
+\begin{ribcode}
+Option "units" "float length" [0.01]    # scene unit is 1 cm
+               "float time"   [0.04166] # 24 fps
+\end{ribcode}
+where \Verb/units:length/ is the size of a scene unit in meters,
+and \Verb/units:time/ is the size of a time unit in seconds.
+
+\section{Quantities in light transport}
+
+A common way of reasoning about image generation is built on the notion of a
+light ray, which is the fundamental element of geometrical optics. Light rays
+are straight line segments through space along which light travels in the scene.
+Thinking about photons, light rays represent paths along which photons flow,
+each of them carrying a quantity of energy dependent on its wavelength $\lambda$
+and equal to $E = hc/\lambda$ (where $h$ is Planck's constant and $c$ the speed
+of light in vacuum).
+
+As much as photons are the elements of light transport, at first we only have an
+aggregate measure of their condition in terms of power of a source.
+The intention here is to break down the aggregate notion of power of a source
+into components so that we can understand what quantity flows through a ``ray of
+light''.
+For this reason, we start from the amount of power emitted by our source $S$:
+the \textsl{emissive radiant power}.
+It can be seen as the energy flux through a sphere fully enclosing $S$.
+More precisely, we define the \textsl{emissive radiant flux} $\Phi_e$ of a
+source $S$ through a given surface $A$ as the amount of energy from $S$ that
+crosses $A$ per unit time. This flux will be called \textsl{total} when the surface
+$A$ fully encloses the source $S$. Total flux will be called \textsl{power} in
+this
+document, radiant flux is measured in watts $[\si{\watt}]$.
+
+It is natural to think of radiant power as originating from a region $\delta S$ on our source:
+for instance a source could emit different energy over its surface. This leads to an
+intuitive notion of radiant power from a point $x$ on the surface of the source
+$M_e(x)$, which
+we would like defined in such a way that power originated from our source $S$
+can be computed
+directly by integration over its surface (which we also call $S$ with an abuse of notation):
+\begin{displaymath}
+\Phi_e = \int_{S} M_e(x) \d x \qquad [\si{\watt}]
+\end{displaymath}
+this quantity $M_e$ is called \textsl{radiosity} and represent the power density
+of our
+source with respect to its surface area, formally
+\begin{displaymath}
+M_e = \frac{\d\Phi_e}{\d S} \qquad \left[\si{\watt\per\square\meter}\right]
+\end{displaymath}
+It is immediately verified that for a uniformly emissive source the
+radiosity is simply the ratio of emissive power to area
+$M_e = \Phi_e / S$.
+
+In a similar way, one could consider a notion of power leaving the source $S$ in
+a given
+direction $\omega$.
+As before we would like this quantity defined so that the power in a range of
+directions
+$\Omega$ could be directly computed by integration:
+\begin{displaymath}
+\Phi_e = \int_\Omega I_e(\omega) \d\omega \qquad [\si{\watt}]
+\end{displaymath}
+the integrand $I_e(\omega)$ is called \textsl{radiant intensity} and represent
+the density
+of power with respect to directions from the source, formally
+\begin{displaymath}
+I_e = \frac{\d\Phi_e}{\d\Omega} \qquad \left[\si{\watt\per\steradian}\right]
+\end{displaymath}
+it is very important to note that radiant intensity should be considered a
+``far-field'' quantity, that is to say, a quantity that is only valid when
+the source is extremely small in comparison to the other dimensions at play.
+The interested reader is invited to consult~\cite{nicodemus63}, a relevant
+extract of which is included in Appendix~\ref{ch:radiance} of this document.
+
+Now that we have a notion of power \textit{from a region} and power \textit{in
+a given direction}, we can combine the two to get power \textit{from a region
+in a given direction}, which as before is a quantity that lets us compute
+power by integration in area and direction:
+\begin{displaymath}
+\Phi_e = \int_{S} \int_\Omega L_e^\uparrow(x, \omega) \;\cos\theta\d x\d\omega
+\qquad [\si{\watt}]
+\end{displaymath}
+the integrand $L_e^\uparrow(x, \omega)$ is called \textsl{exitant radiance}
+and represents the power density with respect to area and directions from
+the source, formally
+\begin{displaymath}
+L_e^\uparrow = \frac{\d\Phi_e}{\cos\theta \d S \d\Omega}
+\qquad \left[\si{\watt\per\square\meter\per\steradian}\right]
+\end{displaymath}
+in some cases it might be convenient to distinguish exitant radiance from
+incident radiance and this will be indicated with an arrow in the exponent:
+exitant radiance pointing up $L_e^\uparrow$ and incident radiance pointing down
+$L_e^\downarrow$.
+
+Here, $\theta$ denotes the angle between the direction $\omega$ and the normal.
+The so called \emph{projected solid angle} $\d\omega^\bot := \cos \theta \d \omega$
+accounts for the change of flux received per infinitesimal area by a beam of light
+according to its orientation towards the surface.
+
+
+%  \begin{figure}[t]
+%  {
+%  \centering
+%  \begin{minipage}[b]{.3\textwidth}
+%  	\centering
+%  	\input{figures/P_e.tikz}
+%  	\label{fig:P_e}
+%  \end{minipage}
+%  \begin{minipage}[b]{.3\textwidth}
+%  	\centering
+%  	\input{figures/M_e.tikz}
+%  	\label{fig:M_e}
+%  \end{minipage}
+%  \begin{minipage}[b]{.3\textwidth}
+%  	\centering
+%  	\input{figures/I_e.tikz}
+%  	\label{fig:I_e}
+%  \end{minipage}
+%  \caption{Visualization of different light transport quantities}
+%  }
+%  \vskip 1mm
+%  {\footnotesize
+%  \begin{inconstruction}[This figure is under construction]
+%  \itshape One ray is representing the amount of energy originating at one point
+%  and travelling into one direction. Figure $a)$ shows a visualization of the
+%  power $\Phi_e$ from a surface $\delta S$. Power is the total energy leaving the
+%  source into all directions. Figure $b)$ is a visualization of $M_e$: the energy
+%  leaving the source from a specified point $x$ and into all directions.
+%  Whereas figure $c)$ visualizes $I_e$: the energy flowing into one specific
+%  direction $\omega$ from a surface patch $\delta S$.
+%  One ray representing $L_e$, the relations to the other quantities are visualized
+%  clearly: $M_e$ is the integration over all directions $\Omega$, $I_e$ is the
+%  integral over a surface $S$, but in one specified direction and $\Phi_e$ is
+%  the combination of both.
+%  \end{inconstruction}
+%  }
+%  \end{figure}
+%  
+%  \begin{figure}[htb]
+%      \centering
+%      \def\svgwidth{0.9\linewidth}
+%      \import{figures/}{flux_etc.pdf_tex}
+%      \caption{\label{fig:flux_etc}%
+%      A sensor for power detects photons across an area regardless of
+%      their direction of travel (top left). Restricting the directions to a
+%      small cone produces a sensor for intensity (top right). Similarly, 
+%      restricting the area to a point yields a sensor for irradiance (bottom left).
+%      Radiance is measured by restricting both the sensor area and the incident
+%      directions (bottom right). }
+%  \end{figure}
+
+\begin{figure}[tb]
+    \centering
+    \def\svgwidth{\linewidth}
+    \import{figures/}{flux_etc.pdf_tex}
+    \caption{\label{fig:flux_etc}%
+    A visualization of power (top left), intensity (top right),
+    irradiance (bottom left), and radiance (bottom right).
+    Power $\Phi_e$ is the total energy incident on the area $S$ from all directions
+    $\Omega$. Intensity $I_e(\omega)$ is the energy incident from a specific direction $\omega$
+    while irradiance $M_e(x)$ is the energy incident at a given point $x$.
+    Irradiance can be obtained by integrating radiance $L_e(x,\omega)$ over the sensor
+    surface $S$ and intensity can be derived by integrating radiance over the set of
+    all directions $\Omega$. An integration over both the surface and all directions yields power.  }
+\end{figure}
+
+One can think of incident radiance as photons along a ray reaching a surface.
+This also can vary across a region so it is natural to formulate a notion
+of incident power density across an area on the receiver.
+The total incident flux of a region $R$ on the receiver can then be computed by
+integration over its surface:
+\begin{displaymath}
+\Phi_e = \int_{R} E_e(x) \d x \qquad [\si{\watt}]
+\end{displaymath}
+the value $E_e(x)$ is the receiver's area density of incident power and
+is called \textit{irradiance}.
+Much like radiosity, irradiance as well has a differential formulation:
+\begin{displaymath}
+E_e = \frac{\d\Phi_e}{\d R} \qquad \left[\si{\watt\per\square\meter}\right]
+\end{displaymath}
+
+Comparing all the relations above, we can express radiosity, radiant intensity
+and irradiance in terms of radiance:
+\begin{displaymath}
+M_e(x) = \int_\Omega L_e^\uparrow(x,\omega) \;\cos\theta \d\omega \qquad
+I_e(\omega) = \int_S L_e^\uparrow(x,\omega) \d x \qquad
+E_e(x) = \int_\Omega L_e^\downarrow(x,\omega) \;\cos\theta \d\omega
+\end{displaymath}
+
+Somewhat orthogonally to all the above, we can consider spectral distributions
+of all these quantities, which we simply define as the spectral densities of the
+quantities above:
+\begin{displaymath}
+\Phi_{\lambda} = \frac{\d\Phi_e}{\d\lambda} \quad
+M_{\lambda} = \frac{\d\Phi_{\lambda}}{\d S} \quad
+I_{\lambda} = \frac{\d\Phi_{\lambda}}{\d\Omega} \quad
+E_{\lambda} = \frac{\d\Phi_{\lambda}}{\d R} \quad
+L_{\lambda}^\uparrow = \frac{\d\Phi_{\lambda}}{\d S \d\Omega} \quad
+L_{\lambda}^\downarrow = \frac{\d\Phi_{\lambda}}{\d R \d\Omega}
+\end{displaymath}
+
+
+
+\section{Measuring light and brightness}
+
+\begin{table}
+%\small
+\fontsize{9}{10.8}\selectfont
+{
+\centering
+% add some space inbetween lines
+\renewcommand{\arraystretch}{1.1}% only valid inside for this table due to scoping
+% reduce spacing between columns
+\renewcommand{\tabcolsep}{.125em}
+\begin{tabular}{l c c c |@{$\;$} l c c c}
+\multicolumn{4}{c|@{$\;$}}{Radiometric spectral} & \multicolumn{4}{c}{Photometric} \\
+  name	             & \multicolumn{2}{c}{unit} & symbol
+& name               & \multicolumn{2}{c}{unit} & symbol \\ \hline
+%
+  Radiance           &                  &
+\si{\watt\per\square\meter\per\steradian\per\meter} & $L_{\lambda}$
+& Luminance          & \textsl{nit}     & $\si{\nit} =
+\si{\lumen\per\square\meter\per\steradian}$          & $L_v$ \\
+%
+  Irradiance         &                  & \si{\watt\per\square\meter\per\meter}               & $E_{\lambda}$
+& Illuminance        & \textsl{lux}     & $\si{\lux} = \si{\lumen\per\square\meter}$          & $E_v$  \\
+%
+  Radiosity          &        & \si{\watt\per\square\meter\per\meter}
+   & $J_{\lambda}$
+& Luminosity         & \textsl{lux}     & $\si{\lux} = \si{\lumen\per\square\meter}$          & $J_v$ \\
+%
+  Radiant emittance  &                  & \si{\watt\per\square\meter\per\meter}
+             & $M_{\lambda}$
+& Luminous emittance & \textsl{lux}     & $\si{\lux} = \si{\lumen\per\square\meter}$          & $M_v$ \\
+%
+  Radiant intensity  &                  & \si{\watt\per\steradian\per\meter}
+             & $I_{\lambda}$
+& Luminous intensity & \textsl{candela} & $\si{\candela} = \si{\lumen\per\steradian}$         & $I_v$ \\
+%
+  Radiant power      & \textsl{watt}    & \si{\watt\per\meter}                                & $\Phi_{\lambda}$
+& Luminous power     & \textsl{lumen}   & \si{\lumen}                                         & $\Phi_v$ \\
+%
+  Radiant energy     & \textsl{joule}   & $\si{\joule\per\meter} =
+\si{\watt\second\per\meter}$ & $Q_{\lambda}$
+& Luminous energy    & \textsl{talbot}  & $\si{\talbot} = \si{\lumen\second}$
+               & $Q_v$
+\end{tabular}\\[2mm]
+\begin{tabular}{l c c}
+Throughput (\'etendue) & \si{\square\meter\steradian} & $G$ \\
+Reflectance            & & $\rho$ \\
+Transmittance          & & $\tau$ \\
+\end{tabular}
+\caption{Correspondance between radiometric and photometric units}
+}
+\vskip 1mm
+{\footnotesize\it We abbreviate the unit for luminous energy \textit{talbot} as
+\si{\talbot} instead of the also common \si{\tesla} to avoid confusion with the
+unit for magnetic flux \textit{tesla}.
+We also use the convention of subscripting photometric quantities
+with $v$ (for \textit{visual}), radiometric quantities with $e$ (for
+\textit{energetic}) and spectral radiometric quantities with $\lambda$;
+this follows the recommendations in documents such as~\cite{united1967usa}.}
+\label{tab:radiophoto}
+\end{table}
+
+One of the central points of this document is to put units to the pixel
+values in a raster image. Each pixel records the \textsl{\gls{brightness}} and color
+of a scene at its respective location. As we have just seen, radiometric
+quantities can be used to measure brightness in terms of radiative energy.
+
+However, the human visual system is not equally sensitive to all wavelengths
+of light, and may perceive radically different spectral
+distributions emanating or reflecting off an object as having the same
+brightness. Conversely, spectral distributions that carry the same amount
+of radiative energy may be percieved as having different brightness levels.
+
+It is therefore useful to reason about the energy of light in two
+different ways, one dealing with energy, called \textsl{radiometric}, and the
+other dealing with perception, called \textsl{photometric}. The two approaches
+have historically been using a great number of units, a few of which were
+included in the \gls{si} at the Eleventh Conference on Weights and Measures
+held in 1960.  Many details around various historical and \gls{si} units are
+described in~\cite{Meyer-Arendt:68}.
+
+In the \textsl{radiometric} point of view, the \textsl{radiant power} of a
+source $S$
+(also called \textsl{total radiant flux}) is measured in
+\textit{watts} $[\si{\watt}]$ and is the total amount of energy per unit time
+emitted by $S$.
+This means that two different light sources emitting the same radiant power and
+having different spectral distributions are likely to appear as having different
+brightness.
+
+On the other hand, in the \textsl{photometric} point of view, the
+\textsl{luminous power}
+of a source $S$ (called \textsl{luminous flux}) is measured in
+\textit{lumens} $[\si{\lumen}]$, and is the amount of energy per unit time
+weighted
+by the \textit{photopic luminosity function} $\bar y(\lambda)$ designed to
+model the response of the human visual system as a function of 
+wavelength $\lambda$\footnote{The photopic luminosity function $\bar y(\lambda)$ is
+the result of a series of experiments and tabulations first published
+by the \gls{CIE} in 1924 (the function was called $V(\lambda)$ at the time)
+and then included in the color matching functions for the standard 2 degree
+colorimetric observer~\citep{cie1931}.}.
+
+This means that two different light sources emitting the same luminous
+power will appear as having about the same brightness even when having
+different spectral distributions\footnote{This
+statement can only be true approximately, as the specific spectral response
+of different humans exhibits a certain amount of variation, even among
+normal subjects.
+Also there are subjects having various different kinds of anomalies in their
+visual
+systems (eg. daltonism), for whom this statement ends up being even less accurate}.
+
+More formally, a photometric quantity $X_v(\ldots)$ is obtained from 
+the corresponding radiometric spectral quantity $X_{\lambda}(\ldots, \lambda)$
+integrating
+\begin{equation}
+X_v(\ldots) = K_m \int X_{\lambda}(\ldots,\lambda)\; \bar y (\lambda) \d\lambda.
+\label{eqn:rad_to_photo}
+\end{equation}
+For example, given spectral radiant power $\Phi_{\lambda}(\lambda)$, the
+corresponding
+luminous power $\Phi_v$ is
+\begin{displaymath}
+\Phi_v = K_m \int \Phi_{\lambda}(\lambda)\; \bar y(\lambda) \d\lambda.
+\end{displaymath}
+
+The scaling constant $K_m$ converts watts to lumens. It can be determined
+from the 
+\gls{si} unit \textsl{candela} $[\si{\candela}]$, which was adopted at
+the General Conference on Weights and Measures in 1979 and
+there formally defined as follows:
+\begin{quote}
+\emph{One candela is the amount of luminous intensity of a source of
+monochromatic radiation of frequency \SI{540}{\tera\hertz} and
+a radiant intensity of \SI{1/683}{\watt\per\steradian}.}
+\end{quote}
+
+$\SI{540}{\tera\hertz}$ correspond to about \SI{555.016}{\nano\meter} in
+standard air, a wavelength in the greens to which the eye of the standard observer
+is most sensitive.
+The radiant intensity of $\SI{1/683}{\watt\per\steradian}$ was chosen to make the candela about equal to the
+\textit{standard candle}, the unit which it superseded. 
+
+Note that the above definition is an updated version of the original definition, which had been
+valid since 1933 and was based on the emission of a blackbody radiator
+at the freezing point of platinum, about \SI{2042}{\kelvin}. This 
+historical definition is sometimes also found in literature~\citep{Meyer-Arendt:68}.
+
+Using Eqn.~\eqref{eqn:rad_to_photo} and the Dirac delta distribution $\delta$, the
+above definition can be written as
+\begin{displaymath}
+    1 \si{\candela} = 1\frac{\si{\lumen}}{\si{\steradian}} 
+    = K_m \int \frac{\delta(\lambda-555.016\si{\nano\meter})}{683} \si{\watt\per\steradian}\;\bar y(\lambda) \d\lambda
+    = K_m \cdot \frac{\bar y(555.016\si{\nano\meter})}{683}\si{\watt\per\steradian},
+\end{displaymath}
+from which it follows that $K_m \approx 683.002 \;\si{\lumen\per\watt}$. In 
+practice, however, it is safe to use the value of $683\;\si{\lumen\per\watt}$~\citep{cie1996,wyszecki2000}.
+
+Table~\ref{tab:radiophoto} lists important radiometric quantities and their photometric equivalents.
+

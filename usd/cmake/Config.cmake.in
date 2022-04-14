@@ -1,0 +1,6 @@
+# @CMAKE_PROJECT_NAME@Config.cmake
+
+get_filename_component(@CMAKE_PROJECT_NAME@_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+if(NOT TARGET @CMAKE_PROJECT_NAME@::usdTri)
+    include("${@CMAKE_PROJECT_NAME@_CMAKE_DIR}/cmake/@CMAKE_PROJECT_NAME@Targets.cmake")
+endif()

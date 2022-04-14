@@ -1,0 +1,361 @@
+\section{Describing light sources}\label{ch:specification}
+
+Light sources are modeled as emitters characterized by spectral distribution
+and angular profile, and further modified by a ``filter'' or ``gel'' (called
+\textsl{tint function} in this document). We want to derive a formulation for
+spectral exitant radiance $L_{\lambda}^\uparrow(x,\omega,\lambda)$ given
+specific light properties. We will do that by means of an \textsl{intrinsic
+emission function} $\overline{L}^\uparrow_{\lambda}(x,\omega,\lambda)$
+describing the directional and spectral properties of the light source
+(inclusive of the tint) and scale this function as needed to obtain exitant
+radiance:
+\begin{equation}
+L_{\lambda}^\uparrow(x, \omega, \lambda) = k_e \cdot
+\overline{L}^\uparrow_{\lambda}(x, \omega, \lambda)
+\end{equation}
+where $k_e$ is a scaling factor called the \textsl{emission constant}.
+
+%\paragraph{Emission constant}
+
+The value of the emission constant is derived \emph{a posteriori} from the
+source's power once the emission profile, the angular distribution and the tint
+function are fixed, as opposed to a more traditional specification in which it
+would be the emission constant to be specified directly as a light parameter and
+the power computed from the other quantities.
+
+We propose using luminous power for finite
+sources (such as area lights) and illuminance for non-finite sources (such as
+\gls{IBL} sources) to specify source brightness and to consider these to be
+quantities inclusive of the effects of the tint function.
+
+The rationale behind this choice is that it is desirable to setup lighting
+on a scene in terms of perceived brightness of the final rendered image,
+abstracting away concerns with such matters as specific spectral or angular
+profiles of emitters, in an effort to try and focus attention towards the broad
+brightness ratios of a scene.
+For example, this arrangement minimizes changes in perceived scene brightness
+(and moreso brightness ratios) in the event of substitution of a tint function
+with another.
+
+\paragraph{Texture maps}
+It is common to use texture maps to define some of the emission distribution
+functions. A texture map can be seen as a function $M(x,\lambda)$ that specifies
+a spatial distribution of color values, the function is dependent on pixel
+position $x$ and wavelength $\lambda$.
+For later calculations it is useful to separate the spectral dependency from the
+spatial dependency. For example, in the case of an \gls{RGB} map, a possibility
+could be to use a three-primary decomposition to separate pixel position from
+color values:
+\begin{equation}
+M(x,\lambda) = M_r(x) r(\lambda) + M_g(x) g(\lambda) + M_b(x) b(\lambda)
+\end{equation}
+where $r(\lambda)$, $g(\lambda)$ and $b(\lambda)$ are the hypotetical spectral
+distributions of the map's primaries for red, green and blue and $M_r(p)$,
+$M_g(p)$ and $M_b(p)$ are the corresponding values stored in the map for a
+given pixel position $x$.
+
+It will be convenient in the upcoming sections to make use of a different
+notation: we call $M_{col}(x): X\to\R^n$ the function that maps the position $x$
+to its coordinates in a specified $n$ dimensional color space $col$. For example
+for the \gls{RGB} color space we would have $n = 3$:
+\begin{equation}
+M_{rgb}(p) = \big(M_r(p), M_g(p), M_b(p)\big) \in \R^3
+\end{equation}
+but see Chapter~\ref{ch:implementation} for an $n=7$ example. A similar thing
+can be done for the primaries, joining them into a single function
+$col(\lambda): \R^+\to\R^n$ which maps a wavelength to the response of the $n$
+primaries at once. For \gls{RGB} we would have $n = 3$ and $rgb(\lambda)$ would be:
+\begin{equation}
+rgb(\lambda) = \big(r(\lambda), b(\lambda), g(\lambda)\big) \in\R^3
+\end{equation}
+This notation lets us write an equivalent, more compact definition for
+$M(x,\lambda)$ in terms of the scalar product operation in $\R^n$
+\begin{equation}
+M(x,\lambda) = \big\langle M_{col}(x), col(\lambda) \big\rangle
+\end{equation}
+or for \gls{RGB} in $\R^3$
+\begin{equation}
+M(x,\lambda) = \big\langle M_{rgb}(x), rgb(\lambda) \big\rangle
+\end{equation}
+
+Chapter~\ref{ch:implementation} contains some further details on possible ways
+to construct these spectral distributions for the primaries. The following
+subsections will describe the functions needed to specify the different types of
+lights and show how to calculate the emission constant from the specifications.
+
+\subsection{Area Lights}
+
+The emission for an area light source is specified by:
+\begin{itemize}
+\item $\Phi_v$ -- luminous power $[\si{\lumen}]$
+\item $A$ -- area $[\si{\square\meter}]$
+\item $\hat{L}(\lambda)$ -- spectral distribution
+  \begin{itemize}\small\it
+  \item Black body of given temperature $T$: $\hat{L}(\lambda) = B_T(\lambda)$
+  \item Standard Illuminant D of given CCT $T$: eg. $\hat{L}(\lambda) = D_{65}(\lambda)$
+  \item Standard Illuminant E: $\hat{L}(\lambda) = 1$
+  \item Standard Illuminant $F_1$--$F_{12}$: eg. $\hat{L}(\lambda) = F_1(\lambda)$
+  \item Tabulated spectral data from file
+  \end{itemize}
+\item $D(\omega)$ -- angular distribution
+  \begin{itemize}\small\it
+  \item lambertian: $D(\omega) = 1$
+  \item powered cosine: $D(\omega) = \cos^n \theta = \langle \hat n,\omega \rangle^n$
+  \item IES profile from file
+  \end{itemize}
+\item $T(x,\lambda)$ -- tint function
+  \begin{itemize}\small\it
+  \item color: $T(x,\lambda) = \langle T_{col}, col(\lambda)\rangle$
+  \item Pick from list of known gel sets (LEE, Rosco, Wratten, \ldots): $T(x, \lambda) = LEE_{013} (\lambda)$
+  \item texture map: $T(x,\lambda) = \langle T_{col}(x), col(\lambda)\rangle$
+  \end{itemize}
+\end{itemize}
+
+The exitant radiance of an area light source will be specified by a spectral
+distribution $\hat{L}(\lambda)$, an angular distribution $D(\omega)$ that
+describes the dependence of exitant radiance on outgoing direction and a tint
+function $T(x,\lambda)$ that is used to scale exitant radiance depending on
+position on the source and wavelength. This leads us to the following
+formulation for the intrinsic emission function
+\begin{equation}
+\overline{L}^\uparrow_{\lambda}(x, \omega, \lambda) = T(x, \lambda)
+\hat{L}(\lambda) D(\omega)
+\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\end{equation}
+
+The luminous power of the source is obtained integrating over the area of the
+light source $A$, the angular domain $\Omega$ (typically the front hemisphere
+for planar, forward only sources, or an entire sphere for most other sources)
+and the wavelength domain
+\begin{equation}
+\Phi_v = k_e K_m \int_\lambda \int_\Omega \int_A
+\overline{L}^\uparrow_{\lambda}(x, \omega, \lambda) \bar y (\lambda) \cos\theta
+\d x \d\omega \d\lambda
+\qquad [\si{\lumen}]
+\end{equation}
+In our case $\Phi_v$ is given as a parameter of the light, and $k_e$ can be
+determined by inversion:
+\begin{equation}
+k_e = \frac{\Phi_v}{K_m \int_\lambda \int_\Omega \int_A T(x, \lambda) \cdot
+\hat{L}(\lambda) \cdot D(\omega) \cdot \bar y (\lambda) \; \cos\theta \d x \d\omega
+\d\lambda \qquad}
+\end{equation}
+
+Depending on the tint function and emission profile the triple integral for
+$\Phi_v$ turns out to be separable, and it factorizes into a product of
+integrals that can be precomputed easily.
+Specifically in the common case in which the tint function is based on a texture
+map, the triple integral for $\Phi_v$ separates into a product of integrals as
+follows:
+
+\begin{itemize}
+\item a tint vector $\|T_{col}\|$
+\begin{equation}
+\|T_{col}\|  = \frac1A\int_A T_{col}(x) \d x \in \R^n
+\end{equation}
+\item a reduced luminance vector $\|col \cdot \hat{L}\|_{\bar y}$
+\begin{equation}
+\|col \cdot \hat{L}\|_{\bar y} = \int_\lambda col(\lambda) \hat{L}(\lambda)
+\bar{y}(\lambda) \d\lambda \in \R^n
+\end{equation}
+\item an angular norm $\|D\|$
+\begin{equation}
+ \|D\| = \int_\Omega D(\omega) \cos\theta \d\omega \in \R
+\end{equation}
+\end{itemize}
+with these relations we can rewrite luminous power as
+\begin{equation}
+\Phi_v = k_e K_m A \|D\| \big\langle \|T_{col}\|,\; \|col\cdot \hat{L}\|_{\bar
+y} \big\rangle
+\end{equation}
+so that the expression for the emission constant is simply
+\begin{equation}
+ k_e = \frac{\Phi_v}{K_m A \|D\| \big\langle \|T_{col}\|,\; \|col\cdot \hat{L}\|_{\bar y} \big\rangle }
+\end{equation}
+
+We observe that the tinting vector can be precomputed once for texture maps, the
+angular norm has simple closed form solutions for the common cases (and can be
+precomputed and stored for tabulated profiles), and the reduced luminous power
+vector can be precomputed for each combination of texture map primaries and
+spectral emission profiles.
+This reduces the computation of $k_e$ to a scalar product and a few
+multiplications, once the given inputs of a light are given.
+Chapter~\ref{ch:implementation} contains tables for various common combinations.
+
+Once the emission constant has been computed, exitant radiance from the source
+is simply
+\begin{equation}
+L^\uparrow_{\lambda}(x, \omega, \lambda) = k_e T(x, \lambda) \hat{L}(\lambda)
+D(\omega)
+\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\end{equation}
+
+% TODO: add the corresponding expression in space col
+
+\subsection{Image Based Lighting}
+
+The emission for an \gls{IBL} source is specified by (sublists contain possible examples):
+
+\begin{itemize}
+\item $E^+_v$ -- illuminance from top hemisphere $[\si{\lux}]$
+\item $\hat{L}(\omega,\lambda)$ -- spherical map of an image (spectral and angular distribution)
+\item $T(\lambda)$ -- tint function
+  \begin{itemize}\small\it
+  \item color: $T(\lambda) = \langle T_{col}, col(\lambda) \rangle$
+  \item Pick from list of known gel sets (LEE, Rosco, Wratten, \ldots): $T(\lambda) = LEE_{013} (\lambda)$
+  \end{itemize}
+\end{itemize}
+\Gls{IBL} sources model light coming from great distance away from the scene. As
+such they illuminate the scene geometry in a manner that is dependent on
+local orientation, but not position. For this reason it is only possible to
+specify their brightness in terms of illuminance (area density of luminous power
+at the receiver) rather than luminous power\footnote{Luminous power would be
+ill-defined in this case: it's easily seen that an \gls{IBL} source emits in
+such a way to have the same finite illuminance at all points in a scene. This
+means that its luminous power, that is its illuminance integrated over the scene
+area, depends on the amount of geometry in the scene, implying that doubling the
+amount of geometry in a scene would double the power of the source, making
+such a definition inconsistent}.
+This means that for \gls{IBL} sources the formulation is in terms of incident
+radiance at an unspecified position in the scene:
+\begin{equation}
+L_{\lambda}^\downarrow(\omega,\lambda) = k_e T(\lambda) \hat{L}(\omega,\lambda)
+\end{equation}
+the missing dependence on the position $x$ in the scene outlines how incident
+radiance from an \gls{IBL} source is not dependent on the receiver's location
+but only on its orientation. The emission constant is the estimated in terms of
+illuminance $E^+_v$ from the top hemisphere
+\begin{align*}
+E^+_v &= K_m \int_{\Omega^+} \int_\lambda L_{\lambda}^\downarrow(\omega,\lambda)
+\cdot\bar y(\lambda) \cos\theta \d\omega\d\lambda \\
+&= k_e K_m\int_{\Omega^+}\int_{\lambda} T(\lambda) \cdot \hat{L}(\omega,\lambda)
+\cdot\bar y(\lambda) \cos\theta \d\omega\d\lambda
+\qquad [\si{\lux}]
+\end{align*}
+where $\Omega^+$ indicates integration over the top hemisphere, intuitively
+modeling the idea of a receiver (such as a grey card or a hemispherical light
+meter) set horizontally and facing upwards. This gives us:
+\begin{equation}
+k_e = \frac{E^+_v}{K_m\int_{\Omega^+}\int_{\lambda} T(\lambda) \cdot
+\hat{L}(\omega,\lambda) \cdot \bar y(\lambda)\cos\theta \d\omega\d\lambda}
+\end{equation}
+
+The double integral in the denominator can again be factorized into simpler
+computations when using an \gls{IBL} texture map in a color space $col(\lambda)$.
+This time the the spatial component is the directional component of $\hat{L}$:
+\begin{equation}
+\hat{L}(\omega, \lambda) = \big\langle \hat{L}_{col}(\omega),\; col(\lambda) \big\rangle
+\end{equation}
+
+This gives us the possibility to break down the integral into
+\begin{itemize}
+\item an irradiance coloration vector $\|\hat{L}_{col}\|$
+\begin{equation}
+\|\hat{L}_{col}\| = \int_{\Omega^+} \hat{L}_{col}(\omega)\cos\theta \d\omega \in \R^n
+\end{equation}
+\item a tint vector $\|T \cdot col\|_{\bar y}$
+\begin{equation}
+\|T \cdot col\|_{\bar y} = \int_\lambda T(\lambda)\cdot col(\lambda)\,\bar y(\lambda) \d\lambda \in \R^n
+\end{equation}
+\end{itemize}
+where the tint function itself can be specified as a vector in some color space
+as outlined above:
+\begin{equation}
+T(\lambda) = \langle T_{col},\; col(\lambda)\rangle
+\end{equation}
+Note that if the map and the tint are specified in color spaces $col_1$ and
+$col_2$, the full expression for the tint vector is
+\begin{equation}
+\|T \cdot col\|_{\bar y} = \int_\lambda T_{col_2}col_2(\lambda)^t col_1(\lambda)\,\bar y(\lambda) \d\lambda
+ = T_{col_2} \|col_2 \otimes col_1\|_{\bar y}
+ \in \R^n
+\end{equation}
+where $\|col_2 \otimes col_1\|_{\bar y}$ is the $\bar y$-norm of the outer
+product of the color spaces $col_1$ and $col_2$.
+
+This decomposition lets us compute the emission constant for \gls{IBL} sources
+as follows
+\begin{equation}
+k_e = \frac{E^+_v} {K_m \langle \|\hat{L}_{col}\|, \|T \cdot col\|_{\bar y}
+\rangle}
+\end{equation}
+
+Once the emission constant has been computed, exitant radiance from the source
+is simply
+\begin{equation}
+L^\uparrow_{\lambda}(x, \omega, \lambda) = k_e  T(\lambda)
+\hat{L}(\omega,\lambda)
+\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\end{equation}
+
+% TODO: add the corresponding expression in space col
+
+\subsection{Sun light}
+
+The emission for a Sun light is specified by (sublists contain possible examples):
+
+\begin{itemize}
+\item $E^+_v$ -- illuminance of the sun $[\si{\lux}]$
+\item $D_{\omega_c}(\omega)$ -- angular dependent function describing the sun with the center at $\omega_c$
+	\begin{itemize} \small\it
+	\item Disk of angular size $\alpha$
+	\item Gaussian falloff function around $\omega_c$
+	\end{itemize}
+\item $\hat{L}(\lambda)$ -- emitter (spectral distribution)
+  \begin{itemize}\small\it
+  \item Black body of given temperature $T$: $\hat L(\lambda) = B_T(\lambda)$
+  \item Standard Illuminant D of nominal temperature $T$: eg. $\hat L(\lambda) = D_{65}(\lambda)$
+  \item Standard Illuminant E: $\hat L(\lambda) = 1$
+  \item Standard Illuminant $F_1$--$F_{12}$: eg. $\hat L(\lambda) = F_1(\lambda)$
+  \item Tabulated spectral data from file
+  \end{itemize}
+\item $T(\lambda)$ -- tint function
+  \begin{itemize}\small\it
+  \item color: $T(\lambda) = \langle T_{col}, col(\lambda) \rangle$
+  \item Pick from list of known gel sets (LEE, Rosco, Wratten, \ldots): $T(\lambda) = LEE_{013} (\lambda)$
+  \end{itemize}
+\end{itemize}
+
+Sun lights, like \glspl{IBL}, model a light source located at a great distance from
+a scene. Again the irradiance is dependent on the incident angle, but not the
+position in the scene.
+\begin{equation}
+L^\downarrow_{\lambda}(\omega,\lambda) = k_e\cdot T(\lambda)\cdot
+D_{\omega_c}(\omega)\cdot \hat{L}(\lambda)
+\end{equation}
+This time no function is dependent on more than one variable, so a factorisation is easily done.
+To compute the emission constant we again use the definition of illuminance
+$E^+_v$
+\begin{equation}
+E^+_v = K_m \int_\lambda \int_{\Omega^+} L^\downarrow_{\lambda}(\omega,\lambda) \cdot\bar y(\lambda)\cos\theta\d\omega \d\lambda
+\end{equation}
+which gives us:
+\begin{equation}
+k_e = \frac{E^+_v}{K_m\int_{\Omega^+}\int_{\lambda} T(\lambda)\cdot D_{\omega_c}(\omega)\cdot \hat{L}(\lambda) \cdot \bar y(\lambda)\cos\theta\d\omega \d\lambda}
+\end{equation}
+\\
+If $T(\lambda)$ is defined in some color space $col$, we can break the down the double integral into:
+\begin{itemize}
+\item an angular norm $\|D_{\omega_c}\|$
+\begin{equation}
+\|D_{\omega_c}\| = \int_\Omega D_{\omega_c}(\omega)\cos\theta\d\omega
+\end{equation}
+\item a reduced illuminance vector $\|col \cdot \hat{L}\|_{\bar{y}}$
+\begin{equation}
+\|col \cdot \hat{L}\|_{\bar{y}} = \int_\lambda col(\lambda)\cdot \hat{L}(\lambda)\cdot\bar{y}(\lambda)\d\lambda
+\end{equation}
+\end{itemize}
+This gives us the emission constant $k_e$ as
+\begin{equation}
+k_e = \frac{E^+_v}{K_m\cdot \|D_{\omega_c}\|\cdot \big\langle T_{col}, \; \|col \cdot \hat{L}\|_{\bar{y}} \big\rangle}
+\end{equation}
+
+Once the emission constant has been computed, exitant radiance from the source
+is simply
+\begin{equation}
+L^\uparrow_{\lambda}(x, \omega, \lambda) = k_e  T(\lambda)
+D_{\omega_c}(\omega) \hat{L}(\lambda)
+\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\end{equation}
+
+% TODO: add the corresponding expression in space col

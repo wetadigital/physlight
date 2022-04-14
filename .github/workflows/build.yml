@@ -1,0 +1,170 @@
+name: Build and test
+
+# Run the jobs for pushes and pull requests targetting main branch.
+on: 
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'images/**'
+      - 'examples/**'
+      - 'docs/**'
+  pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - 'images/**'
+      - 'examples/**'
+      - 'docs/**'
+
+jobs:
+
+  # A build job matrix based on pre-built USD binaries provided by NVIDIA.
+  nvidia-usd-binaries-linux-build:
+    strategy:
+      matrix:
+        usdVersion:
+          - 21.05
+        include:
+          - usdVersion: 21.05
+            usdVersionUrl: 21-05
+            pythonVersion: 3.6
+            USE_PYTHON_3: ON
+            buildType: Release
+            buildTests: 'ON'
+    runs-on: ubuntu-18.04
+    name: 'Ubuntu 18.04 NVIDIA Pre-built Binaries
+      <USD Version=${{ matrix.usdVersion }},
+       Python Version=${{ matrix.pythonVersion }},
+       Build type:${{ matrix.buildType }},
+       Enable tests=${{ matrix.build-tests }}>'
+    steps:
+      - name: Install dependencies (Linux)
+        run: sudo apt-get install cmake python${{ matrix.pythonVersion }} python${{ matrix.pythonVersion }}-dev
+      - uses: actions/checkout@v2
+      - name: Download and extract pre-built USD binaries
+        run: |
+          curl -L -o /tmp/usd-${{ matrix.usdVersion }}.7z https://developer.nvidia.com/usd-${{ matrix.usdVersionUrl }}-binary-linux-python-${{ matrix.pythonVersion }}
+          mkdir -p /tmp/usd-${{ matrix.usdVersion }}
+          7z x /tmp/usd-${{ matrix.usdVersion }}.7z -o/tmp/usd-${{ matrix.usdVersion }}
+      - name: Create build directories
+        run: |
+          mkdir _build
+          mkdir _install
+      - name: Configure
+        run: |
+          cmake -DUSD_ROOT="/tmp/usd-${{ matrix.usdVersion }}/" \
+                -DTBB_ROOT="/tmp/usd-${{ matrix.usdVersion }}/" \
+                -DBOOST_ROOT="/tmp/usd-${{ matrix.usdVersion }}/" \
+                -DUSE_PYTHON_3=${{ matrix.USE_PYTHON_3 }} \
+                -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} \
+                -DBUILD_TESTING=${{ matrix.buildTests }} \
+                -DCMAKE_CXX_FLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" \
+                -DCMAKE_INSTALL_PREFIX=../_install \
+                ../usd
+        working-directory: _build
+      - name: Build
+        run: |
+          cmake --build . \
+                --verbose \
+                --target install \
+                --config ${{ matrix.buildType }}
+        working-directory: _build
+      - name: Test
+        run: ctest -VV --output-on-failure -C ${{ matrix.buildType }}
+        working-directory: _build
+
+
+# A build job matrix based on pre-built USD binaries provided by NVIDIA on Windows.
+  nvidia-usd-binaries-windows-build:
+    strategy:
+      matrix:
+        usdVersion:
+          - 21.05
+        include:
+          - usdVersion: 21.05
+            usdVersionUrl: 21-05
+            pythonVersion: 3.6
+            USE_PYTHON_3: ON
+            buildType: Release
+            buildTests: ON
+    runs-on: windows-2016
+    name: 'Windows 2016 NVIDIA Pre-built Binaries
+      <USD Version=${{ matrix.usdVersion }},
+       Python Version=${{ matrix.pythonVersion }},
+       Build type:${{ matrix.buildType }},
+       Enable tests=${{ matrix.build-tests }}>'
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.pythonVersion }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.pythonVersion }}
+      - name: Download and extract pre-built USD binaries
+        run: |
+          Invoke-WebRequest https://developer.nvidia.com/usd-${{ matrix.usdVersionUrl }}-binary-windows-python-${{ matrix.pythonVersion }} -OutFile $env:TEMP/usd-${{ matrix.usdVersion }}.zip
+          mkdir -Force $env:TEMP/usd-${{ matrix.usdVersion }}
+          7z x $env:TEMP/usd-${{ matrix.usdVersion }}.zip $("-o" + "$env:TEMP" + "\usd-${{ matrix.usdVersion }}") -y
+      - name: Create build directories
+        run: |
+          mkdir -Force _build
+          mkdir -Force _install
+      - name: Configure
+        run: |
+          cmake -DUSD_ROOT="$env:TEMP/usd-${{ matrix.usdVersion }}" `
+              -DTBB_ROOT="$env:TEMP/usd-${{ matrix.usdVersion }}" `
+              -DBOOST_ROOT="$env:TEMP/usd-${{ matrix.usdVersion }}" `
+              -DUSE_PYTHON_3=${{ matrix.USE_PYTHON_3 }} `
+              -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} `
+              -DBUILD_TESTING=${{ matrix.buildTests }} `
+              -DCMAKE_INSTALL_PREFIX="../_install" `
+              -G "Visual Studio 15 2017 Win64" `
+              ../usd
+        working-directory: "_build"
+      - name: Build
+        run: |
+          cmake --build . `
+            --verbose `
+            --config ${{ matrix.buildType }} `
+            --target ALL_BUILD
+        working-directory: "_build"
+      - name: Run Tests
+        run: |
+          ctest --extra-verbose `
+            --output-on-failure `
+            -C ${{ matrix.buildType }}
+        working-directory: "_build"
+      - name: Install
+        run: |
+          cmake --build . `
+            --verbose `
+            --config ${{ matrix.buildType }} `
+            --target INSTALL
+        working-directory: "_build"
+
+  # Run automated code formatting checks.
+  code-formatting-check:
+    runs-on: ubuntu-18.04 
+    steps:
+      - name: Install dependencies (Linux)
+        run: |
+          sudo apt-get install clang-format-10
+      - uses: actions/checkout@v2
+      - name: Run clang-format on source code
+        run: |
+          find . \
+            -name ".git" -prune -o \
+            -name "*.cpp" -type f -exec clang-format -i --verbose {} + -o \
+            -name "*.h" -type f -exec clang-format -i --verbose {} +
+      - name: Check for code differences
+        run: |
+          set +e
+          git diff --color
+          git diff-index --quiet HEAD --; EXIT_CODE=$?
+          set -e
+          if [ $EXIT_CODE -ne 0 ]; then echo "C++ code formatting check failed.  Please run clang-format on *.h and *.cpp, then push your changes."; fi
+          exit $EXIT_CODE

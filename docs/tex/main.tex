@@ -1,0 +1,483 @@
+% compile with
+% oz+ texlive-20140109
+% oz+ pygments-1.6
+% make
+%  OR
+% make lores
+%
+% alternatively
+% xelatex -shell-escape main.tex
+% bibtex main
+% xelatex -shell-escape main.tex
+% xelatex -shell-escape main.tex
+
+% to make pictures (not a very perfect process, tbh)
+% use geogebra to make a diagram
+%  - to Export choose: export to PGF/TikZ
+%    - x units: 1.0, y units: 1.0
+%    - setup x/y min/max to include the picture
+%       (note this draws on the diagram the part that will be exported)
+%    - press Generate PGF/TikZ code
+%    - copy-paste the block \begin{tikzpicture} into the document
+%    - do adjustments of various kinds of label positioning and formatting
+
+% to install pygments on a mac
+% sudo easy_install Pygments
+
+% to make fonts work:
+% > cp /usr/home/lukes/.fonts.conf ~/.fonts.conf
+% > cp -R ~lukes/fonts ~/fonts
+% done :-)
+
+% ifplatform and minted need --shell-escape
+% \makeglossaries uses the shell for the glossary stuff
+% \makeindex uses the texindy thing for the index
+% use bibtex for the bibliography
+\documentclass[11pt,a4paper]{report}
+\usepackage{ifplatform}
+
+\newif\iffancyfonts
+% use this if fancy fonts are available
+\fancyfontstrue
+% else use this
+%\fancyfontsfalse
+
+% used to omit blocks of stuff
+\newif\ifomit
+
+% used in the source to skip over minted sections
+\newif\ifhasminted % defined later
+
+\usepackage[usenames]{color} %used for font color
+\usepackage{amssymb} %maths
+\usepackage{amsmath} %maths
+\usepackage{mathtools} %maths
+%\usepackage[utf8]{inputenc} %useful to type directly diacritic characters
+
+\usepackage{import}
+
+% these have to come before mathspec, unfortunately:
+% http://tex.stackexchange.com/questions/85696/what-causes-this-strange-interaction-between-glossaries-and-amsmath
+% bibliography configuration
+\usepackage[square,comma,sort&compress,nonamebreak]{natbib}
+% used for end-of-chapter bibliography in Appendix C: Radiance
+\usepackage{multibib}
+\newcites{rad}{References}
+
+% glossary and acronyms, has to come after hyperref
+% The noidx versions need 4.04, which was released on 08 March 2014.
+\makeatletter
+\usepackage[acronym,xindy,toc]{glossaries}%
+\@ifpackagelater{glossaries}{2014/03/08}{%
+    \newcommand\MakeGlossaries{\makenoidxglossaries}
+    \newcommand\PrintGlossaries{\printnoidxglossaries}
+}{%
+    \newcommand\MakeGlossaries{\makeglossaries}
+    \newcommand\PrintGlossaries{\printglossaries}
+}
+\makeatother
+
+\usepackage[xindy]{imakeidx}
+% ... up to here for simplicity, but only glossaries needs that, strictly speaking
+
+\usepackage{mathspec} % fontspec + maths support
+%\usepackage{fontspec,unicode-math} % for LuaLaTeX, doesn't work too well
+\usepackage{xunicode} % xelatex/unicode
+\usepackage{xltxtra} % xelatex extra pieces
+
+\usepackage{multirow} % \multirow command in tabular environments
+\usepackage[colorlinks=true]{hyperref} % for \url, has to come after amsmath
+
+% use pygments to do syntax highlighting of code
+% if pygmentize is not available, just comment this out
+\usepackage{minted}
+% used in conjunction with minted: mdframed is able to do pagebreaks, and this
+% propagates to minted when used inside of an mdframed environment
+\usepackage{mdframed}
+
+% tikz/pgf for images
+\usepackage{pgf,tikz}
+\usetikzlibrary{arrows}
+%\usepackage{txfonts,pxfonts}
+\usepackage{tcolorbox}
+
+% configure spacing around listing
+\usepackage{enumitem}
+\setlist{noitemsep}
+% for header/footer construction
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+% convenient setup for fonts in section headings
+\usepackage{sectsty}
+% handling of SI units
+\usepackage{siunitx}
+% allows crossreferencing and reusing of footnotes using \cref
+% see http://tex.stackexchange.com/questions/10102/multiple-references-to-the-same-footnote-with-hyperref-support-is-there-a-bett/10116#10116
+\usepackage{cleveref}
+\crefformat{footnote}{#2\footnotemark[#1]#3}
+% add support for \marginnote
+\usepackage{marginnote}
+% adjust margins a bit
+\ifmacosx
+% it seems the sum for bottom (1in+31.5pt) doesn't work for the mac
+% but it appears to work fine on linux...
+\usepackage[driver=xetex,a4paper,
+            top=1in, bottom=1.4in,
+            left=1.25in, right=1.25in]{geometry}
+\else
+\usepackage[driver=xetex, a4paper,
+            top=1in, bottom=1.5in,
+            left=1.25in, right=1.25in]{geometry}
+\fi
+
+% deals with warning: headheight too small from fancyhdr,
+% not sure what it's about though
+\iffancyfonts
+\setlength{\headheight}{31.5pt}
+\else
+\setlength{\headheight}{15pt}
+\fi
+
+% get ourselves some colors
+\definecolor{qqwuqq}{rgb}{0,0.39,0}
+\definecolor{xdxdff}{rgb}{0.49,0.49,1}
+\definecolor{uuuuuu}{rgb}{0.27,0.27,0.27}
+\definecolor{eqeqeq}{rgb}{0.88,0.88,0.88}
+\definecolor{uuuuuu}{rgb}{0.27,0.27,0.27}
+\definecolor{qqqqff}{rgb}{0,0,1}
+\definecolor{cqcqcq}{rgb}{0.75,0.75,0.75}
+\definecolor{xdxdff}{rgb}{0.49,0.49,1}
+
+% setup colors for links
+\definecolor{hyperref-color}{rgb}{0.1,0.1,0.3}
+\hypersetup{
+  colorlinks,
+  citecolor=hyperref-color,
+  linkcolor=hyperref-color,
+  urlcolor=hyperref-color}
+
+% enable TeX ligatures: `` '' -- --- !` ?` << >>
+% works in xelatex but not lualatex
+% see http://tex.stackexchange.com/questions/37855/fontspec-with-helvetica-breaks-quotes
+\defaultfontfeatures{Ligatures=TeX}
+
+\ExplSyntaxOn
+% \NewFontFamily takes the same arguments to \newfontfamily, prepended by
+% one to be a name that expands to something that can be passed to \fontfamily
+% so that if you have
+% \NewFontFamily\foo\foofamily{Ubuntu Mono}
+% {\foofamily test}
+% and
+% {\fontfamily{\foo}\selectfont test}
+% are rendered with the same font
+\DeclareDocumentCommand \NewFontFamily { m m O{} m }
+{
+    \newfontfamily #2 [#3] {#4}
+    \cs_set_eq:NN #1 \l_fontspec_family_tl
+}
+
+% use \Unicode{E1C0} for symbol U+E1C0
+% equivalente to \symbol{\string"E1C0}
+\DeclareDocumentCommand \Unicode { m }
+{
+    \symbol{\string"#1}
+}
+\ExplSyntaxOff
+
+\iffancyfonts
+  %\input{warnock_font}
+  \input{minion_font}
+  %\input{jenson_font}
+
+  % for sections titling in sans, black
+  \newfontfamily\sectionsFont[LetterSpace=-5]{Noto Sans Black}
+  \allsectionsfont{\sf}
+  \chapterfont{\sf\sectionsFont}
+  \sectionfont{\sf\sectionsFont}
+  \partfont{\sf\sectionsFont}
+
+  % for the physLight "logo" font
+  \newfontfamily\titleFont[Scale=.9]{Charmonman}
+  \def\physLight{{\titleFont p\kern-.075ex h\kern-.075ex y\kern-.075ex sLig\kern-.2ex ht}}
+
+  % for the units
+  \NewFontFamily\unitFont\unitFontFamily[Scale=.925]{Vollkorn}
+
+  % for the listings
+  \ifmacosx
+    \NewFontFamily\mintedFont\mintedFontFamily[Scale=.8]{SF Menlo}
+  \else
+    \NewFontFamily\mintedFont\mintedFontFamily[Scale=.925]{Noto Sans}
+  \fi
+
+\else
+  % use vanilla fonts
+  \def\physLight{\emph{physLig\kern-.425ex ht}}
+  \allsectionsfont{\sf}
+\fi
+
+% configure minted
+\makeatletter
+  \@ifpackageloaded{minted}{\hasmintedtrue}{\hasmintedfalse}
+\makeatother
+
+\ifhasminted
+  % to check what pygmentize styles are available use
+  % pygmentize -L styles
+  \usemintedstyle{friendly}
+  % redefine \theFancyVerbLine to control the formatting of line numbers
+  \definecolor{minted-bg}{rgb}{.95, .95, .95}
+  % global options for minted. Language-specific options override document-wide
+  % options. Individual command and environment options override
+  % language-specific options. The language can be passed as a first optional
+  % parameter (\setminted[c++]\{...})
+  %\setminted{
+  %  bgcolor=minted-bg,
+  %  mathescape=true,
+  %  texcl=true
+  %}
+  % cheat: minted is actually a thin wrapper around fancyvrb
+  % fvset sets globals for fancyvrb
+  \fvset{
+    fontfamily=\mintedFont,
+    frame=topline,
+    framesep=2mm,
+    labelposition=topline,
+    numbersep=1em,
+    samepage=false,
+    stepnumber=5,
+    tabsize=4
+    }
+  % we use minted inside an mdframed environment, this is the global
+  % configuration for mdframed
+  \mdfsetup{
+    backgroundcolor=minted-bg,
+    linecolor=black,
+    topline=false,
+    bottomline=false,
+    leftline=false,
+    rightline=false
+  }
+  % a command like \newminted, which uses mdframed to work around a page-break
+  % limitation that minted has in texlive 2014. Note the minted shipping with
+  % texlive 2016+ apparently has this fixed, so this might not be needed after
+  % we upgrade
+  \newcommand\makemyminted[3]{%
+\newenvironment{#1}{\VerbatimEnvironment
+\begin{mdframed}
+\small
+\begin{minted}[mathescape=true,
+               texcl=true,
+               label=\raisebox{-0.5ex}{#3}]{#2}}
+{\end{minted}
+\end{mdframed}}}
+\else
+  \usepackage{fancyvrb}
+  \fvset{
+    fontfamily=\mintedFont,
+    frame=topline,
+    framesep=2mm,
+    labelposition=topline,
+    numbersep=1em,
+    samepage=false,
+    stepnumber=5,
+    tabsize=4
+    }
+\newcommand\makemyminted[3]{%
+\newenvironment{#1}{\VerbatimEnvironment
+\begin{mdframed}
+\begin{Verbatim}[label=\raisebox{-0.5ex}{#3}]{#2}}
+{\end{Verbatim}
+\end{mdframed}}}
+\fi
+
+% these two need to be implemented in terms of mintinline, after we upgrade
+%\def\rsl#1{{\Verb@#1@}}
+%\def\rib#1{{\Verb@#1@}}
+\makemyminted{pythoncode}{python}{Python}
+\makemyminted{c++code}{c++}{C++}
+\makemyminted{rslcode}{c++}{RenderMan SL}% pretend it's c++
+\makemyminted{ribcode}{text}{RenderMan RIB}% no syntax highlighting
+% blocks of text of various kinds
+\makemyminted{csvdata}{text}{CSV file}
+
+% there seems to be some odd interaction between fancyfonts and setacronym
+\ifdefined\setacronymstyle
+  \setacronymstyle{long-sc-short}
+\fi
+% setup acronyms to be displayed in letterspaced small caps
+\renewcommand*{\firstacronymfont}[1]{\textsc{\addfontfeature{LetterSpace=5}#1}}
+\renewcommand*{\acronymfont}[1]{\textsc{\addfontfeature{LetterSpace=5}#1}}
+
+% load the glossary into this file
+\loadglsentries{glossary}
+
+\MakeGlossaries
+
+% disable the first-use flag for a few well-known acronyms
+\glsunset{RGB}
+\glsunset{sRGB}
+\glsunset{XYZ}
+
+% indices
+%  unqualified entries
+\makeindex[intoc,title=Index]
+%  people
+%\makeindex[name=persons,intoc,title=Index of names]
+
+
+% our version number
+\def\physLightVersion{v 1.1 - \today}
+
+% mathbb R, for the real numbers
+\def\R{\mathbb{R}}
+% wrapper to insert URL's
+\def\link#1{{\small\url{#1}}}
+% used in tables to make the font small and slanted
+\def\smsl{\footnotesize\sl}
+
+% used for product names
+\newcommand\productname[1]{\textit{#1}}
+
+\newenvironment{inconstruction}[1][This section is under construction]{
+\noindent
+\let\oldunitlength\unitlength
+\setlength{\unitlength}{.5in}
+\begin{minipage}{\unitlength}
+\begin{picture}(1,1)
+    \put(0,0){\includegraphics[width=\unitlength]{figures/construction.pdf}}
+\end{picture}
+\end{minipage}\hfill
+\begin{minipage}{\textwidth - \unitlength - 2em}
+\vspace{1ex}
+\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,title=#1]
+
+
+}{
+\end{tcolorbox}
+\end{minipage}
+\let\unitlength\oldunitlength
+}
+
+% add a few units and configure unit formatting
+% first, the unit symbols are set in their own font family
+\iffancyfonts
+  \sisetup{
+	  unit-math-rm = \unitFontFamily,
+   	  unit-text-rm = \unitFontFamily,
+  }
+\else
+  \sisetup{
+	  unit-math-rm = \mathtt,
+  	  unit-text-rm = \ttfamily,
+  }
+\fi
+\sisetup{
+	exponent-product = \cdot, % 1.3\cdot10^3
+	inter-unit-product = \ensuremath{{}\cdot{}}, % m\cdot s
+	per-mode = symbol-or-fraction, % / in inline mode, \frac in display mode
+	power-font = unit, % maybe this should be 'number'?
+	%number-unit-product = \text{~}, % per Chicago Manual of Style, I don't like it
+	number-unit-product = \ensuremath{\;}, % a little smaller
+}
+\DeclareSIUnit{\talbot}{Tb}
+\DeclareSIUnit{\nit}{nt}
+\DeclareSIUnit{\iso}{ISO}
+\DeclareSIUnit{\pixel}{pxl}
+\DeclareSIUnit{\fnumber}{f-number}
+% alternatively we could use cd/m^2
+%\def\nit\candela\per\square\meter
+% tell PGF about how we want numbers formatted
+\SendSettingsToPgf
+
+% configure page headers and footers
+%\pagestyle{myheadings}
+%\markboth{\hfill  \hfill \physLight}{\physLight \hfill \physLightVersion \hfill}
+
+\pagestyle{fancy}
+\lhead{}
+\chead{\leftmark}
+\rhead{\physLight}
+\lfoot{\textit{Weta Digital}}
+\cfoot{\textsc{\physLightVersion}}
+\rfoot{Page \thepage\,/\,\pageref*{LastPage}}
+
+% thickness of the rules
+\renewcommand{\headrulewidth}{.4pt}
+\renewcommand{\footrulewidth}{.4pt}
+
+%\includeonly{sec_wcl}
+
+\renewcommand{\d}{\mathop{}\!\mathrm{d}}
+
+\newcommand{\todo}[1]{\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=TODO]{#1}\end{tcolorbox}}
+
+\begin{document}
+%\setacronymstyle{long-sc-short}
+\begin{titlepage}
+\begin{center}
+
+{\fontsize{60}{72}\selectfont \physLight}\\[.3cm]
+
+\textsf{\textit{\fontsize{24}{26.8}\selectfont physical units in light transport}}\\[1.5cm]
+
+\vfill
+\large
+\textit{Weta Digital Rendering Department}\\[1mm]
+
+% \begin{minipage}{0.4\textwidth}
+% \begin{flushleft} \large
+% %\emph{Author:}\\
+% Luca \textsc{Fascione}\\
+% Sehera \textsc{Nawaz}
+%
+% \end{flushleft}
+% \end{minipage}
+% \begin{minipage}{0.4\textwidth}
+% \begin{flushright} \large
+% \textit{Weta Digital Rendering Department}
+% \end{flushright}
+% \end{minipage}
+
+%\vspace{3mm}
+\hrule \vspace{1mm}
+\textsc{\large \physLightVersion}\\[0.5cm]
+
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\listoffigures
+\listoftables
+\include{sec_notations}
+
+\part{Models \& Specification}\label{part:models}
+
+\include{sec_intro}
+\include{sec_imaging}
+\include{sec_lighting}
+\include{sec_calcsheets}
+
+\part{Reference}\label{part:ref}
+
+\include{sec_illuminants}
+\include{sec_sensors}
+\include{sec_implementation}
+
+\part{Appendices}\label{part:app}
+\appendix
+
+\include{sec_appendix}
+\include{sec_wcl}
+\include{sec_radiance}
+
+% put this bibliography as a chapter
+\bibliographystyle{plainnat}
+\bibliography{bibliography}
+
+%\printindex
+%\indexprologue{This is a list of names}
+%\printindex[persons]
+\PrintGlossaries
+
+\end{document}
