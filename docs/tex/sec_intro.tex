@@ -71,7 +71,7 @@ as well as a reference implementation (Chapter~\ref{ch:implementation}).
 
 Part~\ref{part:app} contains the appendices: Appendix~\ref{ch:color} discusses
 various considerations on color in the tristimulus versus spectral setting,
-Appendix~\ref{ch:wcl} describes an implementation of a color manipulation library
+Appendix~\ref{ch:implementation} describes an implementation of a color manipulation library
 and Appendix~\ref{ch:radiance} is an extensive excerpt from Frederic Nicodemus's 
 excellent 1963 paper~\cite{nicodemus63} in which the concept of \textsl{radiance}
 is introduced: unsurprisingly we found his explanation far clearer than what we 
@@ -362,7 +362,8 @@ Throughput (\'etendue) & \si{\square\meter\steradian} & $G$ \\
 Reflectance            & & $\rho$ \\
 Transmittance          & & $\tau$ \\
 \end{tabular}
-\caption{Correspondance between radiometric and photometric units}
+\caption{Correspondance between radiometric and photometric units \label{tab:radiophoto}}
+
 }
 \vskip 1mm
 {\footnotesize\it We abbreviate the unit for luminous energy \textit{talbot} as
@@ -372,7 +373,6 @@ We also use the convention of subscripting photometric quantities
 with $v$ (for \textit{visual}), radiometric quantities with $e$ (for
 \textit{energetic}) and spectral radiometric quantities with $\lambda$;
 this follows the recommendations in documents such as~\cite{united1967usa}.}
-\label{tab:radiophoto}
 \end{table}
 
 One of the central points of this document is to put units to the pixel
