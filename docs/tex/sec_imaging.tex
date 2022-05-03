@@ -86,8 +86,8 @@ W_{camera}(\lambda) = \big(\bar r_{camera}(\lambda), \bar g_{camera}(\lambda),
 \bar b_{camera}(\lambda)\big)
 \end{equation}
 Conversion into \gls{sRGB} or other working spaces would then be done employing
-a similar process to the on the raw data from the cameras, further details are
-outlined in Chapter~\ref{ch:implementation}.
+a similar process to that on the raw data from the cameras, further details are
+outlined in~\cref{ch:implementation}.
 
 
 \paragraph{Local response}
@@ -108,8 +108,9 @@ imaging constant $k_i$, which is defined as
 \begin{equation}\label{eqn:imaging_ki}
  k_i = \frac{4K_m}{C} \simeq \frac{4\cdot683}{312.5} = 8.7424.
 \end{equation}
-The constant $C$ (valued at $312.5$ in this document) is sometimes called the \textsl{light meter
+The constant $C$ (valued at $312.5$ in this document) is sometimes called the \textsl{incident light meter
 calibration constant} and effectively defines the units for the film speed $S$.
+Note that as we use exact integration, our value for $C$ is close to what would be used on a meter fitted with a hemispherical receptor and somewhat lower, because our exact implementation doesn't suffer from losses at near-grazing angles as a physical device would.
 
 
 \section{Luminance and sensor response}
@@ -125,12 +126,13 @@ which directly relates the luminance emitted towards the camera pupil
 with the luminance of the corresponding sensor response value. This approximation
 is valid for distant to mid-field objects for which angular variation
 is insignificant. For simplicity we confine ourselves here to luminance, although in
-reality the sensor response is carried out in camera RGB. However, the
+reality the sensor response is carried out in \textit{camera RGB}. However, the
 analysis can be carried out analogously by applying the camera
 response curves instead of $\bar y$. Furthermore, due to physical
 constraints and limited storage precision, physical camera sensors
 obey the linearity of \eqref{eqn:imaging_response} only within certain
-ranges of incoming light.
+ranges of incoming light: while most of them are very close to being linear for the
+majority of their range, they will of course stop responding at the upper limit of brightness (they ``clip'') and often exhibit a mild over-sensitivity in the darkest side of the range. This behaviour is very specific to each device, for example cameras meant for use in astrophotography contain provisions to better linearize the sensitivity to dim light.
 
 From this it directly becomes obvious that if the aperture number $N$,
 exposure time $\Delta t$, and film speed $S$ are set to satisfy the
@@ -245,7 +247,7 @@ f \ll o \Rightarrow  f \simeq a
 and thus
 \begin{equation}
   Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_m\;} \frac{\pi\;r^2}{a^2}\; L_v^{\uparrow obj} \stackrel{\eqref{eqn:aperture_radius}}{=}
-   \frac{\pi\; k_i\; \Delta t \; S}{4\;N^{\,2}\;K_m} L_v^{\uparrow obj} 
+   \frac{\pi\; k_i\; \Delta t \; S}{4\;N^2\;K_m} L_v^{\uparrow obj} 
 \end{equation}
 which using Equation~\eqref{eqn:imaging_ki} concludes our proof. \hfill $\square$
 

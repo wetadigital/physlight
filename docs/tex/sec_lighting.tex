@@ -102,13 +102,13 @@ The emission for an area light source is specified by:
   \end{itemize}
 \item $D(\omega)$ -- angular distribution
   \begin{itemize}\small\it
-  \item lambertian: $D(\omega) = 1$
-  \item powered cosine: $D(\omega) = \cos^n \theta = \langle \hat n,\omega \rangle^n$
+  \item Lambertian: $D(\omega) = 1$
+  \item Powered cosine: $D(\omega) = \cos^n \theta = \langle \hat n,\omega \rangle^n$
   \item IES profile from file
   \end{itemize}
 \item $T(x,\lambda)$ -- tint function
   \begin{itemize}\small\it
-  \item color: $T(x,\lambda) = \langle T_{col}, col(\lambda)\rangle$
+  \item Color: $T(x,\lambda) = \langle T_{col}, col(\lambda)\rangle$
   \item Pick from list of known gel sets (LEE, Rosco, Wratten, \ldots): $T(x, \lambda) = LEE_{013} (\lambda)$
   \item texture map: $T(x,\lambda) = \langle T_{col}(x), col(\lambda)\rangle$
   \end{itemize}
@@ -195,7 +195,7 @@ D(\omega)
 
 % TODO: add the corresponding expression in space col
 
-\subsection{Image Based Lighting}
+\subsection{Image-Based Lighting}
 
 The emission for an \gls{IBL} source is specified by (sublists contain possible examples):
 
@@ -204,7 +204,7 @@ The emission for an \gls{IBL} source is specified by (sublists contain possible 
 \item $\hat{L}(\omega,\lambda)$ -- spherical map of an image (spectral and angular distribution)
 \item $T(\lambda)$ -- tint function
   \begin{itemize}\small\it
-  \item color: $T(\lambda) = \langle T_{col}, col(\lambda) \rangle$
+  \item Color: $T(\lambda) = \langle T_{col}, col(\lambda) \rangle$
   \item Pick from list of known gel sets (LEE, Rosco, Wratten, \ldots): $T(\lambda) = LEE_{013} (\lambda)$
   \end{itemize}
 \end{itemize}
@@ -245,7 +245,7 @@ k_e = \frac{E^+_v}{K_m\int_{\Omega^+}\int_{\lambda} T(\lambda) \cdot
 
 The double integral in the denominator can again be factorized into simpler
 computations when using an \gls{IBL} texture map in a color space $col(\lambda)$.
-This time the the spatial component is the directional component of $\hat{L}$:
+This time the spatial component is the directional component of $\hat{L}$:
 \begin{equation}
 \hat{L}(\omega, \lambda) = \big\langle \hat{L}_{col}(\omega),\; col(\lambda) \big\rangle
 \end{equation}
@@ -314,7 +314,7 @@ The emission for a Sun light is specified by (sublists contain possible examples
   \end{itemize}
 \item $T(\lambda)$ -- tint function
   \begin{itemize}\small\it
-  \item color: $T(\lambda) = \langle T_{col}, col(\lambda) \rangle$
+  \item Color: $T(\lambda) = \langle T_{col}, col(\lambda) \rangle$
   \item Pick from list of known gel sets (LEE, Rosco, Wratten, \ldots): $T(\lambda) = LEE_{013} (\lambda)$
   \end{itemize}
 \end{itemize}

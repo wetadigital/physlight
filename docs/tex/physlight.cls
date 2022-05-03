@@ -134,8 +134,8 @@
 	\setsansfont[BoldFont={* Bold}]{Noto Sans}
 	\setmathsf[BoldFont={* Bold}]{Noto Sans}
 	% monospaced
-	\setmonofont{DejaVu Sans Mono}
-	\setmathtt{DejaVu Sans Mono}
+	\setmonofont[Scale=MatchLowercase]{DejaVu Sans Mono}
+	\setmathtt[Scale=MatchLowercase]{DejaVu Sans Mono}
 
 	% for sections titling in sans, should be black 900
 	\newfontfamily\sectionsFont[LetterSpace=-5,

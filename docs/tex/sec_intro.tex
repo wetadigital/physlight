@@ -49,9 +49,9 @@ In short, this document introduces the use of physical units in the
 Weta pipeline for the treatment of lighting and imaging.  The
 objective is to formalize a system of physical absolute units to be used
 when describing lighting, materials and imaging across Weta's
-processes of digital image synthesis in order to bring them in line
-with real life measurements taken on set and facilitate integration of
-live action footage and digitally created content.the specification of
+processes of digital image synthesis. This will allow us to bring them in line
+with real life measurements in order to facilitate integration of
+live action footage and digitally created content. The specification of
 how units from the \gls{si} are injected in the pipeline and the
 mathematics that corresponds to the quantities described.
 
@@ -149,7 +149,7 @@ intuitive notion of radiant power from a point $x$ on the surface of the source
 $M_e(x)$, which
 we would like defined in such a way that power originated from our source $S$
 can be computed
-directly by integration over its surface (which we also call $S$ with an abuse of notation):
+directly by integration over its surface:
 \begin{displaymath}
 \Phi_e = \int_{S} M_e(x) \d x \qquad [\si{\watt}]
 \end{displaymath}
@@ -266,14 +266,11 @@ according to its orientation towards the surface.
     \def\svgwidth{\linewidth}
     \import{figures/}{flux_etc.pdf_tex}
     \caption{\label{fig:flux_etc}%
-    A visualization of power (top left), intensity (top right),
-    irradiance (bottom left), and radiance (bottom right).
-    Power $\Phi_e$ is the total energy incident on the area $S$ from all directions
-    $\Omega$. Intensity $I_e(\omega)$ is the energy incident from a specific direction $\omega$
-    while irradiance $M_e(x)$ is the energy incident at a given point $x$.
-    Irradiance can be obtained by integrating radiance $L_e(x,\omega)$ over the sensor
-    surface $S$ and intensity can be derived by integrating radiance over the set of
-    all directions $\Omega$. An integration over both the surface and all directions yields power.  }
+    A visualization of power (top left), intensity (top right), irradiance (bottom left), and radiance (bottom right).
+    Power $\Phi_e$ is the total energy per unit time incident everywhere on the area $S$ from all directions $\Omega$. 
+    Intensity $I_e(\omega)$ is the energy incident from a specific direction $\omega$ everywhere on $S$, while irradiance $M_e(x)$ is the energy incident at a given point $x$ from all direction $\Omega$.
+    Intensity can be obtained by integrating radiance $L_e(x,\omega)$ over $S$, while irradiance can be obtained by integrating radiance over the set of
+    all directions $\Omega$. Integrating $L_e$ over both the surface and all directions yields power. }
 \end{figure}
 
 One can think of incident radiance as photons along a ray reaching a surface.
@@ -376,19 +373,21 @@ this follows the recommendations in documents such as~\cite{united1967usa}.}
 \end{table}
 
 One of the central points of this document is to put units to the pixel
-values in a raster image. Each pixel records the \textsl{\gls{brightness}} and color
-of a scene at its respective location. As we have just seen, radiometric
-quantities can be used to measure brightness in terms of radiative energy.
+values in a raster image. 
+For the purpose of this intoductory section, we will focus on the generation of grayscale images, where each pixel records the \textsl{\gls{brightness}} of a scene at its respective location. In particular, and throughout this whole document, we will use the term \textsl{brightness} to indicate a non-specific, informal, plain-English, everyday meaning that a quantity may feel more or less ``dim'' to a human observer. 
+The discussion will then proceed to specify the exact meaning in question more precisely and give it an appropriate name.
 
-However, the human visual system is not equally sensitive to all wavelengths
-of light, and may perceive radically different spectral
-distributions emanating or reflecting off an object as having the same
-brightness. Conversely, spectral distributions that carry the same amount
-of radiative energy may be percieved as having different brightness levels.
+As we have just seen, radiometric quantities can be used to measure brightness in terms of \emph{radiative energy}.
+However, if our image was generated using values proportional to this quantity,
+we would obtain an image that will likely not correspond well to the subjective sense of brightness in the scene as experienced by a person looking at it. 
+This is because the human visual system is not equally sensitive to all wavelengths
+of light, and may perceive light emanating or reflecting off two objects with different total radiative energy as having the same brightness, as a consequence of differences in the spectral distributions only. 
+Conversely, spectral distributions carrying the same amount
+of total radiative energy may be perceived as having different brightness levels.
 
 It is therefore useful to reason about the energy of light in two
 different ways, one dealing with energy, called \textsl{radiometric}, and the
-other dealing with perception, called \textsl{photometric}. The two approaches
+other tuned to human perception, called \textsl{photometric}. The two approaches
 have historically been using a great number of units, a few of which were
 included in the \gls{si} at the Eleventh Conference on Weights and Measures
 held in 1960.  Many details around various historical and \gls{si} units are
@@ -399,22 +398,17 @@ source $S$
 (also called \textsl{total radiant flux}) is measured in
 \textit{watts} $[\si{\watt}]$ and is the total amount of energy per unit time
 emitted by $S$.
-This means that two different light sources emitting the same radiant power and
-having different spectral distributions are likely to appear as having different
-brightness.
+%This means that two different light sources emitting the same radiant power and
+%having different spectral distributions are likely to appear as having different
+%brightness.
 
 On the other hand, in the \textsl{photometric} point of view, the
 \textsl{luminous power}
 of a source $S$ (called \textsl{luminous flux}) is measured in
 \textit{lumens} $[\si{\lumen}]$, and is the amount of energy per unit time
-weighted
-by the \textit{photopic luminosity function} $\bar y(\lambda)$ designed to
-model the response of the human visual system as a function of 
-wavelength $\lambda$\footnote{The photopic luminosity function $\bar y(\lambda)$ is
-the result of a series of experiments and tabulations first published
-by the \gls{CIE} in 1924 (the function was called $V(\lambda)$ at the time)
-and then included in the color matching functions for the standard 2 degree
-colorimetric observer~\citep{cie1931}.}.
+weighted by the \textsl{photopic luminous efficiency function} $\bar y(\lambda)$. 
+This function was designed to model the response of the human visual system as a function of wavelength $\lambda$\footnote{
+	The photopic luminosity function $\bar y(\lambda)$ is the result of a series of experiments and tabulations first published by the \gls{CIE} in 1924 (the function was called $V(\lambda)$ at the time) and then included in the color matching functions for the \emph{standard 2 degree colorimetric observer}~\citep{cie1931}.}.
 
 This means that two different light sources emitting the same luminous
 power will appear as having about the same brightness even when having
@@ -423,8 +417,7 @@ statement can only be true approximately, as the specific spectral response
 of different humans exhibits a certain amount of variation, even among
 normal subjects.
 Also there are subjects having various different kinds of anomalies in their
-visual
-systems (eg. daltonism), for whom this statement ends up being even less accurate}.
+visual systems (such as color blindness), for whom this statement ends up being even less accurate}.
 
 More formally, a photometric quantity $X_v(\ldots)$ is obtained from 
 the corresponding radiometric spectral quantity $X_{\lambda}(\ldots, \lambda)$

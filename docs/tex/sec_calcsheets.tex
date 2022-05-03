@@ -16,14 +16,14 @@ in Chapter~\ref{ch:imaging}:
 \item Focus distance $o = \SI{1}{\meter}$
 \item Iris aperture $N = \SI{8}{\fnumber}$
 \item Exposure time $t = \SI{1/60}{\second}$
-\item Sensor width/height $\SI{27.7 x 14.6}{\milli\meter}$ (RED Epic Mysterium-X)
-\item Image resolution $\SI{5120 x 2700}{\pixel}$ (RED Epic Mysterium-X 5K)
+\item Sensor width/height $\SI{27.7 x 14.6}{\milli\meter}$ 
+\item Image resolution $\SI{5120 x 2700}{\pixel}$ 
 \item Pixel area $A_{pxl} \simeq \SI{29.25}{\square\micro\meter}$
 \item Calibration constant $C = 312.5$
 \end{itemize}
 
 \paragraph{Incident Light Meter Exposure}
-Compute illuminance $E_v$ at $P$ given imaging parameters:
+Compute illuminance $E_v$ at a point $P$ given imaging parameters:
 \begin{align*}
 E_v& = C\frac{N^2}{t S}\\
 &= 312.5\frac{8\cdot 8 \cdot 60}{100} = \SI{12000}{\lux}
@@ -33,8 +33,8 @@ E_v& = C\frac{N^2}{t S}\\
 Compute the reflected luminance with $18\%$ reflective Lambertian plane:
 \begin{align*}
 L_v& = E_v\cdot \frac{\rho}{\pi} \\
-&= \num{12480} \cdot \frac{0.18}{\pi}
-\simeq \SI{715.0}{\nit}
+&= \num{12000} \cdot \frac{0.18}{\pi}
+\simeq \SI{687.549}{\nit}
 \end{align*}
 
 \paragraph{Entrance pupil distance}
@@ -172,7 +172,7 @@ Calculate $\Omega_{obj}$ the solid angle of the aperture seen from point in obje
 \begin{align*}
 \Omega_p^{obj} &\simeq \frac{\pi r^2}{(o-a)^2}\\
 &= \frac{f^2}{4N^2(o-a)^2}\\
-&\simeq  \SI{0.74296e-5}{\steradian}
+&\simeq  \SI{2.36497}{\steradian}
 \end{align*}
 
 \paragraph{Luminous energy from Y value}
@@ -277,7 +277,7 @@ this algorithm is available in Section~\ref{sec:implementation:texturemaps}.
 
 \section{Surface interaction}
 
-Compute the exitant radiance $L_{o\lambda}(\omega_o, \lambda)$ from a point
+Compute the exitant luminance $L_{o,v}(\omega_o, \lambda)$ from a point
 $P_s$ on a surface of normal $N$, given the incident radiance
 $L_{i\lambda}(\omega_i, \lambda)$ and the object’s BRDF $f(\omega_i, \omega_o, \lambda)$.
 Let us assume that the surface at $P_s$ is made of Lambertian material of reflectance $\rho=0.18$, i.e., $f(\omega_i, \omega_o, \lambda) = \frac \rho \pi$. 
@@ -293,7 +293,7 @@ Let us assume that the surface at $P_s$ is made of Lambertian material of reflec
 Let's say that the light is a portion of a sphere of radius $r = \SI{1}{\meter}$, centered
 around our surface point $P_s$, extending in $\theta$ from $\frac\pi6$ to $\frac\pi3$ and in
 $\phi$ from $0$ to $\frac\pi2$, and having Lambertian emission towards our
-surface of $L_{i,v} = \SI{300}{\lumen\per\square\meter\per\steradian}$.
+surface of $L_{i,v} = \SI{300}{\nit}$.
 In this configuration we obtain:
 
 \begin{align*}
@@ -301,14 +301,14 @@ L_{o,v} &= \int_{\theta = \frac\pi 6}^\frac\pi 3 \int _{\phi = 0}^\frac\pi
 2 L_{i,v} \frac\rho\pi \cos\theta \sin\theta \d\theta \d\phi \\
              &= 300\cdot \frac{0.18}\pi \int_{\theta = \frac\pi 6}^\frac\pi 3 \int _{\phi = 0}^\frac\pi 2 \cos\theta \sin\theta \d\theta \d\phi \\
              &= 54 \left.\frac{-\cos^2\theta}{2}\right|_{\frac\pi 6}^\frac\pi 3 \\
-             &= \SI{13.5}{\lumen\per\square\meter\per\steradian}
+             &= \SI{13.5}{\nit}
 \end{align*}
 
 \section{Light to sensor interaction}
 
 Given camera parameters $S=100$, $N=5.6$, $\Delta t = \frac 1 {60}$
-and an infinitesimally small light source oriented towards a
-Lambertian plane parallel to the light source with distance
+and a small light source $A$ oriented towards a
+Lambertian plane parallel to the light with distance
 $d = \SI{0.4}{\meter}$. If the luminance $Y(p)$ at the pixel corresponding
 to the center of the projection $p$ equals the albedo $\rho$ of the plane,
 what is the luminous power $\Phi_v$ of the light source?
@@ -339,7 +339,7 @@ The illuminance at $p$ is
 \begin{multline*}
   E_v = \int_\Omega L_v^{\downarrow,obj}(\omega) \d\omega^{\bot} = \int_A L_v^{\uparrow,light}(x\to p) \frac{\cos \theta\; \cos \theta'}{|x-p|^2} \d x \\
   \stackrel{\eqref{eq:light_exitance}} =  \frac{\Phi_v}{|A|} \frac{n+2}{2\pi} \int_A  \frac{\cos^{n+1} \theta\; \cos \theta'}{|x-p|^2} \d x
-  \approx |A| \frac{ \Phi_v }{|A|\; d^2} \frac{n+2}{2\pi} \d x  \stackrel{n=0} \approx \frac{\Phi_v}{\pi\;d^2}
+  \approx \frac{ \Phi_v }{|A|}\; \frac{n+2}{2\pi}\; \frac{|A|}{d^2} \stackrel{n=0}= \frac{\Phi_v}{\pi\;d^2}
 \end{multline*}
 where the approximation holds if the light source is sufficiently small, hence the cosines are $\approx 1$ and assuming a Lambertian emission ($n=0$).
 Putting this together, it follows 
