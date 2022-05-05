@@ -9,7 +9,7 @@ support for \physLight\ in a rendering pipeline.
 \section{Imaging}\label{ch:calc_calibration}
 
 We will use the following camera Inputs for our calibration scenario described
-in Chapter~\ref{ch:imaging}:
+in \cref{ch:imaging}:
 \begin{itemize}
 \item Film speed $S = \SI{100}{\iso}$
 \item Focal length $f = \SI{24}{\milli\meter}$
@@ -112,7 +112,7 @@ Compute luminous energy $Q_v$ at a certain pixel given the exposure parameters:
 
 A pixel receives energy from an area $A_P$ around $P$ which is computed as follows: let $\alpha_1$ and $\alpha_2$ be the angles spanned by a ray $r$ through $P$ and the center of the pixel, and a rays through the border of the same pixel along $x$ (in raster coordinates) in the positive and negative direction, these last rays intersect  the plane at $P$ in two points $P_1$ and $P_2$ respectively, at angles $\beta_1$ and $\beta_2$.
 
-From Figure~\ref{fig:opposite-angle} it can be seen how to compute the length of segment $PP_2$ from the length of segment $PF$ and the angles $\alpha_2$ and $\theta$. It is immediately seen that:
+From \cref{fig:opposite-angle} it can be seen how to compute the length of segment $PP_2$ from the length of segment $PF$ and the angles $\alpha_2$ and $\theta$. It is immediately seen that:
 \begin{displaymath}
 \overline{PH_2} = \overline{FP}\sin\alpha_2 \qquad \overline{PP_2} = \frac{\overline{PH_2}}{\sin\beta_2}
 \end{displaymath}
@@ -200,7 +200,7 @@ Given following input parameters for an area light:
 \item Lambertian angular distribution $D = \frac1{\pi}$
 \item emitter: black body radiator at $T=\SI{6500}{\kelvin}$
 \end{itemize}
-we want to compute the light constant $k_e$. From Chapter~\ref{ch:specification} we can  have:
+we want to compute the light constant $k_e$. From \cref{ch:specification} we can  have:
 \begin{displaymath}
  k_e = \frac{\Phi_v}{K_m \cdot |A| \cdot \|D\| \cdot \langle \|T_{col}\|, \|col\cdot\hat{L}\|_{\bar y} \rangle }
 \end{displaymath}
@@ -210,7 +210,7 @@ we want to compute the light constant $k_e$. From Chapter~\ref{ch:specification}
 k_e = \frac{\Phi_v}{K_m \cdot |A| \cdot \|D\| \cdot \|\hat{L}\|_{\bar y} }
 \end{displaymath}
 with $\|\hat{L}\|_{\bar y} = \|B_T\|_{\bar y}$ which can be precomputed with the
-closed-form expression in Chapter~\ref{ch:illuminants}. This gives us
+closed-form expression in \cref{ch:illuminants}. This gives us
 \begin{align*}
 \|\hat{L}\|_{\bar y} &= \|B_{6500}\|_{\bar y} \simeq 2826.5 \\
 k_e &= \frac{1000}{683 \cdot 4 \cdot 2826.5 } \simeq 1.295 \cdot 10^{-4}
@@ -250,7 +250,7 @@ where $\langle \bar T, \phi \rangle = \bar T_r|\phi_r| + \bar T_g|\phi_g| + \bar
 in the simple case of a simplistic three basis functions lifting to spectral.
 
 Other, more plausible ways of lifting \gls{RGB} data to the spectral domain
-are possible, as explained in Section~\ref{sec:spec_basis}.
+are possible, as explained in \cref{sec:spec_basis}.
 
 For example, if using the algorithm proposed by Brian Smits in~\cite{smits99},
 the expression $\langle \bar T, \phi \rangle$ this would be computed as follows:
@@ -273,7 +273,7 @@ For example if $\overline{T_{rgb}} = (0.3, 0.1, 0.7)$ then $T_0$ is set to $0.1$
 then magenta is the complementary, so $T_2$ is set to $0.3-0.1 = 0.2$, then
 blue is the primary, so $T_6$ is set to $0.7 - 0.3 = 0.4$, yielding
 $\overline{T} = (0.1, 0, 0.2, 0, 0, 0, 0.4)$. An implementation in code of
-this algorithm is available in Section~\ref{sec:implementation:texturemaps}.
+this algorithm is available in \cref{sec:implementation:texturemaps}.
 
 \section{Surface interaction}
 

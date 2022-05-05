@@ -71,7 +71,7 @@ Multiplication by the $M_{sRGB}$ color space conversion matrix is now all
 that's needed to obtain a linear, scene referred \gls{sRGB} image
 $W_{sRGB}(\lambda) = M_{sRGB} W_{XYZ}(\lambda)$
 (details on this and other color space transformations are available in
-Chapter~\ref{ch:implementation}).
+\cref{ch:implementation}).
 
 Although using \gls{CIE} \gls{XYZ} spectral response is common practice
 in digital image synthesis (see for example \cite{pharr2010, jakob2010,
@@ -217,7 +217,7 @@ Substituting into Equation~\eqref{eqn:imaging_y}, we obtain
 At this point, in order to compute $Y(p^{img})$ we need to compute the ratio of
 areas $A_p^{obj}/A_p^{img}$, and the solid angle $\Omega_a^{obj}$. Let $a$ be the distance between the filmback and the
 aperture on the optical axis and $o$ the distance between filmback and focus
-plane. From Figure~\ref{fig:aperture_distance}, we can see that
+plane. From \cref{fig:aperture_distance}, we can see that
 \begin{equation*}
     \frac{A_p^{obj}}{A^{img}_p}
     = \frac{r_o^2}{r_i^2}

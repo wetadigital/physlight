@@ -64,7 +64,7 @@ for the \gls{RGB} color space we would have $n = 3$:
 \begin{equation}
 M_{rgb}(p) = \big(M_r(p), M_g(p), M_b(p)\big) \in \R^3
 \end{equation}
-but see Chapter~\ref{ch:implementation} for an $n=7$ example. A similar thing
+but see \cref{ch:implementation} for an $n=7$ example. A similar thing
 can be done for the primaries, joining them into a single function
 $col(\lambda): \R^+\to\R^n$ which maps a wavelength to the response of the $n$
 primaries at once. For \gls{RGB} we would have $n = 3$ and $rgb(\lambda)$ would be:
@@ -81,7 +81,7 @@ or for \gls{RGB} in $\R^3$
 M(x,\lambda) = \big\langle M_{rgb}(x), rgb(\lambda) \big\rangle
 \end{equation}
 
-Chapter~\ref{ch:implementation} contains some further details on possible ways
+\Cref{ch:implementation} contains some further details on possible ways
 to construct these spectral distributions for the primaries. The following
 subsections will describe the functions needed to specify the different types of
 lights and show how to calculate the emission constant from the specifications.
@@ -183,7 +183,7 @@ vector can be precomputed for each combination of texture map primaries and
 spectral emission profiles.
 This reduces the computation of $k_e$ to a scalar product and a few
 multiplications, once the given inputs of a light are given.
-Chapter~\ref{ch:implementation} contains tables for various common combinations.
+\Cref{ch:implementation} contains tables for various common combinations.
 
 Once the emission constant has been computed, exitant radiance from the source
 is simply

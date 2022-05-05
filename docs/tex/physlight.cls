@@ -202,6 +202,7 @@
 \ifwithminted
   %\PassOptionsToPackage{outputdir=built}{minted}
 \fi
+\PassOptionsToPackage{capitalise,noabbrev}{cleveref}
 \PassOptionsToPackage{top=1in, bottom=1.4in, left=1.25in, right=1.25in}{geometry}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

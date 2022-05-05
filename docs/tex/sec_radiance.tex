@@ -101,7 +101,7 @@ A brief definition of radiance is given in the abstract and is discussed in more
 detail
 directly. It is helpful to note here that radiance is analogous to the familiar property
 of visual brightness, or more exactly to the photometric quantity luminance.
-Also for convenience, Table~\ref{tab:radiophoto}\footnote{[Table~I in the
+Also for convenience, \cref{tab:radiophoto}\footnote{[Table~I in the
 original---\textit{Ed.}]}
 lists the radiometric quantities, symbols, and units used in this paper.
 
@@ -206,7 +206,7 @@ of power flow as a function of direction. We define an elementary pencil of rays
 through a point $Q$ as including all of the rays which pass from $Q$ through an
 element of area $dA$ at a distance $D$ from $Q$ which is very large in relation
 to
-the linear dimensions of $dA$ (see Figure~\ref{fig:nicodemus1}).
+the linear dimensions of $dA$ (see \cref{fig:nicodemus1}).
 The solid angle subtended at $Q$ by $dA$ is given by
 \begin{equation*}
 \d\omega = \frac{\cos\theta \d A}{D^2}
@@ -227,7 +227,7 @@ where
 I_e \equiv \frac{\partial \Phi_e}{\partial \omega}
 \qquad \left[\si{\watt\per\steradian}\right]
 \end{equation}
-is defined as the \textsl{radiant intensity} (see Table~\ref{tab:radiophoto}) of
+is defined as the \textsl{radiant intensity} (see \cref{tab:radiophoto}) of
 $Q$ as a “point” source of radiation (e.g., a virtual source, such as the image
 of an illuminated pin hole) \emph{in the direction of the pencil} (the direction of
 $dA$ from $Q$). Note that $I_e$ may vary with direction and is a constant only
@@ -257,7 +257,7 @@ where
 E_e \equiv \frac{\partial \Phi_e}{\partial A}
 \qquad \left[\si{\watt\per\square\meter}\right]
 \end{equation}
-is the \textsl{irradiance} (see Table~\ref{tab:radiophoto}), the surface density
+is the \textsl{irradiance} (see \cref{tab:radiophoto}), the surface density
 of radiant power flowing into the surface at a point from a complete hemisphere
 (or, sometimes, from a stated solid angle which is less than a hemisphere), and
 where
@@ -266,7 +266,7 @@ M_e \equiv \frac{\partial \Phi_e}{\partial A}
 \qquad \left[\si{\watt\per\square\meter}\right]
 \end{equation}
 %page 372
-is the \textsl{radiant emittance} (see Table~\ref{tab:radiophoto}), the surface
+is the \textsl{radiant emittance} (see \cref{tab:radiophoto}), the surface
 density of radiant power flowing out of the surface at a point into a complete
 hemisphere. Both of these quantities may vary from point to point over an
 extended
@@ -299,7 +299,7 @@ compared to the linear dimensions of either element of area, is defined as
 including
 all of the rays which pass from $\d A_1$ to $\d A_2$ (or from $\d A_2$ to $\d A_1$, since either
 may be the source and the other the receiver).
-By inspection of Figure~\ref{fig:nicodemus2}, it can be seen that the cross
+By inspection of \cref{fig:nicodemus2}, it can be seen that the cross
 section of
 the beam at either end is determined by the projected area of the element at
 that end,
@@ -395,7 +395,7 @@ different refractive indices ($n$ and $n'$)}
 
 In order to generalize still further, we examine the situation where a beam of
 radiation passes through a smooth surface separating two media with different
-refractive indices (see Figure~\ref{fig:nicodemus3}). The power incident on any
+refractive indices (see \cref{fig:nicodemus3}). The power incident on any
 surface element $\d A$ through any element of solid angle $\d \omega$ in the first
 medium and that from the same beam emerging from the same surface element into
 a solid angle $\d \omega'$ in the second medium must be the same, if there are no
@@ -434,7 +434,7 @@ or scattering (see~\citerad[pp.
 266--268]{martin60}\footnote{\label{note:nicodemus8__}Martin's proof is given
 only for the luminance $L_v$ of an image, but with
 only slight modification it, too, is easily generalized to apply to any
-point along a ray.}). It is also apparent from Equation~\ref{eqn:nicodemus17}
+point along a ray.}). It is also apparent from \cref{eqn:nicodemus17}
 that the value of $L_e$ in the direction of a ray will be the same at any
 point along such a ray which lies in a medium with the same index, regardless
 of passage through other media, such as refractive lenses, at intermediate
@@ -466,15 +466,15 @@ by absorption, scattering, and reflection. Such losses, where they are
 not negligible, can be accounted for by multiplying the radiometric quantities,
 determined from ray geometry only, by the appropriate factors.
 For example, if the radiance along a particular ray at a source is
-$L_{es}$, and the radiant transmittance (see Table~\ref{tab:radiophoto}) along
+$L_{es}$, and the radiant transmittance (see \cref{tab:radiophoto}) along
 its path (taking into account the source spectrum and the spectral transmittance
-(see Table~\ref{tab:radiophoto}) of the intervening medium) from source to
+(see \cref{tab:radiophoto}) of the intervening medium) from source to
 receiver is $\tau$, and source and receiver both lie in the same medium (same
 index of refraction), then the radiance at the receiver in the direction of
 this same ray is given by $L_{er} = \tau L_{es}$. If, in addition, this same
 ray has also been imperfectly reflected by a mirror at some point along its
 path to the receiver, the radiance at the receiver becomes $L_{er} = \rho \tau L_{es}$,
-where $\rho$ is the radiant reflectance (see Table~\ref{tab:radiophoto}) of
+where $\rho$ is the radiant reflectance (see \cref{tab:radiophoto}) of
 the mirror.
 
 A situation of even more importance, perhaps, is the effect of reflection loss
@@ -492,7 +492,7 @@ L'_e = L_e \frac{n'^2}{n^2} (1-\rho)
 Note, however, that it may be possible to reduce $\rho$ to a negligible value,
 at least for a limited range of wavelengths and angles of incidence, by the
 use of so-called antireflection coatings, thus approaching the condition
-described by Equation~\ref{eqn:nicodemus17}.
+described by \cref{eqn:nicodemus17}.
 
 \section{Practical applications}
 [omitted---\textit{Ed.}]
@@ -740,7 +740,7 @@ evaluated.
 \section{Discussion of introductory examples}
 
 In the Introduction we described three situations involving extended sources.
-It should be clear from Equation~\ref{eqn:nicodemus13} that the exposure meter must
+It should be clear from \cref{eqn:nicodemus13} that the exposure meter must
 give the same response, regardless of distance or orientation, as long as all
 of the radiation entering it has the same value of radiance. If the wall
 is perfectly diffuse, all of the rays from it will have the same radiance.
@@ -753,7 +753,7 @@ slit by the collimating optics) of the spectrometer are filled with rays of
 the maximum available radiance, there remains no way to increase any of these
 quantities with additional lenses. In the last example, we must first determine
 the radiance $L_e$ of the earth’s surface.
-From Equation~\ref{eqn:nicodemus1} and Equation~\ref{eqn:nicodemus5} we can write
+From \cref{eqn:nicodemus1} and \cref{eqn:nicodemus5} we can write
 for a uniform plane diffuse radiator for which both $L_e$ and $M_e$ are constants:
 \begin{equation*}
 \Phi_e = \int M_e \d A = \int \int L_e \cos\theta \d A \d \omega
@@ -777,7 +777,7 @@ M_e = L_e \int_{\phi = 0}^{2\pi} \int_{\theta=0}^{\frac{\pi}{2}}\cos\theta
 \qquad \left[\si{\watt\per\square\meter}\right].
 \end{equation}
 %page377
-Similarly, from Equation~\ref{eqn:nicodemus1} and Equation~\ref{eqn:nicodemus4},
+Similarly, from \cref{eqn:nicodemus1} and \cref{eqn:nicodemus4},
 the irradiance at a plane surface due to uniform radiation of radiance $L_e$,
 arriving within a cone of halfangle $\theta$, is given by
 \begin{equation}
@@ -819,7 +819,7 @@ and within a well-defined solid angle $\omega$ that is the same at all points of
 the
 surface (no vignetting) whenever it is possible to assume a uniform value of
 radiance
-$L_e$ throughout the beam. The general expression in Equation~\ref{eqn:nicodemus12} can
+$L_e$ throughout the beam. The general expression in \cref{eqn:nicodemus12} can
 then be simplified as follows:
 \begin{equation}
 \Phi_e = \int \int L_e \cos\theta \d A \d \omega = L_e A \int \int \cos\theta

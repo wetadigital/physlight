@@ -56,23 +56,23 @@ how units from the \gls{si} are injected in the pipeline and the
 mathematics that corresponds to the quantities described.
 
 
-This document is divided in parts: Part \ref{part:models}
+This document is divided in parts: \cref{part:models}
 contains an introduction on basic quantities that are relevant in
 light transport simulation and review the relation of photometric and
-radiometric units and describes the modelling aspects. In Chapter
-\ref{ch:lighting} we describe imaging and light models and propose the
-relevant sets of parameters to specify them accurately.  Chapter
-\ref{ch:calcsheets} provides some examples on how to derive some of
+radiometric units and describes the modelling aspects. In 
+\cref{ch:lighting} we describe imaging and light models and propose the
+relevant sets of parameters to specify them accurately.  
+\Cref{ch:calcsheets} provides some examples on how to derive some of
 the described quantities from real world examples.
 
-Part~\ref{part:ref} provides a reference of various concrete types of
-illuminants (Chapter~\ref{ch:illuminants}) and cameras (Chapter~\ref{ch:sensors})
-as well as a reference implementation (Chapter~\ref{ch:implementation}).
+\Cref{part:ref} provides a reference of various concrete types of
+illuminants (\cref{ch:illuminants}) and cameras (\cref{ch:sensors})
+as well as a reference implementation (\cref{ch:implementation}).
 
-Part~\ref{part:app} contains the appendices: Appendix~\ref{ch:color} discusses
+\Cref{part:app} contains the appendices: \cref{ch:color} discusses
 various considerations on color in the tristimulus versus spectral setting,
-Appendix~\ref{ch:implementation} describes an implementation of a color manipulation library
-and Appendix~\ref{ch:radiance} is an extensive excerpt from Frederic Nicodemus's 
+\cref{ch:implementation} describes an implementation of a color manipulation library
+and \cref{ch:radiance} is an extensive excerpt from Frederic Nicodemus's 
 excellent 1963 paper~\cite{nicodemus63} in which the concept of \textsl{radiance}
 is introduced: unsurprisingly we found his explanation far clearer than what we 
 had been able to come up with, so we decided to retype his text, and limit ourselves
@@ -101,8 +101,8 @@ sensitivity and so on. Similarly, as the renderers will be adapted to receive da
 referred to physical units, the bridges would need to make sure they are capable of transporting
 and translating such data appropriately, and various shading libraries might need various levels
 of adaptation for correctness. These changes are discussed in detail in the rest of this document:
-while Chapter~\ref{ch:imaging} focuses on the theretical background for these revisions,
-Chapter~\ref{ch:implementation} has code reference for the specifics of a working implementation.
+while \cref{ch:imaging} focuses on the theoretical background for these revisions,
+\cref{ch:implementation} has code reference for the specifics of a working implementation.
 
 \paragraph{Scene representation}
 
@@ -182,7 +182,7 @@ it is very important to note that radiant intensity should be considered a
 ``far-field'' quantity, that is to say, a quantity that is only valid when
 the source is extremely small in comparison to the other dimensions at play.
 The interested reader is invited to consult~\cite{nicodemus63}, a relevant
-extract of which is included in Appendix~\ref{ch:radiance} of this document.
+extract of which is included in \cref{ch:radiance} of this document.
 
 Now that we have a notion of power \textit{from a region} and power \textit{in
 a given direction}, we can combine the two to get power \textit{from a region
@@ -465,5 +465,5 @@ above definition can be written as
 from which it follows that $K_m \approx 683.002 \;\si{\lumen\per\watt}$. In 
 practice, however, it is safe to use the value of $683\;\si{\lumen\per\watt}$~\citep{cie1996,wyszecki2000}.
 
-Table~\ref{tab:radiophoto} lists important radiometric quantities and their photometric equivalents.
+\Cref{tab:radiophoto} lists important radiometric quantities and their photometric equivalents.
 

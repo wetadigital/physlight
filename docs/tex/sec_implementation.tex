@@ -115,7 +115,7 @@ redlum_sRGB = M * redlum_camRGB
 
 \paragraph{Angular norm}
 
-From Section~\ref{sec:angular_norm} we see that the angular norm $\|D\|$ of
+From \cref{sec:angular_norm} we see that the angular norm $\|D\|$ of
 $\langle \omega, \hat n \rangle^n$ is $2\pi / (n+2)$, which is easily
 implemented as
 
@@ -339,10 +339,10 @@ public void construct()
     float r = f / (2 * apertureNumber);
     float apertureRatio = PI * r*r / (a*a);
 
-    // the imaging constant, Equation \ref{eqn:imaging_ki}
+    // the imaging constant, \cref{eqn:imaging_ki}
     float k_i = 4 * 683 / 312.5;
 
-    // scale as per Equation \ref{eqn:imaging_y2}
+    // scale as per \cref{eqn:imaging_y2}
     // note the missing division by $K_m$ as here Ci is already in
     // radiometric units
     c_imagingRatio = c_exposureTime * k_i * filmSpeed * c_apertureRatio;
@@ -364,7 +364,7 @@ float getOneMeter()
 
 
 The helper method \Verb|getApertureDistance()| computes the distance of the
-aperture from the filmback, in the notation of Chapter~\ref{ch:imaging}
+aperture from the filmback, in the notation of \cref{ch:imaging}
 
 \begin{rslcode}
 // get the aperture distance
@@ -463,7 +463,7 @@ color matching curves to map from spectral to tristimulus \gls{XYZ} space.
 We introduce the use of \colspacefont{cameraRGB} color space, the color space
 determined by spectral response curves coming from a physical camera, together
 with a matrix to map this space into \gls{CIE} \gls{XYZ} (or \sRGBl). Examples
-of such data are given in the appendix, Section~\ref{sec:cameradata}.
+of such data are given in the appendix, \cref{sec:cameradata}.
 
 
 \subsection{Lights}
@@ -606,7 +606,7 @@ def XYZ_lv(l, v, xyzcmf = CIE.CMF_1931):
 It's common practice to use \gls{RGB} texture maps to encode various
 kind of spatially varying spectral distributions. In order to use them
 in a spectral pipeline, a way is needed to try and reconstruct a plausible
-spectrum from the data in these files. Chapter~\ref{ch:lighting} introduced
+spectrum from the data in these files. \cref{ch:lighting} introduced
 the idea of discussing spatially varying spectra in terms of $n$-dimensional
 vectors in a color basis called generically $col(\lambda)$ for which a
 simple example was given for a naive reconstruction from \gls{RGB} as

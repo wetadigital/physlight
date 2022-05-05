@@ -266,17 +266,17 @@ The F series of standard illuminants represent various types of fluorescent ligh
 $F_1$--$F_6$ ``standard'' fluorescent lamps consist of two semi-broadband
 emissions of
 antimony and manganese activations in calcium halophosphate phosphor, these are
-plotted in Figure~\ref{fig:illumfspectrastd}. $F_4$ is of
+plotted in \cref{fig:illumfspectrastd}. $F_4$ is of
 particular interest since it was used for calibrating the \gls{CIE} \gls{CRI}
 (the \gls{CRI} formula was chosen such that $F_4$ would have a \gls{CRI} of
 $51$).
 $F_7$--$F_9$ are ``broadband'' (full-spectrum light) fluorescent lamps with
 multiple phosphors, and higher \glspl{CRI}, plotted in
-Figure~\ref{fig:illumfspectrabroad}. Finally, $F_{10}$--$F_{12}$ are narrow
+\cref{fig:illumfspectrabroad}. Finally, $F_{10}$--$F_{12}$ are narrow
 triband illuminants consisting of three ``narrowband'' emissions (caused by
 ternary
 compositions of rare-earth phosphors) in the R,G,B regions of the visible
-spectrum, plotted in Figure~\ref{fig:illumfspectranarrow}.
+spectrum, plotted in \cref{fig:illumfspectranarrow}.
 The phosphor weights can be tuned to achieve the desired \gls{CCT}.
 The spectra of these illuminants are published in \cite{ciecolorimetry}.
 
@@ -406,7 +406,7 @@ ac & a \geq 0
 
 The data for the three tabulated spectral curves $\bar x(\lambda)$, $\bar
 y(\lambda)$, $\bar z(\lambda)$ as distributed by CIE is in
-Appendix~\ref{sec:cmfsdata}, Table~\ref{tab:cmf1931},
+\cref{sec:cmfsdata}, \cref{tab:cmf1931},
 page~\pageref{tab:cmf1931}.
 
 \section{Spectral basis representation}
@@ -479,7 +479,7 @@ Smits uses a run-time interpolation scheme
 that, for any given input color, attempts to use as much as possible 
 of the smoothest available spectrum by first mixing in the white spectrum, 
 then one of the complement color spectra, and only then a primary spectrum.
-We reproduce an implementation of this method in Section~\ref{sec:implementation:texturemaps}.
+We reproduce an implementation of this method in \cref{sec:implementation:texturemaps}.
 
 Smits' technique is bound to the sRGB color space, and the sparse sampling with only
 seven precomputed spectra can lead to poor results if a wider-gamut color space is
@@ -541,7 +541,7 @@ numerically evaluating the angular norm integral
    = \int_{\phi = 0}^{2\pi} \int_{\theta = 0}^{\pi/2}
         D_{IES}(\theta,\phi) \cos\theta \sin\theta \d\theta \d\phi
 \end{equation}
-implementation details are in Section~\ref{sec:implementation}.
+implementation details are in \cref{sec:implementation}.
 
 \section{Tint functions}
 
@@ -551,7 +551,7 @@ Explain differences between textured emitters and transmittance/reflectance data
 
 
 \subsection{Tabulated spectral data}
-Sometimes tabulated data is available for various gels or filters, figure~\ref{fig:roscolux}
+Sometimes tabulated data is available for various gels or filters, \cref{fig:roscolux}
 includes plots of a subset of Rosco's \emph{RoscoLux} series of gels.
 
 \begin{figure}
