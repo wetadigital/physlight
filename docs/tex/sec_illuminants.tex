@@ -34,20 +34,20 @@ where relevant constants and variables are:
 
 \begin{center}
 \begin{tabular}{c l l}
-$k$                & Boltzmann constant        & \SI{1.3806488e-23}{\joule\per\kelvin}  \\
-$h$                & Planck constant           & \SI{6.62606957e-34}{\joule\second}  \\
-$c$                & speed of light in vacuum  & \SI{2.99792458e8}{\meter\per\second} \\
-$T$                & temperature in kelvin     & $[\si{\kelvin}]$    \\
-$\lambda$          & wavelength in meter       & $[\si{\meter}]$    \\
-$T_{kK}$           & temperature in kilokelvin & $[\si{\kilo\kelvin}]$ \\
-$\lambda_{\mu m}$  & wavelength in micrometers & $[\si{\micro\meter}]$ \\
+$k$                & Boltzmann constant         & \SI{1.3806488e-23}{\joule\per\kelvin}  \\
+$h$                & Planck constant            & \SI{6.62606957e-34}{\joule\second}  \\
+$c$                & speed of light in vacuum   & \SI{2.99792458e8}{\meter\per\second} \\
+$T$                & temperature in kelvins     & $[\si{\kelvin}]$    \\
+$\lambda$          & wavelength in meters       & $[\si{\meter}]$    \\
+$T_{kK}$           & temperature in kilokelvins & $[\si{\kilo\kelvin}]$ \\
+$\lambda_{\mu m}$  & wavelength in micrometers  & $[\si{\micro\meter}]$ \\
 \end{tabular}
 \end{center}
 
-Substitute values in, and rescale for numerical accuracy:
+It is possible to get a formulation with every-day ranged constants and values in play by expressing the temperature in kilokelvins $[\si{\kilo\kelvin}]$ and the wavelength in micrometers $[\si{\micro\meter}]$:
 
 \begin{equation}
-B_T(\lambda) = \frac{119.104}{\lambda_{\mu m}^5} \frac
+B_T(\lambda) \approx \frac{119.104}{\lambda_{\mu m}^5} \frac
 1{e^{\frac{14.3878}{\lambda_{\mu m} T_{kK}}}-1}
 \qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
@@ -100,8 +100,8 @@ Luminance of blackbody radiator $\|B_T\|_{\bar y} = \int B_T(\lambda)\bar y(\lam
 this can be approximately computed as
 
 \begin{equation}
-\|B_T\|_{\bar y} = \frac{\num{50471.2}}{e^{\frac{14.3878}{\num{0.0384919} +
-\num{0.541533} T_{kK}}}-1}
+\|B_T\|_{\bar y} \approx \frac{50471.2}{e^{\frac{14.3878}{0.0384919 +
+0.541533\; T_{kK}}}-1}
 \quad \left\{\begin{array}{cl}
 \pm 0.375\% & T_{kK} \in [1.6, 2.5] \\
 +0.23\% \pm 0.1\% & T_{kK} \in [2.5, 3.3] \\
@@ -110,6 +110,7 @@ this can be approximately computed as
 \end{array}\right.
 \quad \left[\si{\watt\per\square\meter\per\steradian}\right]
 \end{equation}
+
 
 \subsection{CIE Standard Illuminants}
 
@@ -157,11 +158,11 @@ involving the use of incandescent lighting, unless there are specific reasons
 for
 using a different illuminant. Using our previous expression for black body radiation we have
 \begin{equation}
-S_{A}(\lambda_{\mu m}) = B_{2855.54}(\lambda_{\mu m}) =
+S_{A}(\lambda_{\mu m}) = B_{2855.54}(\lambda_{\mu m}) \approx
 \frac{119.104}{\lambda_{\mu m}^5} \frac 1{e^{\frac{5.03855}{\lambda_{\mu m}}}-1}
 \qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
-where $\lambda_{\mu m}$ is the wavelength in micrometer.
+where $\lambda_{\mu m}$ is the wavelength in micrometers.
 
 \paragraph{Standard Illuminant D series}
 
