@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Contributors to the PhysLight Project.
 # 3.13 for target_link_directories.
 cmake_minimum_required(VERSION 3.13)
 

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Contributors to the PhysLight Project.
 #TODO# usd_library(physAreaLight
 #TODO# 
 #TODO#     PUBLIC_HEADERS_INSTALL_PREFIX

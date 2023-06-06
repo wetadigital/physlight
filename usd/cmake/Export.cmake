@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Contributors to the PhysLight Project.
 # This module is for exporting targets and installing CMake package
 # files which are used to import _this_ project into _other_ projects
 # in a robust manner.

@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Contributors to the PhysLight Project.
 # ============================================================================
 # Public-facing convenience functions & macros for building USD plugin(s).
 # ============================================================================

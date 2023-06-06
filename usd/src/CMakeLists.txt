@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Contributors to the PhysLight Project.
 # A top-level name used as the root directory for public headers
 # installation, and the root python module.
 # This is optional.  See ./usdTri/CMakeLists.txt for how it's used.

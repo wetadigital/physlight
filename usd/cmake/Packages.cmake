@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright (c) Contributors to the PhysLight Project.
 # Discovery of the dependencies of USDPluginExamples.
 
 # Boost & python.
