@@ -141,7 +141,7 @@ source $S$ through a given surface $A$ as the amount of energy from $S$ that
 crosses $A$ per unit time. This flux will be called \textsl{total} when the surface
 $A$ fully encloses the source $S$. Total flux will be called \textsl{power} in
 this
-document, radiant flux is measured in watts $[\si{\watt}]$.
+document, radiant flux is measured in watts $[\unit{\watt}]$.
 
 It is natural to think of radiant power as originating from a region $\delta S$ on our source:
 for instance a source could emit different energy over its surface. This leads to an
@@ -151,13 +151,13 @@ we would like defined in such a way that power originated from our source $S$
 can be computed
 directly by integration over its surface:
 \begin{displaymath}
-\Phi_e = \int_{S} M_e(x) \d x \qquad [\si{\watt}]
+\Phi_e = \int_{S} M_e(x) \d x \qquad [\unit{\watt}]
 \end{displaymath}
 this quantity $M_e$ is called \textsl{radiosity} and represent the power density
 of our
 source with respect to its surface area, formally
 \begin{displaymath}
-M_e = \frac{\d\Phi_e}{\d S} \qquad \left[\si{\watt\per\square\meter}\right]
+M_e = \frac{\d\Phi_e}{\d S} \qquad \left[\unit{\watt\per\square\meter}\right]
 \end{displaymath}
 It is immediately verified that for a uniformly emissive source the
 radiosity is simply the ratio of emissive power to area
@@ -170,13 +170,13 @@ As before we would like this quantity defined so that the power in a range of
 directions
 $\Omega$ could be directly computed by integration:
 \begin{displaymath}
-\Phi_e = \int_\Omega I_e(\omega) \d\omega \qquad [\si{\watt}]
+\Phi_e = \int_\Omega I_e(\omega) \d\omega \qquad [\unit{\watt}]
 \end{displaymath}
 the integrand $I_e(\omega)$ is called \textsl{radiant intensity} and represent
 the density
 of power with respect to directions from the source, formally
 \begin{displaymath}
-I_e = \frac{\d\Phi_e}{\d\Omega} \qquad \left[\si{\watt\per\steradian}\right]
+I_e = \frac{\d\Phi_e}{\d\Omega} \qquad \left[\unit{\watt\per\steradian}\right]
 \end{displaymath}
 it is very important to note that radiant intensity should be considered a
 ``far-field'' quantity, that is to say, a quantity that is only valid when
@@ -190,14 +190,14 @@ in a given direction}, which as before is a quantity that lets us compute
 power by integration in area and direction:
 \begin{displaymath}
 \Phi_e = \int_{S} \int_\Omega L_e^\uparrow(x, \omega) \;\cos\theta\d x\d\omega
-\qquad [\si{\watt}]
+\qquad [\unit{\watt}]
 \end{displaymath}
 the integrand $L_e^\uparrow(x, \omega)$ is called \textsl{exitant radiance}
 and represents the power density with respect to area and directions from
 the source, formally
 \begin{displaymath}
 L_e^\uparrow = \frac{\d\Phi_e}{\cos\theta \d S \d\Omega}
-\qquad \left[\si{\watt\per\square\meter\per\steradian}\right]
+\qquad \left[\unit{\watt\per\square\meter\per\steradian}\right]
 \end{displaymath}
 in some cases it might be convenient to distinguish exitant radiance from
 incident radiance and this will be indicated with an arrow in the exponent:
@@ -279,13 +279,13 @@ of incident power density across an area on the receiver.
 The total incident flux of a region $R$ on the receiver can then be computed by
 integration over its surface:
 \begin{displaymath}
-\Phi_e = \int_{R} E_e(x) \d x \qquad [\si{\watt}]
+\Phi_e = \int_{R} E_e(x) \d x \qquad [\unit{\watt}]
 \end{displaymath}
 the value $E_e(x)$ is the receiver's area density of incident power and
 is called \textit{irradiance}.
 Much like radiosity, irradiance as well has a differential formulation:
 \begin{displaymath}
-E_e = \frac{\d\Phi_e}{\d R} \qquad \left[\si{\watt\per\square\meter}\right]
+E_e = \frac{\d\Phi_e}{\d R} \qquad \left[\unit{\watt\per\square\meter}\right]
 \end{displaymath}
 
 Comparing all the relations above, we can express radiosity, radiant intensity
@@ -327,35 +327,35 @@ L_{\lambda}^\downarrow = \frac{\d\Phi_{\lambda}}{\d R \d\Omega}
 & name               & \multicolumn{2}{c}{unit} & symbol \\ \hline
 %
   Radiance           &                  &
-\si{\watt\per\square\meter\per\steradian\per\meter} & $L_{\lambda}$
-& Luminance          & \textsl{nit}     & $\si{\nit} =
-\si{\lumen\per\square\meter\per\steradian}$          & $L_v$ \\
+\unit{\watt\per\square\meter\per\steradian\per\meter} & $L_{\lambda}$
+& Luminance          & \textsl{nit}     & $\unit{\nit} =
+\unit{\lumen\per\square\meter\per\steradian}$          & $L_v$ \\
 %
-  Irradiance         &                  & \si{\watt\per\square\meter\per\meter}               & $E_{\lambda}$
-& Illuminance        & \textsl{lux}     & $\si{\lux} = \si{\lumen\per\square\meter}$          & $E_v$  \\
+  Irradiance         &                  & \unit{\watt\per\square\meter\per\meter}               & $E_{\lambda}$
+& Illuminance        & \textsl{lux}     & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & $E_v$  \\
 %
-  Radiosity          &        & \si{\watt\per\square\meter\per\meter}
+  Radiosity          &        & \unit{\watt\per\square\meter\per\meter}
    & $J_{\lambda}$
-& Luminosity         & \textsl{lux}     & $\si{\lux} = \si{\lumen\per\square\meter}$          & $J_v$ \\
+& Luminosity         & \textsl{lux}     & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & $J_v$ \\
 %
-  Radiant emittance  &                  & \si{\watt\per\square\meter\per\meter}
+  Radiant emittance  &                  & \unit{\watt\per\square\meter\per\meter}
              & $M_{\lambda}$
-& Luminous emittance & \textsl{lux}     & $\si{\lux} = \si{\lumen\per\square\meter}$          & $M_v$ \\
+& Luminous emittance & \textsl{lux}     & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & $M_v$ \\
 %
-  Radiant intensity  &                  & \si{\watt\per\steradian\per\meter}
+  Radiant intensity  &                  & \unit{\watt\per\steradian\per\meter}
              & $I_{\lambda}$
-& Luminous intensity & \textsl{candela} & $\si{\candela} = \si{\lumen\per\steradian}$         & $I_v$ \\
+& Luminous intensity & \textsl{candela} & $\unit{\candela} = \unit{\lumen\per\steradian}$         & $I_v$ \\
 %
-  Radiant power      & \textsl{watt}    & \si{\watt\per\meter}                                & $\Phi_{\lambda}$
-& Luminous power     & \textsl{lumen}   & \si{\lumen}                                         & $\Phi_v$ \\
+  Radiant power      & \textsl{watt}    & \unit{\watt\per\meter}                                & $\Phi_{\lambda}$
+& Luminous power     & \textsl{lumen}   & \unit{\lumen}                                         & $\Phi_v$ \\
 %
-  Radiant energy     & \textsl{joule}   & $\si{\joule\per\meter} =
-\si{\watt\second\per\meter}$ & $Q_{\lambda}$
-& Luminous energy    & \textsl{talbot}  & $\si{\talbot} = \si{\lumen\second}$
+  Radiant energy     & \textsl{joule}   & $\unit{\joule\per\meter} =
+\unit{\watt\second\per\meter}$ & $Q_{\lambda}$
+& Luminous energy    & \textsl{talbot}  & $\unit{\talbot} = \unit{\lumen\second}$
                & $Q_v$
 \end{tabular}\\[2mm]
 \begin{tabular}{l c c}
-Throughput (\'etendue) & \si{\square\meter\steradian} & $G$ \\
+Throughput (\'etendue) & \unit{\square\meter\steradian} & $G$ \\
 Reflectance            & & $\rho$ \\
 Transmittance          & & $\tau$ \\
 \end{tabular}
@@ -364,7 +364,7 @@ Transmittance          & & $\tau$ \\
 }
 \vskip 1mm
 {\footnotesize\it We abbreviate the unit for luminous energy \textit{talbot} as
-\si{\talbot} instead of the also common \si{\tesla} to avoid confusion with the
+\unit{\talbot} instead of the also common \unit{\tesla} to avoid confusion with the
 unit for magnetic flux \textit{tesla}.
 We also use the convention of subscripting photometric quantities
 with $v$ (for \textit{visual}), radiometric quantities with $e$ (for
@@ -396,7 +396,7 @@ described in~\cite{Meyer-Arendt:68}.
 In the \textsl{radiometric} point of view, the \textsl{radiant power} of a
 source $S$
 (also called \textsl{total radiant flux}) is measured in
-\textit{watts} $[\si{\watt}]$ and is the total amount of energy per unit time
+\textit{watts} $[\unit{\watt}]$ and is the total amount of energy per unit time
 emitted by $S$.
 %This means that two different light sources emitting the same radiant power and
 %having different spectral distributions are likely to appear as having different
@@ -405,7 +405,7 @@ emitted by $S$.
 On the other hand, in the \textsl{photometric} point of view, the
 \textsl{luminous power}
 of a source $S$ (called \textsl{luminous flux}) is measured in
-\textit{lumens} $[\si{\lumen}]$, and is the amount of energy per unit time
+\textit{lumens} $[\unit{\lumen}]$, and is the amount of energy per unit time
 weighted by the \textsl{photopic luminous efficiency function} $\bar y(\lambda)$. 
 This function was designed to model the response of the human visual system as a function of wavelength $\lambda$\footnote{
 	The photopic luminosity function $\bar y(\lambda)$ is the result of a series of experiments and tabulations first published by the \gls{CIE} in 1924 (the function was called $V(\lambda)$ at the time) and then included in the color matching functions for the \emph{standard 2 degree colorimetric observer}~\citep{cie1931}.}.
@@ -435,35 +435,35 @@ luminous power $\Phi_v$ is
 
 The scaling constant $K_m$ converts watts to lumens. It can be determined
 from the 
-\gls{si} unit \textsl{candela} $[\si{\candela}]$, which was adopted at
+\gls{si} unit \textsl{candela} $[\unit{\candela}]$, which was adopted at
 the General Conference on Weights and Measures in 1979 and
 there formally defined as follows:
 \begin{quote}
 \emph{One candela is the amount of luminous intensity of a source of
-monochromatic radiation of frequency \SI{540}{\tera\hertz} and
-a radiant intensity of \SI{1/683}{\watt\per\steradian}.}
+monochromatic radiation of frequency \num{540}\unit{\tera\hertz} and
+a radiant intensity of $1/683$\unit{\watt\per\steradian}.}
 \end{quote}
 
-$\SI{540}{\tera\hertz}$ correspond to about \SI{555.016}{\nano\meter} in
+$\num{540}\unit{\tera\hertz}$ correspond to about \num{555.016}\unit{\nano\meter} in
 standard air, a wavelength in the greens to which the eye of the standard observer
 is most sensitive.
-The radiant intensity of $\SI{1/683}{\watt\per\steradian}$ was chosen to make the candela about equal to the
+The radiant intensity of $1/683\unit{\watt\per\steradian}$ was chosen to make the candela about equal to the
 \textit{standard candle}, the unit which it superseded. 
 
 Note that the above definition is an updated version of the original definition, which had been
 valid since 1933 and was based on the emission of a blackbody radiator
-at the freezing point of platinum, about \SI{2042}{\kelvin}. This 
+at the freezing point of platinum, about \num{2042}\unit{\kelvin}. This 
 historical definition is sometimes also found in literature~\citep{Meyer-Arendt:68}.
 
 Using Eqn.~\eqref{eqn:rad_to_photo} and the Dirac delta distribution $\delta$, the
 above definition can be written as
 \begin{displaymath}
-    1 \si{\candela} = 1\frac{\si{\lumen}}{\si{\steradian}} 
-    = K_m \int \frac{\delta(\lambda-555.016\si{\nano\meter})}{683} \si{\watt\per\steradian}\;\bar y(\lambda) \d\lambda
-    = K_m \cdot \frac{\bar y(555.016\si{\nano\meter})}{683}\si{\watt\per\steradian},
+    1 \unit{\candela} = 1\frac{\unit{\lumen}}{\unit{\steradian}} 
+    = K_m \int \frac{\delta(\lambda-555.016\unit{\nano\meter})}{683} \unit{\watt\per\steradian}\;\bar y(\lambda) \d\lambda
+    = K_m \cdot \frac{\bar y(555.016\unit{\nano\meter})}{683}\unit{\watt\per\steradian},
 \end{displaymath}
-from which it follows that $K_m \approx 683.002 \;\si{\lumen\per\watt}$. In 
-practice, however, it is safe to use the value of $683\;\si{\lumen\per\watt}$~\citep{cie1996,wyszecki2000}.
+from which it follows that $K_m \approx 683.002 \;\unit{\lumen\per\watt}$. In 
+practice, however, it is safe to use the value of $683\;\unit{\lumen\per\watt}$~\citep{cie1996,wyszecki2000}.
 
 \Cref{tab:radiophoto} lists important radiometric quantities and their photometric equivalents.
 

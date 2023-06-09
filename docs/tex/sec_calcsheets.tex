@@ -11,14 +11,14 @@ support for \physLight\ in a rendering pipeline.
 We will use the following camera Inputs for our calibration scenario described
 in \cref{ch:imaging}:
 \begin{itemize}
-\item Film speed $S = \SI{100}{\iso}$
-\item Focal length $f = \SI{24}{\milli\meter}$
-\item Focus distance $o = \SI{1}{\meter}$
-\item Iris aperture $N = \SI{8}{\fnumber}$
-\item Exposure time $t = \SI{1/60}{\second}$
-\item Sensor width/height $\SI{27.7 x 14.6}{\milli\meter}$ 
-\item Image resolution $\SI{5120 x 2700}{\pixel}$ 
-\item Pixel area $A_{pxl} \simeq \SI{29.25}{\square\micro\meter}$
+\item Film speed $S = \num{100}\unit{\iso}$
+\item Focal length $f = \num{24}\unit{\milli\meter}$
+\item Focus distance $o = \num{1}\unit{\meter}$
+\item Iris aperture $N = \num{8}\unit{\fnumber}$
+\item Exposure time $t = 1/60\unit{\second}$
+\item Sensor width/height $\numproduct{27.7 x 14.6}\unit{\milli\meter}$ 
+\item Image resolution $\numproduct{5120 x 2700}\unit{\pixel}$ 
+\item Pixel area $A_{pxl} \simeq \num{29.25}\unit{\square\micro\meter}$
 \item Calibration constant $C = 312.5$
 \end{itemize}
 
@@ -26,7 +26,7 @@ in \cref{ch:imaging}:
 Compute illuminance $E_v$ at a point $P$ given imaging parameters:
 \begin{align*}
 E_v& = C\frac{N^2}{t S}\\
-&= 312.5\frac{8\cdot 8 \cdot 60}{100} = \SI{12000}{\lux}
+&= 312.5\frac{8\cdot 8 \cdot 60}{100} = \num{12000}\unit{\lux}
 \end{align*}
 
 \paragraph{Reflected Luminance}
@@ -34,15 +34,15 @@ Compute the reflected luminance with $18\%$ reflective Lambertian plane:
 \begin{align*}
 L_v& = E_v\cdot \frac{\rho}{\pi} \\
 &= \num{12000} \cdot \frac{0.18}{\pi}
-\simeq \SI{687.549}{\nit}
+\simeq \num{687.549}\unit{\nit}
 \end{align*}
 
 \paragraph{Entrance pupil distance}
 
 Compute the distance $a$ from the entrance pupil to the filmback given:
 \begin{itemize}
-\item Focal length $f = \SI{24}{\milli\meter}$
-\item Focus distance $o = \SI{1}{\meter}$
+\item Focal length $f = \num{24}\unit{\milli\meter}$
+\item Focus distance $o = \num{1}\unit{\meter}$
 \end{itemize}
 
 The lens equation in our case has the form
@@ -57,17 +57,17 @@ a = \frac{o-\sqrt{o^2 - 4fo}}2
 
 Substituting our data into this expression yields
 \begin{displaymath}
-a = \frac{1-\sqrt{1 - 4 \cdot 0.024}}2 \;\si{\meter} \simeq \SI{24.6}{\milli\meter}
+a = \frac{1-\sqrt{1 - 4 \cdot 0.024}}2 \;\unit{\meter} \simeq \num{24.6}\unit{\milli\meter}
 \end{displaymath}
 
 \ifomit
 \subsection{Luminous energy}
 
 \begin{itemize}
-\item Sensitivity $S = \SI{100}{\iso}$
-\item Focal length $f = \SI{24}{\milli\meter}$
-\item Iris aperture $N = \SI{8}{\fnumber}$
-\item Exposure time $t = \SI{1/60}{\second}$
+\item Sensitivity $S = \num{100}\unit{\iso}$
+\item Focal length $f = \num{24}\unit{\milli\meter}$
+\item Iris aperture $N = \num{8}\unit{\fnumber}$
+\item Exposure time $t = 1/60\unit{\second}$
 \item Calibration constant $C = 312.5$
 \end{itemize}
 
@@ -78,7 +78,7 @@ C\frac{N^2}{\Delta t S},
 \end{align*}
 
 \begin{displaymath}
-E_v = 312.5\frac{8\cdot 8 \cdot 60}{100} = \SI{12000}{\lux}
+E_v = 312.5\frac{8\cdot 8 \cdot 60}{100} = \num{12000}\unit{\lux}
 \end{displaymath}
 
 
@@ -95,13 +95,13 @@ k_i = \frac{Y}{\cdots}
 Compute luminous energy $Q_v$ at a certain pixel given the exposure parameters:
 
 \begin{itemize}
-\item Sensitivity $S = \SI{100}{\iso}$
-\item Aperture distance $a = \SI{25}{\milli\meter}$
-\item Iris aperture $N = \SI{8}{\fnumber}$
-\item Exposure time $t = \SI{1/60}{\second}$
-\item Focus distance $o = \SI{1}{\meter}$
-\item Illuminance $E = \SI{12480}{\lux}$
-\item Pixel area $A_{pxl} = \SI{18.5}{\square\micro\meter}$
+\item Sensitivity $S = \num{100}\unit{\iso}$
+\item Aperture distance $a = \num{25}\unit{\milli\meter}$
+\item Iris aperture $N = \num{8}\unit{\fnumber}$
+\item Exposure time $t = 1/60\unit{\second}$
+\item Focus distance $o = \num{1}\unit{\meter}$
+\item Illuminance $E = \num{12480}\unit{\lux}$
+\item Pixel area $A_{pxl} = \num{18.5}\unit{\square\micro\meter}$
 \end{itemize}
 
 \begin{figure}
@@ -156,13 +156,13 @@ Q_v & = L_o(\omega_o)\cdot A_P \cdot\Delta\omega \cdot t \\
 If the surface is Lambertian at $P$, it illuminates equally in all directions:
 
 \begin{displaymath}
-L_v = \frac\rho\pi E_v = \frac{0.18}{3.14159}12\,480 = \SI{715.0}{\nit}
+L_v = \frac\rho\pi E_v = \frac{0.18}{3.14159}12\,480 = \num{715.0}\unit{\nit}
 \end{displaymath}
 substituting the parameters we obtain:
 \begin{align*}
 Q_v & = L_o(\omega_o) \cdot \left( \frac{2\cos\theta\sin\alpha}{1+\cos2\theta\cos\alpha} \right)^2 \cdot \pi \left(\frac f{2N}\right)^2 \cos\gamma \cdot t \\
     & = 715 \cdot 18.5\cdot10^{-12} \cdot \frac{975\cdot10^{-3}}{25\cdot10^{-3}} 3.14159 \left(\frac{24}{8}\right)^2\frac{1}{975^2\cdot 10^{-6}} \frac{1}{60} \\
-    & = \SI{2.5574e-7}{\talbot}
+    & = \num{2.5574e-7}\unit{\talbot}
 \end{align*}
 
 \fi
@@ -172,22 +172,22 @@ Calculate $\Omega_{obj}$ the solid angle of the aperture seen from point in obje
 \begin{align*}
 \Omega_p^{obj} &\simeq \frac{\pi r^2}{(o-a)^2}\\
 &= \frac{f^2}{4N^2(o-a)^2}\\
-&\simeq  \SI{2.36497}{\steradian}
+&\simeq  \num{2.36497}\unit{\steradian}
 \end{align*}
 
 \paragraph{Luminous energy from Y value}
 
-Given a pixel $Y$ value we can calculate the luminous energy density in \si{\lux} for this pixel by
+Given a pixel $Y$ value we can calculate the luminous energy density in \unit{\lux} for this pixel by
 \begin{align*}
 Y_v &= \frac{Y\cdot K_m}{ k_i\cdot S \cdot \Delta t} \\
 &= \frac{Y\cdot C}{ 4\cdot S \cdot \Delta t} \left(\frac{f}{a}\right)^2
-\qquad [\si{\lux}]
+\qquad [\unit{\lux}]
 \end{align*}
 For $Y=0.18$ and the given input specifications we get:
 \begin{align*}
 Y_v &= \frac{Y\cdot C}{ 4\cdot S \cdot \Delta t} \left(\frac{f}{a}\right)^2 \\
-&= \frac{0.18\cdot 312.5}{ 4\cdot 100 \cdot 1/60} \left(\frac{0.024}{0.0246}\right)^2 \;\si{\lux} \\
-&= \SI{8.030934}{\lux}
+&= \frac{0.18\cdot 312.5}{ 4\cdot 100 \cdot 1/60} \left(\frac{0.024}{0.0246}\right)^2 \;\unit{\lux} \\
+&= \num{8.030934}\unit{\lux}
 \end{align*}
 
 \section{Emission constant}
@@ -195,10 +195,10 @@ Y_v &= \frac{Y\cdot C}{ 4\cdot S \cdot \Delta t} \left(\frac{f}{a}\right)^2 \\
 \subsection{Area Light}
 Given following input parameters for an area light:
 \begin{itemize}
-\item luminous power $\Phi_v=\SI{1000}{\lumen}$
-\item area $|A|= \SI{2 x 2}{\meter} = \SI{4}{\square\meter}$
+\item luminous power $\Phi_v=\num{1000}\unit{\lumen}$
+\item area $|A|= \numproduct{2 x 2}\unit{\meter} = \num{4}\unit{\square\meter}$
 \item Lambertian angular distribution $D = \frac1{\pi}$
-\item emitter: black body radiator at $T=\SI{6500}{\kelvin}$
+\item emitter: black body radiator at $T=\num{6500}\unit{\kelvin}$
 \end{itemize}
 we want to compute the light constant $k_e$. From \cref{ch:specification} we can  have:
 \begin{displaymath}
@@ -290,10 +290,10 @@ Let us assume that the surface at $P_s$ is made of Lambertian material of reflec
 \end{split}
 \end{displaymath}
 
-Let's say that the light is a portion of a sphere of radius $r = \SI{1}{\meter}$, centered
+Let's say that the light is a portion of a sphere of radius $r = \num{1}\unit{\meter}$, centered
 around our surface point $P_s$, extending in $\theta$ from $\frac\pi6$ to $\frac\pi3$ and in
 $\phi$ from $0$ to $\frac\pi2$, and having Lambertian emission towards our
-surface of $L_{i,v} = \SI{300}{\nit}$.
+surface of $L_{i,v} = \num{300}\unit{\nit}$.
 In this configuration we obtain:
 
 \begin{align*}
@@ -301,7 +301,7 @@ L_{o,v} &= \int_{\theta = \frac\pi 6}^\frac\pi 3 \int _{\phi = 0}^\frac\pi
 2 L_{i,v} \frac\rho\pi \cos\theta \sin\theta \d\theta \d\phi \\
              &= 300\cdot \frac{0.18}\pi \int_{\theta = \frac\pi 6}^\frac\pi 3 \int _{\phi = 0}^\frac\pi 2 \cos\theta \sin\theta \d\theta \d\phi \\
              &= 54 \left.\frac{-\cos^2\theta}{2}\right|_{\frac\pi 6}^\frac\pi 3 \\
-             &= \SI{13.5}{\nit}
+             &= \num{13.5}\unit{\nit}
 \end{align*}
 
 \section{Light to sensor interaction}
@@ -309,7 +309,7 @@ L_{o,v} &= \int_{\theta = \frac\pi 6}^\frac\pi 3 \int _{\phi = 0}^\frac\pi
 Given camera parameters $S=100$, $N=5.6$, $\Delta t = \frac 1 {60}$
 and a small light source $A$ oriented towards a
 Lambertian plane parallel to the light with distance
-$d = \SI{0.4}{\meter}$. If the luminance $Y(p)$ at the pixel corresponding
+$d = \num{0.4}\unit{\meter}$. If the luminance $Y(p)$ at the pixel corresponding
 to the center of the projection $p$ equals the albedo $\rho$ of the plane,
 what is the luminous power $\Phi_v$ of the light source?
 \begin{figure}[t]
@@ -321,7 +321,7 @@ what is the luminous power $\Phi_v$ of the light source?
 
 According to Equation~\eqref{eqn:imaging_Ev} the illuminance at the plane must be 
 \begin{displaymath}
-  E_v = \frac{C\;N^2}{\Delta t\; S} = 5880\; \si{\lux}.
+  E_v = \frac{C\;N^2}{\Delta t\; S} = 5880\; \unit{\lux}.
 \end{displaymath}
 Say the light source has a cosine powered distribution
 $L_v^{\uparrow,light}(\omega) = \alpha \cos^n \theta'$, where
@@ -344,7 +344,7 @@ The illuminance at $p$ is
 where the approximation holds if the light source is sufficiently small, hence the cosines are $\approx 1$ and assuming a Lambertian emission ($n=0$).
 Putting this together, it follows 
 \begin{displaymath}
-  \Phi_v = \pi \; 0.4^2 \si{\square\meter}\cdot 5880\; \si{\lux} = 2955.61\; \si{\lumen}.
+  \Phi_v = \pi \; 0.4^2 \unit{\square\meter}\cdot 5880\; \unit{\lux} = 2955.61\; \unit{\lumen}.
 \end{displaymath}
 
 Simple geometric setups like these can be reproduced in a render and are hence useful for validation purposes.

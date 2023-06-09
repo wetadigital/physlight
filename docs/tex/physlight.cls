@@ -242,6 +242,8 @@
 \RequirePackage{multirow} 
 % for \url, has to come after amsmath
 \RequirePackage{hyperref} 
+% for XMP data in PDF
+\RequirePackage{hyperxmp} 
 
 % use pygments to do syntax highlighting of code
 % if pygmentize is not available, use the nominted option
@@ -394,7 +396,7 @@
 		detect-none = true,
 		detect-display-math = false,
 		detect-family = false,
-		mode = text,
+		%mode = text,
 		math-rm = \unitFont,
 		text-rm = \unitFont,
 	}
@@ -403,7 +405,7 @@
 		detect-none = true,
 		detect-display-math = false,
 		detect-family = false,
-		mode = text,
+		%mode = text,
 		math-rm = \mathtt,
 		text-rm = \ttfamily,
 	}
@@ -431,8 +433,8 @@
 \pagestyle{fancy}
 \lhead{}
 \chead{\leftmark}
-\rhead{\physLight}
-\lfoot{\textit{Weta Digital}}
+\rhead{}
+\lfoot{\physLight}
 \cfoot{\textsc{\physLightVersion}}
 \rfoot{Page \thepage\,/\,\pageref*{LastPage}}
 

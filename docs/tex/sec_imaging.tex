@@ -9,16 +9,16 @@ configuration into pixel values. This is done by creating a camera and sensor
 or film model and computing their response to the energy flow in the scene.
 The imaging parameters are:
 \begin{itemize}
-\item $f$ -- focal length $[\si{\milli\meter}]$
-\item $N$ -- aperture number $[\si{\fnumber}]$  (artificially valid for
+\item $f$ -- focal length $[\unit{\milli\meter}]$
+\item $N$ -- aperture number $[\unit{\fnumber}]$  (artificially valid for
 non-DoF renders)
-\item $o$ -- focus distance $[\si{\meter}]$
-\item $\Delta t$ -- exposure time $[\si{\second}]$
-\item $S$ -- film speed $[\si{\iso}]$
-\item $T$ -- white point as a temperature $[\si{\kelvin}]$  (from black body
+\item $o$ -- focus distance $[\unit{\meter}]$
+\item $\Delta t$ -- exposure time $[\unit{\second}]$
+\item $S$ -- film speed $[\unit{\iso}]$
+\item $T$ -- white point as a temperature $[\unit{\kelvin}]$  (from black body
 chromaticity)
-\item filmback size $[\si{\square\meter}]$
-\item pixel resolution $[\si{\pixel}]$
+\item filmback size $[\unit{\square\meter}]$
+\item pixel resolution $[\unit{\pixel}]$
 \end{itemize}
 
 The pixels in the image being synthesized are typically stored as triples of
@@ -41,9 +41,9 @@ the image side.
 Note that this formulation means that the image stores values that are
 resolution independent, which is achieved by means of the division by
 $A_p^{img}$. In the case in which $W(x, \lambda)$ is the identity function, the
-result of the integral would be measured in $[\si{\joule\per\square\meter}]$,
+result of the integral would be measured in $[\unit{\joule\per\square\meter}]$,
 wheras using $W(x, \lambda) = K_m \bar y(\lambda)$ would result in quantities
-measured in $[\si{\lux\second}]$.
+measured in $[\unit{\lux\second}]$.
 
 \begin{inconstruction}
  Details on pixel filtering to be inserted here
@@ -259,7 +259,7 @@ which using Equation~\eqref{eqn:imaging_ki} concludes our proof. \hfill $\square
 %   \begin{equation}
 %   Y_v(p^{img}) = \frac{1}{A_p^{img}} \int_{A_p^{img}} \int_{\Omega_a^{img}}
 %   K_m \int_\lambda L_{\lambda}^{\downarrow img}(x,\omega,\lambda) \bar y (\lambda) \cos\theta \d\omega \d x \d\lambda
-%   \qquad [\si{\lux}]
+%   \qquad [\unit{\lux}]
 %   \end{equation}
 %   \end{inconstruction}
 
@@ -276,7 +276,7 @@ a mean to correct along the remaining dimension of the chromaticity space, which
 
 Unfortunately there is little agreement in the implementations as to how exactly this should be performed:
 the color correction temperature seems to be mostly understood as the color of a blackbody emitter for
-temperatures below $4000\si{\kelvin}$ and of \gls{CIE} Illuminant D above that. 
+temperatures below $4000\unit{\kelvin}$ and of \gls{CIE} Illuminant D above that. 
 
 The case of the tint correction is somewhat more complicated with various interpretations 
 of how such an axis should be oriented: in some descriptions the axis is orthogonal to the 

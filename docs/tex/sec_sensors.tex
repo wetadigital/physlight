@@ -18,7 +18,7 @@ Reference: \link{http://en.wikipedia.org/wiki/F}
 From the Planck relation we can compute the energy in a photon:
 
 \begin{equation}
-E = \frac{hc}{\lambda} \simeq \frac{1.98645}{\lambda_{\mu m}}\cdot 10^{-19} \;\si{\joule} \in [2.5, 6]\cdot 10^{-19} \;\si{\joule} \text{~for visible light}
+E = \frac{hc}{\lambda} \simeq \frac{1.98645}{\lambda_{\mu m}}\cdot 10^{-19} \;\unit{\joule} \in [2.5, 6]\cdot 10^{-19} \;\unit{\joule} \text{~for visible light}
 \end{equation}
 
 Reference: \link{http://en.wikipedia.org/wiki/Planck_constant}
@@ -27,38 +27,37 @@ Reference: \link{http://en.wikipedia.org/wiki/Planck_constant}
 A digital sensor is made of electron wells, the well is able to absorb photons
 and keep a count, with a given efficiency (40-50\% typical), and can count
 absorptions in the mid-10k’s (40k to 80k typical).
-This means one well contains the equivalent of about \SI{4e-14}{\joule}
-($O(10^5)$ photons of \SI{4e-19}{\joule} each).
+This means one well contains the equivalent of about \num{4e-14}\unit{\joule}
+($O(10^5)$ photons of \num{4e-19}\unit{\joule} each).
 
 Reference: \link{http://www.clarkvision.com/articles/digital.sensor.performance.summary/}
 
 Example:
-An isotropic source radiating \SI{1}{\watt} at \SI{555}{\nano\meter}
-(which is a monocromatic source of \SI{683}{\lumen}) emits \num{2.793e18} photons per second.
-At \SI{1}{\meter} distance from a Canon 7D sensor
-(\SI{22.3 x 14.9}{\milli\meter}, \SI{5184 x 3456}{\pixel}, well size \SI{4.3 x
-4.3}{\micro\meter}),
-the well area is \SI{18.5}{\square\micro\meter}, whereas the total area the
+An isotropic source radiating \num{1}\unit{\watt} at \num{555}\unit{\nano\meter}
+(which is a monocromatic source of \num{683}\unit{\lumen}) emits \num{2.793e18} photons per second.
+At \num{1}\unit{\meter} distance from a Canon 7D sensor
+(\num{22.3 x 14.9}\unit{\milli\meter}, \num{5184 x 3456}\unit{\pixel}, well size \num{4.3 x 4.3}\unit{\micro\meter}),
+the well area is \num{18.5}\unit{\square\micro\meter}, whereas the total area the
 source is radiating onto
-is \SI{4\pi}{\square\meter} which is \num{1.475e-12} of the total area, meaning
+is \num{4\pi}\unit{\square\meter} which is \num{1.475e-12} of the total area, meaning
 the pixel would
-receive \SI{1.893e6} photons per second or about \num{31550} photons at ET
-$\SI{1/60}{\second}$, if the
+receive \num{1.893e6} photons per second or about \num{31550} photons at ET
+$\num{1/60}\unit{\second}$, if the
 camera had infinitely wide aperture, and the lens absorbed no light and had
 no focusing effect.
 
 \subsubsection{Adding a lens}
 Let's now say that the same source is imaged onto a single pixel through a lens
 of
-focal length $f = \SI{24}{\milli\meter}$, set at aperture $f/8$ and ET $t = \SI{1/60}{\second}$.
+focal length $f = \num{24}\unit{\milli\meter}$, set at aperture $f/8$ and ET $t = \num{1/60}\unit{\second}$.
 
-The aperture area is \SI{2.25 \pi}{\square\milli\meter} (the diameter of the
+The aperture area is \num{2.25 \pi}\unit{\square\milli\meter} (the diameter of the
 aperture is
-$24/8 = \SI{3}{\milli\meter}$), so that the aperture is \num{0.625e-6} of the
+$24/8 = \num{3}\unit{\milli\meter}$), so that the aperture is \num{0.625e-6} of the
 total area, meaning
 the pixel would receive \num{1.746e12} photons per second or about
 \num{2.909e10} photons
-at ET $\SI{1/60}{\second}$ (assuming no lens absorption).
+at ET $\num{1/60}\unit{\second}$ (assuming no lens absorption).
 \fi
 
 

@@ -39,7 +39,7 @@ same tristimulus color value with respect to the given basis.
 As a simple example, consider the family of box spectra
 \begin{equation*}
     S_i(\lambda) = \begin{cases}
-        i / 200, &\lambda \in [ (500-100/i)\si{\nano\meter}, (500+100/i)\si{\nano\meter}],\\
+        i / 200, &\lambda \in [ (500-100/i)\unit{\nano\meter}, (500+100/i)\unit{\nano\meter}],\\
         0, &\text{otherwise}
     \end{cases}
 \end{equation*}
@@ -49,9 +49,9 @@ for $i \geq 1 $ and the sensitivity function
 \end{equation*}
 There are infinitely many such $S_i$, but for each of them,
 \begin{equation*}
-    \int_{380\si{\nano\meter}}^{780\si{\nano\meter}} S_i(\lambda) \bar x(\lambda)\d\lambda
+    \int_{380\unit{\nano\meter}}^{780\unit{\nano\meter}} S_i(\lambda) \bar x(\lambda)\d\lambda
     = 
-    \int_{(500-100/i)\si{\nano\meter}}^{(500+100/i)\si{\nano\meter}} S(\lambda)\d\lambda
+    \int_{(500-100/i)\unit{\nano\meter}}^{(500+100/i)\unit{\nano\meter}} S(\lambda)\d\lambda
     = \frac{i}{200} \cdot \frac{200}{i} = 1,
 \end{equation*}
 and so these spectra are metamers with respect to $\bar x$.

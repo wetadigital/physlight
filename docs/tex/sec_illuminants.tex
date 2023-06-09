@@ -28,28 +28,28 @@ Black body spectral radiance as per Planck's law~\cite{planck14}:
 \begin{equation}
 B_T(\lambda) = \frac{2 h c^2}{\lambda^5} \frac 1{e^{\frac{hc}{\lambda k
 T}}-1}
-\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\qquad \left[\unit{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
 where relevant constants and variables are:
 
 \begin{center}
 \begin{tabular}{c l l}
-$k$                & Boltzmann constant         & \SI{1.3806488e-23}{\joule\per\kelvin}  \\
-$h$                & Planck constant            & \SI{6.62606957e-34}{\joule\second}  \\
-$c$                & speed of light in vacuum   & \SI{2.99792458e8}{\meter\per\second} \\
-$T$                & temperature in kelvins     & $[\si{\kelvin}]$    \\
-$\lambda$          & wavelength in meters       & $[\si{\meter}]$    \\
-$T_{kK}$           & temperature in kilokelvins & $[\si{\kilo\kelvin}]$ \\
-$\lambda_{\mu m}$  & wavelength in micrometers  & $[\si{\micro\meter}]$ \\
+$k$                & Boltzmann constant         & \num{1.3806488e-23}\unit{\joule\per\kelvin}  \\
+$h$                & Planck constant            & \num{6.62606957e-34}\unit{\joule\second}  \\
+$c$                & speed of light in vacuum   & \num{2.99792458e8}\unit{\meter\per\second} \\
+$T$                & temperature in kelvins     & $[\unit{\kelvin}]$    \\
+$\lambda$          & wavelength in meters       & $[\unit{\meter}]$    \\
+$T_{kK}$           & temperature in kilokelvins & $[\unit{\kilo\kelvin}]$ \\
+$\lambda_{\mu m}$  & wavelength in micrometers  & $[\unit{\micro\meter}]$ \\
 \end{tabular}
 \end{center}
 
-It is possible to get a formulation with every-day ranged constants and values in play by expressing the temperature in kilokelvins $[\si{\kilo\kelvin}]$ and the wavelength in micrometers $[\si{\micro\meter}]$:
+It is possible to get a formulation with every-day ranged constants and values in play by expressing the temperature in kilokelvins $[\unit{\kilo\kelvin}]$ and the wavelength in micrometers $[\unit{\micro\meter}]$:
 
 \begin{equation}
 B_T(\lambda) \approx \frac{119.104}{\lambda_{\mu m}^5} \frac
 1{e^{\frac{14.3878}{\lambda_{\mu m} T_{kK}}}-1}
-\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\qquad \left[\unit{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
 
 \paragraph{Chromaticity}
@@ -108,7 +108,7 @@ this can be approximately computed as
 \pm 0.155\% & T_{kK} \in [3.3, 8.5] \\
 \pm 0.11\%  & T_{kK} \in [9, 25] \\
 \end{array}\right.
-\quad \left[\si{\watt\per\square\meter\per\steradian}\right]
+\quad \left[\unit{\watt\per\square\meter\per\steradian}\right]
 \end{equation}
 
 
@@ -152,7 +152,7 @@ black dashed line for reference}
 The standard illuminant A defined by the \gls{CIE} is intended to
 represent typical, domestic, tungsten-filament lighting.
 Its relative spectral power distribution is that of a black body radiator at a
-temperature of approximately \SI{2855.54}{\kelvin}.
+temperature of approximately \num{2855.54}\unit{\kelvin}.
 Standard illuminant A should be used in all applications of colorimetry
 involving the use of incandescent lighting, unless there are specific reasons
 for
@@ -160,7 +160,7 @@ using a different illuminant. Using our previous expression for black body radia
 \begin{equation}
 S_{A}(\lambda_{\mu m}) = B_{2855.54}(\lambda_{\mu m}) \approx
 \frac{119.104}{\lambda_{\mu m}^5} \frac 1{e^{\frac{5.03855}{\lambda_{\mu m}}}-1}
-\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\qquad \left[\unit{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
 where $\lambda_{\mu m}$ is the wavelength in micrometers.
 
@@ -187,8 +187,8 @@ M_2 &= \frac{0.03 - 31.4424 x_D + 30.0717 y_D}{M} \\
 \end{align*}
 
 Due to changes in constants that have happened since 1931, Standard Illuminant $D_{65}$
-corresponds to a temperature of \SI{6504}{\kelvin} and Standard Illuminant $D_{50}$
-to a temperature of \SI{5003}{\kelvin}.
+corresponds to a temperature of \num{6504}\unit{\kelvin} and Standard Illuminant $D_{50}$
+to a temperature of \num{5003}\unit{\kelvin}.
 
 \paragraph{Chromaticity}
 For D-series standard illuminants, \gls{CIE} xy coordinates are:

@@ -90,8 +90,8 @@ lights and show how to calculate the emission constant from the specifications.
 
 The emission for an area light source is specified by:
 \begin{itemize}
-\item $\Phi_v$ -- luminous power $[\si{\lumen}]$
-\item $A$ -- area $[\si{\square\meter}]$
+\item $\Phi_v$ -- luminous power $[\unit{\lumen}]$
+\item $A$ -- area $[\unit{\square\meter}]$
 \item $\hat{L}(\lambda)$ -- spectral distribution
   \begin{itemize}\small\it
   \item Black body of given temperature $T$: $\hat{L}(\lambda) = B_T(\lambda)$
@@ -123,7 +123,7 @@ formulation for the intrinsic emission function
 \begin{equation}
 \overline{L}^\uparrow_{\lambda}(x, \omega, \lambda) = T(x, \lambda)
 \hat{L}(\lambda) D(\omega)
-\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\qquad \left[\unit{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
 
 The luminous power of the source is obtained integrating over the area of the
@@ -134,7 +134,7 @@ and the wavelength domain
 \Phi_v = k_e K_m \int_\lambda \int_\Omega \int_A
 \overline{L}^\uparrow_{\lambda}(x, \omega, \lambda) \bar y (\lambda) \cos\theta
 \d x \d\omega \d\lambda
-\qquad [\si{\lumen}]
+\qquad [\unit{\lumen}]
 \end{equation}
 In our case $\Phi_v$ is given as a parameter of the light, and $k_e$ can be
 determined by inversion:
@@ -190,7 +190,7 @@ is simply
 \begin{equation}
 L^\uparrow_{\lambda}(x, \omega, \lambda) = k_e T(x, \lambda) \hat{L}(\lambda)
 D(\omega)
-\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\qquad \left[\unit{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
 
 % TODO: add the corresponding expression in space col
@@ -200,7 +200,7 @@ D(\omega)
 The emission for an \gls{IBL} source is specified by (sublists contain possible examples):
 
 \begin{itemize}
-\item $E^+_v$ -- illuminance from top hemisphere $[\si{\lux}]$
+\item $E^+_v$ -- illuminance from top hemisphere $[\unit{\lux}]$
 \item $\hat{L}(\omega,\lambda)$ -- spherical map of an image (spectral and angular distribution)
 \item $T(\lambda)$ -- tint function
   \begin{itemize}\small\it
@@ -233,7 +233,7 @@ E^+_v &= K_m \int_{\Omega^+} \int_\lambda L_{\lambda}^\downarrow(\omega,\lambda)
 \cdot\bar y(\lambda) \cos\theta \d\omega\d\lambda \\
 &= k_e K_m\int_{\Omega^+}\int_{\lambda} T(\lambda) \cdot \hat{L}(\omega,\lambda)
 \cdot\bar y(\lambda) \cos\theta \d\omega\d\lambda
-\qquad [\si{\lux}]
+\qquad [\unit{\lux}]
 \end{align*}
 where $\Omega^+$ indicates integration over the top hemisphere, intuitively
 modeling the idea of a receiver (such as a grey card or a hemispherical light
@@ -288,7 +288,7 @@ is simply
 \begin{equation}
 L^\uparrow_{\lambda}(x, \omega, \lambda) = k_e  T(\lambda)
 \hat{L}(\omega,\lambda)
-\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\qquad \left[\unit{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
 
 % TODO: add the corresponding expression in space col
@@ -298,7 +298,7 @@ L^\uparrow_{\lambda}(x, \omega, \lambda) = k_e  T(\lambda)
 The emission for a Sun light is specified by (sublists contain possible examples):
 
 \begin{itemize}
-\item $E^+_v$ -- illuminance of the sun $[\si{\lux}]$
+\item $E^+_v$ -- illuminance of the sun $[\unit{\lux}]$
 \item $D_{\omega_c}(\omega)$ -- angular dependent function describing the sun with the center at $\omega_c$
 	\begin{itemize} \small\it
 	\item Disk of angular size $\alpha$
@@ -358,7 +358,7 @@ is simply
 \begin{equation}
 L^\uparrow_{\lambda}(x, \omega, \lambda) = k_e  T(\lambda)
 D_{\omega_c}(\omega) \hat{L}(\lambda)
-\qquad \left[\si{\watt\per\square\meter\per\steradian\per\meter}\right]
+\qquad \left[\unit{\watt\per\square\meter\per\steradian\per\meter}\right]
 \end{equation}
 
 % TODO: add the corresponding expression in space col
