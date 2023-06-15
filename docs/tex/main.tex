@@ -1,14 +1,20 @@
 % SPDX-License-Identifier: Apache-2.0
 % Copyright (c) Contributors to the PhysLight Project.
+%
+% !TeX TXS-program:compile = txs:///lualatex/[--shell-escape]
+% !TeX TXS-program:bibliography = txs:///bibtex
+% The line above instructs TeXStudio on how to compile this document correctly
+% you still need TeXLive, Pygments and the fonts installed correctly
+% 
 % Tested with 
 %  - texlive-2019
 %  - pygments-2.3.1
 %
-% These can be installed with
+% On Linux, these can be installed with something like
 % $ sudo apt install texlive-full
 % $ sudo apt install python3-pygments
 %
-% The document comes with makefiles, so you can built using simply
+% The document comes with makefiles, so (on linux/mac) you can build using simply
 % $ make
 %
 % alternatively
@@ -16,6 +22,9 @@
 % $ bibtex main
 % $ lualatex --shell-escape main.tex
 % $ lualatex --shell-escape main.tex
+%
+% Building on Windows should "just work"(TM) from inside TeXStudio because of 
+% the "magic comments" above
 %
 % This document uses these fonts:
 %  - Courier Prime (Google)
@@ -213,13 +222,13 @@
 \include{sec_implementation}
 \include{sec_radiance}
 
-% put this bibliography as a chapter
-\bibliographystyle{plainnat}
-\bibliography{bibliography}
-
 %\printindex
 %\indexprologue{This is a list of names}
 %\printindex[persons]
 \PrintGlossaries
+
+% put this bibliography as a chapter
+\bibliographystyle{plainnat}
+\bibliography{bibliography}
 
 \end{document}

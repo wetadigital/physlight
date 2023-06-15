@@ -229,7 +229,7 @@ texture map scaled by the light area $A$:
 \begin{align*}
 \|T_{rgb}\| = A \overline{T}_{rgb}
 \end{align*}
-where $\overline{T}_{rgb}$ is the average of the the pixel values in the
+where $\overline{T}_{rgb}$ is the average of the pixel values in the
 texture,
 a value that can be precomputed and stored in the header of the texture.
 
@@ -259,7 +259,7 @@ Smits basis $w(λ), c(λ), m(λ), y(λ), r(λ), g(λ), b(λ)$, yielding seven in
 $\phi_w, \phi_c, \phi_m, \phi_y, \phi_r, \phi_g, \phi_b$ corresponding to
 $\phi_w =  \|w\cdot\hat{L}\|_{\bar y}$ and so on.
 
-The the algorithm produces a vector $\bar T \in \R^7$ in which at most three
+The algorithm produces a vector $\bar T \in \R^7$ in which at most three
 components are non-zero as follows: the first entry $T_0$ is the smallest component
 of $\overline{T_{rgb}}$, say that this was the green component. Then the basis
 vector from the secondaries is chosen (cyan, magenta and yellow: $c(\lambda), m(\lambda), y(\lambda)$)
