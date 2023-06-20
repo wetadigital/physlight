@@ -45,5 +45,5 @@ if (ENABLE_PYTHON_SUPPORT)
 endif()
 
 # USD & TBB
-find_package(USD REQUIRED)
+include(${USD_ROOT}/pxrConfig.cmake)
 find_package(TBB REQUIRED)
