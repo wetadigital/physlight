@@ -1,12 +1,22 @@
 # PhysLight
 
-This repository contains example materials for Weta Digital's *PhysLight* system as presented in the Siggraph 2020 Talk *PhysLight: An End-to-End Pipeline for Scene-Referred Lighting*. [Slides can be found here.](https://drive.google.com/file/d/1a2jGciAmfH9yPdJCXNuNNEs_U07znp9C/view?usp=sharing)
+This repository contains a collection of materials describing
+PhysLight. *PhysLight* is a philosophy as much as a method. This means
+that there is not one simple plugin to install to "get" *PhysLight*.
+ 
+## Foundation
+
+The documentation contained in docs forms the background and
+foundational mathematics which are the basis for *PhysLight*.
+
+### Siggraph 2020 Talk
+ 
+A higher level overview of the *PhysLight* system was presented in the
+Siggraph 2020 Talk *PhysLight: An End-to-End Pipeline for
+Scene-Referred Lighting*. [Slides can be found
+here.](https://drive.google.com/file/d/1a2jGciAmfH9yPdJCXNuNNEs_U07znp9C/view?usp=sharing)
 
 ![teaser image](img/teaser_gmp.jpg)
-
-## Foundations
-
-The documentation in docs contains the foundational mathematics
 
 ## USD Schema
 
