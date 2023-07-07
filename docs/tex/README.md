@@ -5,7 +5,13 @@ This document details how to build the *PhysLight* white paper
 ## Super Quick guide
 
 If you have a working setup of LaTeX, and pygments installed,
-you need to add these fonts: Courier Prime, Charmon, Noto Sans, DejaVu Sans Mono.
+you need to add these fonts: 
+ - Courier Prime,
+ - Charmon,
+ - Noto Sans,
+ - DejaVu Sans Mono.
+
+These can all be found at https://fonts.google.com
 
 Then either
  - open `main.tex` in *TeXStudio* and use the `Compile` or `Build and View` commands; OR
