@@ -92,20 +92,28 @@ Alternatively, the document will build just fine with the classic simple LaTeX s
 ```
 but note this will leave all the intermediates (and there are quite a few) in the base document directory.
 
-The TeXStudio method has the convenience of working from within the editor UI, but also leaves intermediates right next to the source files.
+The TeXStudio method has the convenience of working from within the editor UI, but also leaves 
+intermediates right next to the source files. TeX people like this, I do not, YMMV
 
 ### Windows preparation
 
  - install texlive or miktex (pick a "full" installation)
  - install python 3
  - install pygments (`pip install pygments` in a cmd prompt should do it)
+   - it seems that `pygmentize.exe` will install in `~/AppData/Roaming/Python/Python310/Scripts/pygmentize.exe`
+   - in order to make TeXStudio work with that, you need to tune its configuration a bit:
+     - in TeXStudio, Options->Configure TeXStudio->Build
+     - select "Show Advanced Options" in the bottom RHS of the window
+     - the last text entry on the window becomes "Commands ($PATH)": note this is in *addition* to the normal path
+     - add the path to `pygmentize.exe` there, it'll be something like `~/AppData/Roaming/Python/Python310/Scripts` (replace `~` with your user home, say `/Users/johndeer`)
+
  - install the fonts
-  - one slow-but-simple method is right-clicking the font files and choosing `Install`
+   - one slow-but-simple method is right-clicking the font files and choosing `Install`
    - you can also copy them in `%WINDIR%\Fonts` (system-wide install)
    - or `%LOCALAPPDATA%\Microsoft\Windows\Fonts` (per-user install)
 
 ### Windows execution
- Building on Windows should "just work"(TM) from inside TeXStudio because of
+ With all the setup above in place, building on Windows should "just work"(TM) from inside TeXStudio because of
  the "magic comments" in `main.tex`
 
 
