@@ -7,9 +7,9 @@ This document details how to build the *PhysLight* white paper
 If you have a working setup of LaTeX, and pygments installed,
 you need to add these fonts: 
  - Courier Prime,
- - Charmon,
+ - Charmonman,
  - Noto Sans,
- - DejaVu Sans Mono.
+ - Noto Sans Mono.
 
 These can all be found at https://fonts.google.com
 
@@ -33,7 +33,7 @@ This document uses these free fonts:
   - Courier Prime (Google - https://fonts.google.com/)
   - Charmon (Google - https://fonts.google.com/)
   - Noto Sans (Google - https://fonts.google.com/)
-  - DejaVu Sans Mono (Google - https://fonts.google.com/)
+  - Noto Sans Mono (Google - https://fonts.google.com/)
   - TeX Gyre Pagella (TeXLive)
 
 In parentheses you find a source for them
