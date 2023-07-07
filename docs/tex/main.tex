@@ -6,65 +6,8 @@
 % The line above instructs TeXStudio on how to compile this document correctly
 % you still need TeXLive, Pygments and the fonts installed correctly
 % 
-% Tested with 
-%  - texlive-2019
-%  - pygments-2.3.1
-%
-% On Linux, these can be installed with something like
-% $ sudo apt install texlive-full
-% $ sudo apt install python3-pygments
-%
-% The document comes with makefiles, so (on linux/mac) you can build using simply
-% $ make
-%
-% alternatively
-% $ lualatex --shell-escape main.tex
-% $ bibtex main
-% $ lualatex --shell-escape main.tex
-% $ lualatex --shell-escape main.tex
-%
-% Building on Windows should "just work"(TM) from inside TeXStudio because of 
-% the "magic comments" above
-%
-% This document uses these fonts:
-%  - Courier Prime (Google)
-%  - Charmon (Google)
-%  - Noto Sans (Google)
-%  - DejaVu Sans Mono (Google)
-%  - TeX Gyre Pagella (TeXLive)
-% In parentheses you find a source for them
-%
-% Installing fonts in linux:
-%  - download package
-%  - unpack in some directory
-%  - copy into /usr/local/share/fonts/<kind>/<familyname> (needs sudo)
-%  - or alternatively into ~/.local/share/fonts/<kind>/<familyname> (no sudo)
-%  - rebuild font cache (no sudo)
-% example:
-% > sudo mkdir /usr/local/share/fonts/opentype/charmonman/
-% > sudo cp Charmonman-* /usr/local/share/fonts/opentype/charmonman/
-% > fc-cache -f -v
-%
-% You can use the fc-list command to view font names on your system
+% please consult docs/tex/README.md for information on how to build this document
 % 
-%
-% to make pictures (not a very perfect process, tbh)
-% use geogebra to make a diagram
-%  - to Export choose: export to PGF/TikZ
-%    - x units: 1.0, y units: 1.0
-%    - setup x/y min/max to include the picture
-%       (note this draws on the diagram the part that will be exported)
-%    - press Generate PGF/TikZ code
-%    - copy-paste the block \begin{tikzpicture} into the document
-%    - do adjustments of various kinds of label positioning and formatting
-%
-% to install pygments on a mac
-% sudo easy_install Pygments
-%
-% ifplatform and minted need --shell-escape
-% \makeglossaries uses the shell for the glossary stuff
-% \makeindex uses the texindy thing for the index
-% use bibtex for the bibliography
 \documentclass{physlight}
 
 \usepackage{import}
