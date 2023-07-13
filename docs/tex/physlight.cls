@@ -427,7 +427,24 @@
 %\def\nit\candela\per\square\meter
 
 % [pgf] tell PGF about how we want numbers formatted
-\SendSettingsToPgf
+% this is a command from siunitx v2.x, in v3.x the recommendation is
+% to manually keep \sisetup and pgfkeys synced by hand 
+% (I will state here, Mr Wright, that I much dislike your approach, sir)
+\@ifundefined{SendSettingsToPgf}{\relax}{\SendSettingsToPgf}
+% I'm leaving this for another day
+% inspecting this page https://github.com/josephwright/siunitx/commit/d35b06cfe6908caae543a660b06d7a9338bfbd9a
+% it seems that /pgf/number~format needs to be kept in sync in these settings
+% figures 
+%{
+%  fixed , % fixed-width? lining?
+%  fixed~zerofill = true , % leading zeros?
+%}
+% precision = 
+% set~decimal~separator = 
+% set~thousands~separator =
+% min~exponent~for~1000~sep =
+% showpos =   % force showing '+' for positive numbers
+
 
 % [fancyhdr] configure the headers/footers
 \pagestyle{fancy}

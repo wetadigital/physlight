@@ -4,7 +4,7 @@ This document details how to build the *PhysLight* white paper
 
 ## Super Quick guide
 
-If you have a working setup of LaTeX, and pygments installed,
+If you have a (recent, 2023+) working setup of LaTeX, and pygments installed,
 you need to add these fonts: 
  - Courier Prime,
  - Charmonman,
@@ -36,7 +36,7 @@ This document uses these free fonts:
   - Noto Sans Mono (Google - https://fonts.google.com/)
   - TeX Gyre Pagella (TeXLive)
 
-In parentheses you find a source for them
+In parentheses you will find a source for them
 
 ### Before we begin
 
@@ -74,7 +74,7 @@ Example:
  $ fc-cache -f -v
 ```
  You can use the `fc-list` command to view font names on your system.
- Note that font naming is a fairly complicated affair, so it's often quite non obvious what FontConfig (the `fc-xxx` commands) thinks the font name actually is
+ Note that font naming is a fairly complicated affair, so it's often quite non-obvious what FontConfig (the `fc-xxx` commands) thinks the font name actually is.
 
 ### Linux Execution
  The document comes with makefiles, so (on unix-like systems) you can build using simply
@@ -103,8 +103,9 @@ intermediates right next to the source files. TeX people like this, I do not, YM
    - it seems that `pygmentize.exe` will install in `~/AppData/Roaming/Python/Python310/Scripts/pygmentize.exe`
    - in order to make TeXStudio work with that, you need to tune its configuration a bit:
      - in TeXStudio, Options->Configure TeXStudio->Build
-     - select "Show Advanced Options" in the bottom RHS of the window
-     - the last text entry on the window becomes "Commands ($PATH)": note this is in *addition* to the normal path
+     - check the "Show Advanced Options" box at the bottom left of the dialog
+     - checking that, the a new text entry at the bottom of the window is revealed, called 
+       "Commands ($PATH)": note this is in *addition* to the normal path
      - add the path to `pygmentize.exe` there, it'll be something like `~/AppData/Roaming/Python/Python310/Scripts` (replace `~` with your user home, say `/Users/johndeer`)
 
  - install the fonts
@@ -121,11 +122,11 @@ intermediates right next to the source files. TeX people like this, I do not, YM
 ## Illustrations
 
 > These are very old notes on how the basic starting point for some illustrations were
- generated. Be aware that a fair few of the ones we have now have actually been redrawn
+ generated. Be aware that a fair few of the ones we have now were redrawn
  (largely by Johannes Meng, to whom we are quite grateful) in Inkscape and are available as
  Inkscape SVG files in the repo.
 
-To make pictures (not a very perfect process, tbh):
+To make pictures (not a very perfect process, TBH):
 
 use geogebra (https://www.geogebra.org/) to make a diagram
   - once you're ready to export use `Export to PGF/TikZ` and choose these options:
@@ -136,9 +137,9 @@ use geogebra (https://www.geogebra.org/) to make a diagram
     - copy-paste the block `\begin{tikzpicture}` into the document
 
 The export is a *great starting point*, but you will easily notice that in several places it'll
-be less than ideal. So you'll have to do manual adjustments of various kinds
+be less than ideal. So, you'll have to do manual adjustments of various kinds,
 typically on label positioning and formatting. Luckily TikZ source is quite easy to follow,
 but this is admittedly quite hacky.
-However the GeoGebra package was very useful to get certain figures made, so this is where we ended up
+However, the GeoGebra package was very useful to get certain figures made, so this is where we ended up.
 
 
