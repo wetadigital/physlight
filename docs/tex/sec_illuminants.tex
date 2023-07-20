@@ -59,7 +59,7 @@ B_T(\lambda) \approx \frac{119.104}{\lambda_{\mu m}^5} \frac
 \centering
 \begin{minipage}{.4\textwidth}
 \input{figures/chromas.pgf}
-\end{minipage}
+\end{minipage}\hfill
 \begin{minipage}{.4\textwidth}
 \input{figures/chromas_enlarge.pgf}
 \end{minipage}
@@ -83,12 +83,12 @@ coordinates in CIE $xy$ space can be computed following \cite{kang02} as:
 \begin{array}{rcll}
 w & = & 1/T_{kK} \qquad \text{inverse of temperature in kiloKelvin} & \\
 x & = & \begin{cases}
-     - .2991239\,w^3 -  .234358 \,w^2  +  .8776956\,w  + .17991  & T_{kK} \in [1.667, 4] \\
+     - .2991239\,w^3 -  .234358 \,w^2  +  .8776956\,w  + .17991  & T_{kK} \in [\frac{5}{3}, 4] \\
      -3.0258469\,w^3 + 2.1070379\,w^2  +  .2226347\,w  + .240390 & T_{kK} \in [4, 25]
     \end{cases} \\
 y & = & \begin{cases}
-     -1.1063814\,x^3 - 1.34811020\,x^2 + 2.18555832\,x - .20219683 & T_{kK} \in [1.667, 2.222] \\
-     - .9549476\,x^3 - 1.37418593\,x^2 + 2.09137015\,x - .16748867 & T_{kK} \in [2.222, 4] \\
+     -1.1063814\,x^3 - 1.34811020\,x^2 + 2.18555832\,x - .20219683 & T_{kK} \in [\frac{5}{3}, \frac{20}{9}] \\
+     - .9549476\,x^3 - 1.37418593\,x^2 + 2.09137015\,x - .16748867 & T_{kK} \in [\frac{20}{9}, 4] \\
       3.081758 \,x^3 - 5.8733867 \,x^2 + 3.75112997\,x - .37001483 & T_{kK} \in [4, 25]
       \end{cases}
 \end{array}

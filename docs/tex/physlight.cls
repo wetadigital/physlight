@@ -270,8 +270,16 @@
 \RequirePackage{lastpage}
 \RequirePackage{fancyhdr}
 
+% used to silence warnings
+\RequirePackage[immediate]{silence}
+
 % convenient setup for fonts in section headings
+% silence the warnings 
+%  Command \underbar  has changed.
+%  Command \underline  has changed.
+\WarningFilter[sectstywarnings]{latex}{Command} 
 \RequirePackage{sectsty}
+\DeactivateWarningFilters[sectstywarnings]
 
 % handling of SI units
 \RequirePackage{siunitx}
@@ -323,7 +331,7 @@
 % [epigraph] width for epigraphs
 \setlength{\epigraphwidth}{.619\textwidth}
 
-% [secsty] restyle sections with our preferred font
+% [sectsty] restyle sections with our preferred font
 \allsectionsfont{\sf}
 \chapterfont{\sectionsFont}
 \sectionfont{\sectionsFont}
@@ -391,30 +399,13 @@
 
 % [siunitx] add a few units and configure unit formatting
 % first, the unit symbols are set in their own font family
-\ifhaveopentype
-	\sisetup{
-		detect-none = true,
-		detect-display-math = false,
-		detect-family = false,
-		%mode = text,
-		math-rm = \unitFont,
-		text-rm = \unitFont,
-	}
-\else
-	\sisetup{
-		detect-none = true,
-		detect-display-math = false,
-		detect-family = false,
-		%mode = text,
-		math-rm = \mathtt,
-		text-rm = \ttfamily,
-	}
-\fi
 \sisetup{
+	detect-none = true,
+	detect-family = false,
+	%mode = text,
 	exponent-product = \cdot, % 1.3\cdot10^3
 	inter-unit-product = \ensuremath{{}\cdot{}}, % m\cdot s
 	per-mode = symbol-or-fraction, % / in inline mode, \frac in display mode
-	power-font = unit, % maybe this should be 'number'?
 	%number-unit-product = \text{~}, % per Chicago Manual of Style, I don't like it
 	number-unit-product = \ensuremath{\;}, % a little smaller
 }

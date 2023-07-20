@@ -34,7 +34,11 @@ built:
 	mkdir $(OUTDIR)
 
 clean:
-	rm -r ./$(OUTDIR)/
+	-rm -rf ./$(OUTDIR)/
+	-rm -rf ./_minted-main/
+	-rm main.synctex.gz main.pdf main.aux main.log main.out main.toc 
+	-rm main.bbl main.blg main.idx main.lof main.lot 
+	-rm rad.aux sec_*.aux
 
 # this is necessary to build intermediates in the "built/" directory
 # note that naked lualatex would cope with -output-directory just fine,
