@@ -1,4 +1,17 @@
 **/.ipynb_checkpoints
 docs/tex/built
+docs/tex/_minted-main
 docs/tex/main.synctex.gz
 docs/tex/main.pdf
+docs/tex/main.aux
+docs/tex/main.bbl
+docs/tex/main.blg
+docs/tex/main.idx
+docs/tex/main.lof
+docs/tex/main.log
+docs/tex/main.lot
+docs/tex/main.out
+docs/tex/main.toc
+docs/tex/physLight*.pdf
+docs/tex/rad.aux
+docs/tex/sec_*.aux
