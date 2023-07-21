@@ -10,7 +10,6 @@ FILES := main.tex \
     sec_intro.tex \
     sec_lighting.tex \
     sec_radiance.tex \
-    sec_theory.tex \
     sec_illuminants.tex \
     sec_sensors.tex \
     sec_notations.tex \
