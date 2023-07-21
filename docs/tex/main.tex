@@ -41,7 +41,7 @@
 
 % indices
 %  unqualified entries
-\makeindex[intoc,title=Index]
+\makeindex[intoc,columns=3,title=Index]
 %  people
 %\makeindex[name=persons,intoc,title=Index of names]
 
@@ -103,7 +103,7 @@
 
 \newcommand{\todo}[1]{\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=TODO]{#1}\end{tcolorbox}}
 
-\graphicspath{{figures/}}
+\graphicspath{{.}{figures/}}
 
 \begin{document}
 %\setacronymstyle{long-sc-short}
@@ -165,7 +165,7 @@
 \include{sec_implementation}
 \include{sec_radiance}
 
-%\printindex
+\printindex
 %\indexprologue{This is a list of names}
 %\printindex[persons]
 \PrintGlossaries

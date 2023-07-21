@@ -197,7 +197,7 @@
 \PassOptionsToPackage{usenames}{xcolor}
 \PassOptionsToPackage{square,comma,sort&compress}{natbib}
 \PassOptionsToPackage{acronym,xindy,toc}{glossaries}
-\PassOptionsToPackage{xindy}{imakeidx}
+\PassOptionsToPackage{makeindex}{imakeidx}
 \PassOptionsToPackage{colorlinks=true}{hyperref} 
 \ifwithminted
   %\PassOptionsToPackage{outputdir=built}{minted}
@@ -233,15 +233,17 @@
 % used for end-of-chapter bibliographies
 \RequirePackage{multibib}
 
-% glossary and acronyms, has to come before hyperref
+% for \url, has to come after amsmath
+\RequirePackage{hyperref} 
+
+% glossary and acronyms, has to come after hyperref so we get gls and index items hyperlinked
 \RequirePackage{glossaries}
 \RequirePackage{imakeidx}
 % ... up to here for simplicity, but only glossaries needs that, strictly speaking
 
 % \multirow command in tabular environments
 \RequirePackage{multirow} 
-% for \url, has to come after amsmath
-\RequirePackage{hyperref} 
+
 % for XMP data in PDF
 \RequirePackage{hyperxmp} 
 

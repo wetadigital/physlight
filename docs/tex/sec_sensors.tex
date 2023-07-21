@@ -67,16 +67,15 @@ at ET $\num{1/60}\unit{\second}$ (assuming no lens absorption).
 
 \begin{figure}
 {
-\centering
-\input{figures/ciexyz1931.pgf}
+\noindent\resizebox{\linewidth}{!}{\input{figures/ciexyz1931.pgf}}
 \caption{Comparison of color matching functions from Wyman vs. CIE data}
 \label{fig:cmf1931wyman}
 }
 \vskip 1mm
-{\footnotesize\it Data from CIE 1931 is plotted with crosses,
+{\centering\footnotesize\it Data from CIE 1931 is plotted with crosses,
 the functions from  \cite{wyman13} are plotted with solid lines.
 
-The three functions are $\bar x(\lambda)$ in red, $\bar y(\lambda)$ in green,
+\centering The three functions are $\bar x(\lambda)$ in red, $\bar y(\lambda)$ in green,
 $\bar z(\lambda)$ in blue}
 \end{figure}
 
@@ -139,9 +138,9 @@ in~\cite{cie1931}.
 \begin{table}
 {
 \small
-\centering
-\begin{minipage}[t]{.44\textwidth}
-\vspace{0pt}
+\setlength{\tabcolsep}{.35em}
+\begin{minipage}[t]{.48\linewidth}
+\vspace{0pt}\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar x(\lambda)$} &  \multicolumn{2}{c|}{$\bar
 y(\lambda)$} &  \multicolumn{2}{c}{$\bar z(\lambda)$} \\
@@ -199,9 +198,9 @@ y(\lambda)$} &  \multicolumn{2}{c}{$\bar z(\lambda)$} \\
 590 & 1&0263    & 0&757       & 0&0011 \\
 595 & 1&0567    & 0&6949      & 0&001 \\
 \end{tabular}
-\end{minipage}\hskip2mm
-\begin{minipage}[t]{.44\textwidth}
-\vspace{0pt}
+\end{minipage}\hfill%
+\begin{minipage}[t]{.48\linewidth}
+\vspace{0pt}\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar x(\lambda)$} &  \multicolumn{2}{c|}{$\bar
 y(\lambda)$} &  \multicolumn{2}{c}{$\bar z(\lambda)$} \\
@@ -292,10 +291,11 @@ A copy of the manuscript is available at \url{http://colorpipe.mikrosimage.eu/wp
 {
 \small
 {
-\centering
-\input{figures/Red_Mysterium_X.pgf}
 
+\noindent\resizebox{\linewidth}{!}{\input{figures/Red_Mysterium_X.pgf}}\\
+\setlength{\tabcolsep}{.35em}
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
@@ -323,8 +323,9 @@ $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar 
  485 &   0&010 &   0&124 &   0&430 \\
  490 &   0&008 &   0&156 &   0&407 \\
 \end{tabular}
-\end{minipage}\hskip3mm
+\end{minipage}\hfill
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
@@ -352,8 +353,9 @@ $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar 
  600 &   0&927 &   0&134 &   0&021 \\
  605 &   0&947 &   0&104 &   0&019 \\
 \end{tabular}
-\end{minipage}\hskip3mm
+\end{minipage}\hfill
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
@@ -424,10 +426,10 @@ A copy of the manuscript and database of measurements is available at
 {
 \small
 {
-\centering
-\input{figures/Canon_1DMarkIII.pgf}
-
+\noindent\resizebox{\linewidth}{!}{\input{figures/Canon_1DMarkIII.pgf}}\\
+\setlength{\tabcolsep}{.35em}
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
@@ -443,8 +445,9 @@ $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar 
  490 &   0&003 &   0&461 &   0&630 \\
  500 &   0&010 &   0&947 &   0&683 \\
 \end{tabular}
-\end{minipage}\hskip3mm
+\end{minipage}\hfill
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
@@ -460,8 +463,9 @@ $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar 
  600 &   0&538 &   0&168 &   0&002 \\
  610 &   0&494 &   0&083 &   0&001 \\
 \end{tabular}
-\end{minipage}\hskip3mm
+\end{minipage}\hfill
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
@@ -520,10 +524,10 @@ A copy of the manuscript and database of measurements is available at
 {
 \small
 {
-\centering
-\input{figures/Canon_5DMarkII.pgf}
-
+\noindent\resizebox{\linewidth}{!}{\input{figures/Canon_5DMarkII.pgf}}\\
+\setlength{\tabcolsep}{.35em}
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
@@ -539,8 +543,9 @@ $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar 
  490 &   0&012 &   0&638 &   0&593 \\
  500 &   0&018 &   0&692 &   0&397 \\
 \end{tabular}
-\end{minipage}\hskip3mm
+\end{minipage}\hfill
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
@@ -556,8 +561,9 @@ $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar 
  600 &   0&599 &   0&296 &   0&010 \\
  610 &   0&473 &   0&129 &   0&005 \\
 \end{tabular}
-\end{minipage}\hskip3mm
+\end{minipage}\hfill
 \begin{minipage}{.3\textwidth}
+\centering
 \begin{tabular}{c|r@{.}l | r@{.}l | r@{.}l}
 $\lambda$ & \multicolumn{2}{c|}{$\bar r(\lambda)$} &  \multicolumn{2}{c|}{$\bar g(\lambda)$} &  \multicolumn{2}{c}{$\bar b(\lambda)$} \\
 \hline
