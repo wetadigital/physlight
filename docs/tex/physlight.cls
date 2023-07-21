@@ -405,6 +405,8 @@
 	detect-none = true,
 	detect-family = false,
 	%mode = text,
+	input-digits=0123456789\mitpi, % accept \pi as a digit, \mitpi is from unicode-math
+	parse-numbers=false, % solves some problems with fractions, not sure what it breaks though
 	exponent-product = \cdot, % 1.3\cdot10^3
 	inter-unit-product = \ensuremath{{}\cdot{}}, % m\cdot s
 	per-mode = symbol-or-fraction, % / in inline mode, \frac in display mode

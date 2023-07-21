@@ -42,10 +42,18 @@ Commission on Illumination}
 \newacronym{RIB}{rib}{RenderMan Interface Bytestream}
 \newacronym{RSL}{rsl}{RenderMan Shading Language}
 
-\newglossaryentry{radiance}
+\newacronym{LED}{led}{Light emitting diode}
+
+
+
+
+\newglossaryentry{aperture}
 {
-  name=radiance,
-  description={The fundamental elemental quantity for light transport}
+	name=aperture,
+	description={In a camera system, the opening in the lens that admits the light.
+		The aperture is normally measured in \unit{\milli\meter}: this indicates that 
+		the aperture shape is well approximated by a circle, and the amount is this 
+		circle's diameter}
 }
 
 \newglossaryentry{brightness}
@@ -56,3 +64,104 @@ Commission on Illumination}
     observed and it is used in this document in its loose, plain spoken
     English sense. Other terms are used to designate specific properties}
 }
+
+\newglossaryentry{digital scene}
+{
+	name={digital scene},
+	description={In the process of making computer-generated images, a scene is the group of
+		objects to be rendered, including their shapes and material descriptions. 
+		The word comes from the mental model of a real-world photographer that is using a 
+		camera to take a picture of a scene}
+}
+
+\newglossaryentry{filmback}
+{
+	name=filmback,
+	description={The area in a camera that would be covered by photosensitive film
+		onto which an image is to be made. In modern camera the filmback is a photosensitive
+		sensor}
+}
+
+\newglossaryentry{footage}
+{
+	name=footage,
+	description={
+		In cinema photography, a segment of motion picture material. The name derives from
+	    the days of physical film: at 24 frames per second, being the standard frame rate for
+    	35\unit{\milli\meter} physical film, one second of film is exactly 1.5ft.
+    	Today the term is used to indicate motion picture content, be that on physical
+        media or stored in digital files}
+}
+
+\newglossaryentry{illuminant}
+{
+	name=illuminant,
+	see={digital scene},
+	description={
+		A source of light, meant to focus on the part of a light-emitting object that
+	    specifically emits the light, as opposed to other elements of it. All together
+        these constitute a \textsl{light fixture}}
+}
+
+\newglossaryentry{luminous efficacy}
+{
+	name={luminous efficacy},
+	description={The ability of a light source to emit visible light, normally measured in
+		\unit{\lumen\per\watt}}
+}
+
+\newglossaryentry{photometry}
+{
+	name={photometry},
+	see={radiometry},
+	description={The science of measurement of the strength of visible light, 
+		through which are defined units that capture its perceived brightness 
+		to the human eye. In photometry, light has \textsl{luminous power} 
+		measured in \unit{\lumen}}
+}
+
+
+\newglossaryentry{pipeline}
+{
+	name={pipeline},
+	description={The set of processes and software tools used for the production of 
+		digital images, especially in digital movie-making. The word is used to draw
+		attention to the large number of connections that must be put in place to 
+		connect the various major tools in a production workflow, where many kinds
+		of files flow together and get combined to produce the result images}
+}
+
+\newglossaryentry{radiance}
+{
+	name=radiance,
+	description={The fundamental elemental quantity for light transport}
+}
+
+\newglossaryentry{radiometry}
+{
+	name={radiometry},
+	see={photometry},
+	description={The science of measurement of the strength of electromagnetic radiation,
+		measuring its total energy, or in some cases the energy corresponding to a part of
+		its spectrum. In radiometry, visible light has \textsl{radiant power},
+		measured in \unit{\watt}}
+}
+
+\newglossaryentry{sensor}
+{
+	name=sensor,
+	see={filmback},
+	description={
+		In a camera, the device installed at the filmback onto which the image is formed}
+}
+
+\newglossaryentry{tilt-shift lens}
+{
+	name={tilt-shift lens},
+	description={In a camera, a lens built in such a manner that its barrel can be \emph{shifted},
+		that is moved parallel to its axis, and \emph{tilted}, that is moved so make the lens axis 
+		lay at an angle with respect to the filmback. These lenses are sometimes called
+		\emph{perspective-control lenses}}
+}
+
+

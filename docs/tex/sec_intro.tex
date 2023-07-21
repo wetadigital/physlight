@@ -5,7 +5,6 @@
 
 \section{Why physical units?}
 
-
 One of the reasons physically-based image synthesis has become such an
 indispensable ingredient for pushing realism and consistency in very
 complex scenarios is predictability. Material modelling is based on
@@ -17,44 +16,59 @@ compensate for lighting, for example missing indirect illumination.
 
 The physically-based rendering paradigm dictates that materials,
 lighting and camera response are completely independent entities and
-must hence always be controlled with this separation in mind. This
-on one hand makes digital assets more universally usable, and on the
-other hand allows to achieve consistency when integrating digital with
-live action footage.
+must hence always be controlled with this separation in mind. 
+On the one hand this makes digital assets more universally usable, 
+and on the other hand it allows to achieve consistency when integrating 
+digitally produced content with live action \gls{footage}.
 
 Naturally, since a wide range of different effects interplay with each
 other in complex and subtle ways, it is absolutely crucial that all
 components are accurately represented by their digital analogues to be
 able to reproduce real-world footage realistically. Furthermore, it is
-very important that the description of the digital scene is based on
+very important that the description of the \gls{digital scene} is based on
 real-world quantities, which enables easier control and verification.
 
-In this document we focus on the specification of illuminants and
-sensors and advocate using the same conventions and physical units as
-lighters and photographers on set. For example, it is preferable in
+In this document we focus on the specification of \glspl{illuminant} and
+\glspl{sensor} and advocate using the same conventions and physical units as
+lighters and photographers on a motion picture set or a photographic studio. 
+For example, it is preferable in
 terms of predictability to think about brightness in terms of
 photometric units, i.e., units which represent perceived brightness as
-seen by a human observer, rather than radiometric power (wattage)
-which depending on the spectral emission profile can have highly
-varying brightness. We specify a system of units and models, such that
-provided the digital scene is modelled after a real-world counterpart,
+seen by a human observer, rather than radiometric ones (commonly called wattage)
+for two reasons: first off the normally used wattage is a measure of the power 
+absorbed by an illuminant, and this means that depending on what is called its 
+\textsl{\gls{luminous efficacy}}, very different amounts of visible light\footnote{What 
+	used to be the common household lightbulb, containing incandescent tungsten and 
+	rated for 100W would have a luminous efficacy of about 15, 
+	a contemporary \gls{LED} lightbulbg would be 
+	somewhere between 100 and 200, a Xenon arc-lamp somewhere between 30 and 90.} 
+will potentially be actually emitted onto the scene. 
+Secondly, the perceived brightness of a source has a fairly marked dependence on 
+its color, making lights emitting the same amount of radiative power (measured limited
+to the visible spectrum only) appear to have different brightnesses. 
+
+We want instead to specify a system of units and models, in such a manner that
 specifying the same illuminants via physical units and using the same
-camera settings the renderer will replicate the same pixel values as a
-real camera. Naturally, for reproducing color, we will not only need
-to develop an accurate understanding of brightness but also be aware
-of how spectral data flows through the pipeline.
+camera settings a compliant renderer will replicate the same pixel values as 
+would come from a real-world camera, provided the digital scene was modelled 
+after its real-world counterpart. 
+Naturally, for reproducing color, we will not only need
+to develop an accurate understanding of brightness, but also be aware
+of how spectral data flows through the \gls{pipeline}.
 
 
-In short, this document introduces the use of physical units in the
-Weta pipeline for the treatment of lighting and imaging.  The
-objective is to formalize a system of physical absolute units to be used
-when describing lighting, materials and imaging across Weta's
-processes of digital image synthesis. This will allow us to bring them in line
-with real life measurements in order to facilitate integration of
-live action footage and digitally created content. The specification of
-how units from the \gls{si} are injected in the pipeline and the
-mathematics that corresponds to the quantities described.
-
+This document introduces the use of physical units in the
+production pipeline in use at W\=et\=a FX since about 2015 for the 
+treatment of lighting and imaging.  
+The objective is to formalize a system of physical absolute units to be used
+when describing lighting, materials and imaging in the
+process of digital image synthesis. 
+This allows us to bring scene values in line
+with real-life measurements, in order to facilitate integration of
+live action footage and digitally created content. 
+The specification of how units from the \gls{si} are injected in 
+the pipeline and the mathematics that corresponds to the quantities 
+are here described in detail.
 
 This document is divided in parts: \cref{part:models}
 contains an introduction on basic quantities that are relevant in
@@ -73,7 +87,7 @@ as well as a reference implementation (\cref{ch:implementation}).
 various considerations on color in the tristimulus versus spectral setting,
 \cref{ch:implementation} describes an implementation of a color manipulation library
 and \cref{ch:radiance} is an extensive excerpt from Frederic Nicodemus's 
-excellent 1963 paper~\cite{nicodemus63} in which the concept of \textsl{radiance}
+excellent 1963 paper~\cite{nicodemus63} in which the concept of \textsl{\gls{radiance}}
 is introduced: unsurprisingly we found his explanation far clearer than what we 
 had been able to come up with, so we decided to retype his text, and limit ourselves
 to adjust his notation to contemporary conventions.
@@ -372,12 +386,11 @@ with $v$ (for \textit{visual}), radiometric quantities with $e$ (for
 this follows the recommendations in documents such as~\cite{united1967usa}.}
 \end{table}
 
-One of the central points of this document is to put units to the pixel
-values in a raster image. 
+One of the central points of this document is to put units to the pixel values in a raster image. 
 For the purpose of this introductory section, we will focus on the generation of grayscale images, where each pixel records the \textsl{\gls{brightness}} of a scene at its respective location. In particular, and throughout this whole document, we will use the term \textsl{brightness} to indicate a non-specific, informal, plain-English, everyday meaning that a quantity may feel more or less ``dim'' to a human observer. 
 The discussion will then proceed to specify the exact meaning in question more precisely and give it an appropriate name.
 
-As we have just seen, radiometric quantities can be used to measure brightness in terms of \index{radiative energy}\emph{radiative energy}.
+As we have just seen, radiometric quantities can be used to measure brightness in terms of \index{radiant power}\emph{radiant power}.
 However, if our image was generated using values proportional to this quantity,
 we would obtain an image that will likely not correspond well to the subjective sense of brightness in the scene as experienced by a person looking at it. 
 This is because the human visual system is not equally sensitive to all wavelengths
@@ -393,7 +406,7 @@ included in the \gls{si} at the Eleventh Conference on Weights and Measures
 held in 1960.  Many details around various historical and \gls{si} units are
 described in~\cite{Meyer-Arendt:68}.
 
-In the \textsl{radiometric} point of view, the \textsl{radiant power} of a
+From the point of view of \textsl{\gls{radiometry}}, the \textsl{radiant power} of a
 source $S$
 (also called \textsl{total radiant flux}) is measured in
 \textit{watts} $[\unit{\watt}]$ and is the total amount of energy per unit time
@@ -402,7 +415,7 @@ emitted by $S$.
 %having different spectral distributions are likely to appear as having different
 %brightness.
 
-On the other hand, in the \textsl{photometric} point of view, the
+On the other hand, from the point of view of \textsl{\gls{photometry}}, the
 \textsl{luminous power}
 of a source $S$ (called \textsl{luminous flux}) is measured in
 \textit{lumens} $[\unit{\lumen}]$, and is the amount of energy per unit time

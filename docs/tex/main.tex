@@ -30,9 +30,14 @@
 \definecolor{xdxdff}{rgb}{0.49,0.49,1}
 
 % load the glossary into this file
+\MakeGlossaries
 \loadglsentries{glossary}
 
-\MakeGlossaries
+% disable links from the text toward the glossary but leave links from
+% glossary to text
+\glsdisablehyper
+
+
 
 % disable the first-use flag for a few well-known acronyms
 \glsunset{RGB}
@@ -116,25 +121,9 @@
 
 \vfill
 \large
-%\textit{Weta Digital Rendering Department}\\[1mm]
 \textit{Copyright \copyright\ the Contributors of the PhysLight Project}\\[1mm]
 \textit{Full source available at} \url{https://github.com/wetadigital/physlight}\\[1mm]
 
-% \begin{minipage}{0.4\textwidth}
-% \begin{flushleft} \large
-% %\emph{Author:}\\
-% Luca \textsc{Fascione}\\
-% Sehera \textsc{Nawaz}
-%
-% \end{flushleft}
-% \end{minipage}
-% \begin{minipage}{0.4\textwidth}
-% \begin{flushright} \large
-% \textit{Weta Digital Rendering Department}
-% \end{flushright}
-% \end{minipage}
-
-%\vspace{3mm}
 \hrule \vspace{1mm}
 \textsc{\large \physLightVersion}\\[0.5cm]
 

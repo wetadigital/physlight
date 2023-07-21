@@ -3,7 +3,7 @@
 
 \chapter{Sensors}\label{ch:sensors}
 
-\ifomit
+
 \subsection{ISO Sensitivity}
 
 \begin{equation}
@@ -23,7 +23,7 @@ E = \frac{hc}{\lambda} \simeq \frac{1.98645}{\lambda_{\mu m}}\cdot 10^{-19} \;\u
 
 Reference: \link{http://en.wikipedia.org/wiki/Planck_constant}
 
-\subsection{Digital sensors}
+\subsection{Digital sensors}\label{sec:digitalsensors}
 A digital sensor is made of electron wells, the well is able to absorb photons
 and keep a count, with a given efficiency (40-50\% typical), and can count
 absorptions in the mid-10k’s (40k to 80k typical).
@@ -36,7 +36,7 @@ Example:
 An isotropic source radiating \num{1}\unit{\watt} at \num{555}\unit{\nano\meter}
 (which is a monocromatic source of \num{683}\unit{\lumen}) emits \num{2.793e18} photons per second.
 At \num{1}\unit{\meter} distance from a Canon 7D sensor
-(\num{22.3 x 14.9}\unit{\milli\meter}, \num{5184 x 3456}\unit{\pixel}, well size \num{4.3 x 4.3}\unit{\micro\meter}),
+(\numproduct{22.3 x 14.9}\unit{\milli\meter}, \numproduct{5184 x 3456}\unit{\pixel}, well size \numproduct{4.3 x 4.3}\unit{\micro\meter}),
 the well area is \num{18.5}\unit{\square\micro\meter}, whereas the total area the
 source is radiating onto
 is \num{4\pi}\unit{\square\meter} which is \num{1.475e-12} of the total area, meaning
@@ -51,15 +51,13 @@ Let's now say that the same source is imaged onto a single pixel through a lens
 of
 focal length $f = \num{24}\unit{\milli\meter}$, set at aperture $f/8$ and ET $t = \num{1/60}\unit{\second}$.
 
-The aperture area is \num{2.25 \pi}\unit{\square\milli\meter} (the diameter of the
+The \gls{aperture} area is \num{2.25 \pi}\unit{\square\milli\meter} (the diameter of the
 aperture is
 $24/8 = \num{3}\unit{\milli\meter}$), so that the aperture is \num{0.625e-6} of the
 total area, meaning
 the pixel would receive \num{1.746e12} photons per second or about
 \num{2.909e10} photons
 at ET $\num{1/60}\unit{\second}$ (assuming no lens absorption).
-\fi
-
 
 
 
