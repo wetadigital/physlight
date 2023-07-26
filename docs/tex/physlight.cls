@@ -103,6 +103,9 @@
 % ADF Foundry ornaments font, used in Appendix C
 \RequirePackage{adforn}
 
+% Provides \degree for the raised circle symbol
+\RequirePackage{gensymb}
+
 % This is from mathbbm.sty: use \mathbbm to get double-struck numbers.
 % We need to do it this specific way is because of how mathspec handles numbers
 % we can now write a double-struck 1 as \mathbbm{1}
@@ -196,7 +199,8 @@
 % used for font color
 \PassOptionsToPackage{usenames}{xcolor}
 \PassOptionsToPackage{square,comma,sort&compress}{natbib}
-\PassOptionsToPackage{acronym,xindy,toc}{glossaries}
+\PassOptionsToPackage{makeindex,toc}{glossaries}
+\PassOptionsToPackage{undefaction=warn}{glossaries-extra}
 \PassOptionsToPackage{makeindex}{imakeidx}
 \PassOptionsToPackage{colorlinks=true}{hyperref} 
 \ifwithminted
@@ -232,12 +236,15 @@
 \RequirePackage{natbib}
 % used for end-of-chapter bibliographies
 \RequirePackage{multibib}
+% provide citation page numbers in the bibliography
+\RequirePackage{citeref}
 
 % for \url, has to come after amsmath
 \RequirePackage{hyperref} 
 
 % glossary and acronyms, has to come after hyperref so we get gls and index items hyperlinked
 \RequirePackage{glossaries}
+\RequirePackage{glossaries-extra}
 \RequirePackage{imakeidx}
 % ... up to here for simplicity, but only glossaries needs that, strictly speaking
 
@@ -294,6 +301,9 @@
 
 % retouch margins
 \RequirePackage{geometry}
+
+% add \sfrac t typeset slash fractions
+\RequirePackage{xfrac}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Other various setup
@@ -390,7 +400,7 @@
 
 % [glossaries] there seems to be some odd interaction between fancyfonts and setacronym
 \ifdefined\setacronymstyle
-  \setacronymstyle{long-sc-short}
+  \setabbreviationstyle[acronym]{long-short-sc}
 \fi
 % [glossaries] setup acronyms to be displayed in letterspaced small caps
 \renewcommand*{\firstacronymfont}[1]{\textsc{\addfontfeature{LetterSpace=5}#1}}
@@ -418,6 +428,10 @@
 \DeclareSIUnit{\iso}{ISO}
 \DeclareSIUnit{\pixel}{pxl}
 \DeclareSIUnit{\fnumber}{f-number}
+
+\DeclareSIUnit{\foot}{ft}
+\DeclareSIUnit{\inch}{in}
+
 % alternatively we could use cd/m^2
 %\def\nit\candela\per\square\meter
 

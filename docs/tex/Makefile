@@ -54,6 +54,7 @@ $(OUTPUTNAME).pdf: $(FILES) Makefile | $(DIRS)
 	for f in $(OUTPUTNAME) $(BIB_AUX); do \
 	    (cd $(OUTDIR) && BIBINPUTS=..: $(BIBTEX) $$f.aux) \
 	done
+	(cd $(OUTDIR) && makeindex -s $(OUTPUTNAME).ist -o $(OUTPUTNAME).gls $(OUTPUTNAME).glo)
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
 	cp $(OUTDIR)/$(OUTPUTNAME).pdf $(OUTPUTNAME).pdf
@@ -61,8 +62,18 @@ $(OUTPUTNAME).pdf: $(FILES) Makefile | $(DIRS)
 	ln -sf $(OUTDIR)/$(OUTPUTNAME).synctex.gz ./main.synctex.gz
 
 # a "compile once" quick hack for fast iteration, just meant for small changes
-.PHONY: quick
+.PHONY: quick quickglo
+# without glossary rebuild
 quick: $(FILES) Makefile
+	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
+	cp $(OUTDIR)/$(OUTPUTNAME).pdf $(OUTPUTNAME).pdf
+	ln -sf $(OUTPUTNAME).pdf main.pdf
+	ln -sf $(OUTDIR)/$(OUTPUTNAME).synctex.gz ./main.synctex.gz
+
+# with glossary rebuild
+quickglo: $(FILES) Makefile
+	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
+	(cd $(OUTDIR) && makeindex -s $(OUTPUTNAME).ist -o $(OUTPUTNAME).gls $(OUTPUTNAME).glo)
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
 	cp $(OUTDIR)/$(OUTPUTNAME).pdf $(OUTPUTNAME).pdf
 	ln -sf $(OUTPUTNAME).pdf main.pdf

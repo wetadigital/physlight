@@ -14,9 +14,6 @@
 
 \newcites{rad}{References}
 
-\newcommand\MakeGlossaries{\makenoidxglossaries}
-\newcommand\PrintGlossaries{\printnoidxglossaries}
-
 \usetikzlibrary{arrows}
 
 % get ourselves some colors
@@ -30,21 +27,19 @@
 \definecolor{xdxdff}{rgb}{0.49,0.49,1}
 
 % load the glossary into this file
-\MakeGlossaries
+\makeglossaries
 \loadglsentries{glossary}
-
-% disable links from the text toward the glossary but leave links from
-% glossary to text
-\glsdisablehyper
-
-
 
 % disable the first-use flag for a few well-known acronyms
 \glsunset{RGB}
 \glsunset{sRGB}
 \glsunset{XYZ}
 
-% indices
+% manually add entries to the glossaries, 
+% format=glsignore removes the page reference from the page list in the glossary
+\glsadd[format=glsignore]{entrance pupil}
+
+% indices (at this point there is a single unified index with all of glossary, acronyms and index)
 %  unqualified entries
 \makeindex[intoc,columns=3,title=Index]
 %  people
@@ -53,8 +48,14 @@
 % our version number
 \def\physLightVersion{v 1.2 - \today}
 
+%%%%%%
 % set up XMP metadata and colors for links
-\definecolor{hyperref-color}{rgb}{0.1,0.1,0.3}
+% disable links from the text toward the glossary but leave links from
+% glossary to text
+%\glsdisablehyper
+%\definecolor{hyperref-color}{rgb}{0.1,0.1,0.3}
+% used for debugging, makes it easier to see links, admittedly obnoxious
+\definecolor{hyperref-color}{rgb}{.8,0.3,0.1}
 \hypersetup{
 	colorlinks,
 	citecolor=hyperref-color,
@@ -133,7 +134,7 @@
 \tableofcontents
 \listoffigures
 \listoftables
-\include{sec_notations}
+
 
 \part{Models \& Specification}\label{part:models}
 
@@ -154,13 +155,17 @@
 \include{sec_implementation}
 \include{sec_radiance}
 
-\printindex
+\include{sec_notations}
+%\printindex
 %\indexprologue{This is a list of names}
 %\printindex[persons]
-\PrintGlossaries
+\printglossaries
 
-% put this bibliography as a chapter
+% put this bibliography as a chapter and add it to the toc
 \bibliographystyle{plainnat}
+\clearpage
+\phantomsection
+\addcontentsline{toc}{chapter}{\bibname}
 \bibliography{bibliography}
 
 \end{document}

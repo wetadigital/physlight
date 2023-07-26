@@ -6,9 +6,52 @@
 %\newglossaryentry{r0}{name=\glslink{R0}{\ensuremath{R_{0}}},text=F\"{o}rster distance,description={F\"{o}rster distance, where 50\% ...}, sort=R}
 %\newglossaryentry{kdeac}{name=\glslink{R0}{\ensuremath{k_{DEAC}}},text=$k_{DEAC}$, description={is the rate of deactivation from ... and emission)}, sort=k}
 
+\newacronym{ADC}{adc}{Analog to Digital Converter}
+
+\newacronym[seealso=ANSI]{ASA}{asa}{American Standards Association}
+
+\newacronym{ANSI}{ansi}{American National Standards Institute}
+
+\newacronym{CCT}{cct}{Correlated Color Temperature}
+
+\newacronym[description={The traditional system of units in use in Europe for physics
+	and related fields, proposed in 1873 by Maxwell and Thmoson among many others. 
+	It was supplanted by the \glsname{MKS} system in the 1940s which then turned into
+	the \glsname{si} system in the 1960s}, seealso={si,MKS}]{CGS}{cgs}{centimeter-gram-second}
+
+\newacronym{DCC}{dcc}{Digital Content Creation}
+
+\newacronym[description={Commission Internationale de l'\'Eclairage 
+	(International Commission on Illumination) is the international standards body that regulates over quantities related to 
+	illumination}]{CIE}{cie}{International
+	Commission on Illumination}
+
+\newacronym{CRI}{cri}{Color Rendering Index}
+
+\newacronym{CUDA}{cuda}{Compute Unified Device Architecture}
+
+\newacronym{DIN}{din}{Deutsches Institut f\"ur Normung (German Institute for Standardisation)}
+
 \newacronym[longplural=Frames per Second]{FPS}{fps}{Frame per Second}
 
-\newacronym{MKS}{mks}{meter-kilogram-second}
+\newacronym{IBL}{ibl}{Image based lighting}
+
+\newacronym{IES}{ies}{Illuminating Engineering Society of North America}
+
+\newacronym{IESNA}{iesna}{Illuminating Engineering Society of North America}
+
+\newacronym{ISO}{iso}{International Organization for Standardization}
+
+\newacronym{LED}{led}{Light emitting diode}
+
+\newacronym[description={The traditional name for the International System of Units,
+after meter/kilogram/second}, seealso={si,CGS}]{MKS}{mks}{meter-kilogram-second}
+
+\newacronym{RGB}{rgb}{RGB color space of generic primaries}
+
+\newacronym{RIB}{rib}{RenderMan Interface Bytestream}
+
+\newacronym{RSL}{rsl}{RenderMan Shading Language}
 
 \newacronym[description={The \textsl{International System of Units}
 (Syst\`eme International d'Unit\'es) is a coherent system of
@@ -20,66 +63,174 @@ $[\unit{\second}]$ (time), \textsl{meter} $[\unit{\meter}]$ (length),
 \textsl{ampere} $[\unit{\ampere}]$ (electric current)}]{si}{si}{International
 System of Units}
 
-\newacronym[description={Commission Internationale de l'\'Eclairage 
-(International Commission on Illumination) is the international standards body that regulates over quantities related to 
-illumination}]{CIE}{cie}{International
-Commission on Illumination}
+\newacronym[see={spectral distribution}]{SPD}{spd}{Spectral Power Distribution}
+
+\newacronym{sRGB}{srgb}{sRGB color space}
+
+\newacronym{USD}{usd}{Universal Scene Description}
 
 \newacronym{XYZ}{xyz}{CIE XYZ color space}
 
-\newacronym{CRI}{cri}{Color Rendering Index}
-
-\newacronym{CCT}{cct}{Correlated Color Temperature}
-
-\newacronym{sRGB}{srgb}{sRGB color space}
-\newacronym{RGB}{rgb}{RGB color space of generic primaries}
-
-\newacronym{IBL}{ibl}{Image based lighting}
-
-\newacronym{IES}{ies}{Illuminating Engineering Society of North America}
-\newacronym{IESNA}{iesna}{Illuminating Engineering Society of North America}
-
-\newacronym{RIB}{rib}{RenderMan Interface Bytestream}
-\newacronym{RSL}{rsl}{RenderMan Shading Language}
-
-\newacronym{LED}{led}{Light emitting diode}
-
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \newglossaryentry{aperture}
 {
 	name=aperture,
-	description={In a camera system, the opening in the lens that admits the light.
-		The aperture is normally measured in \unit{\milli\meter}: this indicates that 
-		the aperture shape is well approximated by a circle, and the amount is this 
-		circle's diameter}
+	seealso={aperture number},
+	description={In an optical system, an opening (usually mounted inside the 
+		barrel of a camera lens) that admits light. 
+		This is also called \textsl{entrance pupil} or a \textsl{diaphragm}.
+		When the aperture is well approximated by a circle, it is normally measured 
+		in one of two ways: either the diameter is specified directly, 
+		usually in \unit{\milli\meter},
+		or its ratio to the focal length is given, called the \textsl{aperture number}}
+}
+
+\newglossaryentry{aperture number}
+{
+	name={aperture number},
+	seealso={aperture,f-number,T-stop},
+	description={In a camera system, the aperture is usually given as a ratio to the
+		focal length, and marked such as $\sfrac{f}{2.8}$: on a $50\unit{\milli\meter}$ 
+		camera lens, this would mean the diameter of the lens's aperture 
+		is $50 / 2.8 \approx 17.8\unit{\milli\meter}$. 
+		Like other series used in photography, the
+		numbers found on most lenses are taken from this standard series:
+		$\sfrac{f}{1.4}$, $\sfrac{f}{2}$, $\sfrac{f}{2.8}$, $\sfrac{f}{4}$, $\sfrac{f}{5.6}$,
+		$\sfrac{f}{8}$, $\sfrac{f}{11}$, $\sfrac{f}{16}$, $\sfrac{f}{22}$, $\sfrac{f}{32}$,
+		each in an approximate ratio of $\sqrt{2}$ to the next one, corresponding to a doubling/halving of admitted light from the previous one.
+	    The aperture number if also called \textsl{f-number} and indicated with the symbol
+    	$N$, where $N=8$ indicates an $\sfrac{f}{8}$ aperture}
 }
 
 \newglossaryentry{brightness}
 {
   name=brightness,
-  description={The visual perception caused by the luminance emitted or
+  description={The strength of the visual perception caused by the luminance emitted or
     reflected by an object. It is a subjective property of the object being
-    observed and it is used in this document in its loose, plain spoken
-    English sense. Other terms are used to designate specific properties}
+    observed and it is used in this document in its loose, 
+    plain spoken-English sense. 
+    Other terms are used to designate specific properties}
 }
 
-\newglossaryentry{digital scene}
+\newglossaryentry{camera lens}
 {
-	name={digital scene},
-	description={In the process of making computer-generated images, a scene is the group of
-		objects to be rendered, including their shapes and material descriptions. 
-		The word comes from the mental model of a real-world photographer that is using a 
-		camera to take a picture of a scene}
+	name={camera lens},
+	seealso={aperture number},
+	description={An assembly of optical lenses meant for use in conjunction with a 
+		camera body to make images of objects by focusing the light arriving from the scene
+		onto the camera's filmback. 
+		The various optical lenses in a camera lens are called \textsl{elements} and 
+		are held in a \textsl{barrel} or approximately cylindrical shape.
+		Around the barrel are normally \textsl{rings} which the photographer can
+		operate to achieve focus, to choose the aperture number and, in zoom lenses, to
+		control the focal length.
+		Some high quality lenses also include a shutter, suitably places inbetween the
+		elements in the barrel and very near to the aperture. In some cases the shutter 
+		can serve double duty and precisely open just to the desired aperture size}
+}
+
+\newglossaryentry{diffuse}
+{
+	name={diffuse},
+	seealso={material model},
+	description={A material model (or component thereof) where light bounces off a material
+		so that equal luminance is received by all observers in the front half-space of the
+		surface (in the case of \textsl{diffuse reflection}) or the back half-space (in the
+		case of \textsl{diffuse transmission})}
+}
+
+
+\newglossaryentry{entrance pupil}
+{
+	name={entrance pupil},
+	alias={aperture},
+	description=\nopostdesc
+}
+
+\newglossaryentry{exposure meter}
+{
+	name={exposure meter},
+	seealso={illuminance},
+	description={A device used to read out the illuminance at a location. The value is often
+		available both in \unit{\lux} as well as \textsl{foot-candle}, being one \unit{\lumen}
+		per \textsl{square foot}. Being a photographer's tool, an exposure meter normally also
+		has provisions to quickly solve the exposure equation for the current lighting
+		conditions: a dial might be use to choose the film speed }
+}
+
+\newglossaryentry{exposure time}
+{
+	name={exposure time},
+	seealso={shutter},
+	description={The amount of time for which a camera shutter is kept open in order to
+		admit light onto the filmback, this quantity is measured in seconds and uses the
+		symbol $t$. 
+		On photographic cameras, the value is calles \textsl{shutter speed} and is 
+		indicated in fractions of a second, standard timings being
+		taken from the series $1$, $\sfrac12$, $\sfrac14$, $\sfrac18$, 
+		$\sfrac1{15}$, $\sfrac1{30}$, $\sfrac1{60}$, $\sfrac1{125}$, 
+		$\sfrac1{250}$, $\sfrac1{500}$, $\sfrac1{1000}$, $\sfrac1{2000}$.
+		In motion pictures the convention is to speak of \textsl{shutter angle}:
+		in a motion picture film camera the shutter is made of two half circle ``blades'' 
+		each covering 180 degrees and set up to complete one revolution per frame. 
+		During setup these can be set to leave an opening between 0 and the
+		full 180 degrees during which light is admitted onto the film stock.
+		The remaining time, called \textsl{blanking}, is used to advance the film
+		to the position of the following frame. The exposure time resulting from this 
+		approach on a given angle $\alpha$ in degrees is then $\alpha/360/24 \unit{\second}$
+		when the camera is running at $24$ \glsname{FPS}}
+}
+
+\newglossaryentry{exposure value}
+{
+	name={exposure value},
+	seealso={shutter speed,aperture number},
+	description={A number used to combine the shutter speed and aperture number into an
+		exposure setting. 
+		Symbols used are $EV$, $Ev$ and $E_v$, although when used to indicate an exposure 
+		setting it would be most correct to include the film speed associate with the value, 
+		such as $EV_{100}$ for ISO 100 stock.
+		For an exposure time of $t$ and aperture number $N$, the relation is
+		$EV_{100} = \log_2\frac{N^2}{t}$}
+}
+
+\newglossaryentry{f-number}
+{
+	name={f-number},
+	seealso={aperture number,T-stop},
+	description=\nopostdesc
 }
 
 \newglossaryentry{filmback}
 {
 	name=filmback,
-	description={The area in a camera that would be covered by photosensitive film
-		onto which an image is to be made. In modern camera the filmback is a photosensitive
-		sensor}
+	seealso={sensor},
+	description={The area in a camera body onto which an image is to be formed. 
+		In modern cameras the filmback contains a photosensitive digital sensor,
+		whereas in non-digital models, the filmback would be covered by 
+		photosensitive film}
+}
+
+
+\newglossaryentry{film speed}
+{
+	name={film speed},
+	seealso={stop},
+	description={A measure for the sensitivity of photosensitive film stock. 
+		The \glsname{ISO} scale is commonly used, with values in powers of two such 
+		as 100, 200, 400, 800, 1600, 3200, each corresponding to a one stop increment. 
+		The standard had previously been proposed by \glsname{ASA}
+		(now called \glsname{ANSI}) and is often found on film stock as 
+		\textsl{\glsname{ISO}/\glsname{ASA}}. 
+		Also common was the German system standardized by \glsname{DIN}, which instead 
+		used a scaled logarithmic scale where a film speed of \glsname{ISO} 100 was equivalent 
+		to DIN 21\degree. 
+		The sensitivity marking on film stock would often include both values, 
+		such as ``\glsname{ISO}/\glsname{ASA} 100/21\degree''. 
+		For some higher end film stock, intermediate
+		sensitivity rating were also available, usually along this series
+		100/21\degree, 125/22\degree, 160/23\degree, 200/24\degree\ and so on}
 }
 
 \newglossaryentry{footage}
@@ -93,10 +244,39 @@ Commission on Illumination}
         media or stored in digital files}
 }
 
+\newglossaryentry{highlight}
+{
+	name=highligh,
+	description={TODO}
+}
+
+\newglossaryentry{human observer}
+{    
+	name={human observer},
+	description={An observer with a light sensitivity equal to the \textsl{standard human},
+		being some kind of a mythical creature.
+		The \glsname{CIE} has spent considerable effort to characterize the response to light 
+		of the visual system in humans, producing several tabulations each suitable for
+		different uses. 
+		It is very important to remember that human subjects exhibit a very wide range 
+		in how they perceive light, even when the observations are restricted to only 
+		consider subjects not affected by color blindness.
+		Combined with the difficulty of making objective measurements on a wide range 
+		of subjects, the width of this variation is one of the reasons why color science is
+		such a complex subject}
+}
+
+\newglossaryentry{illuminance}
+{
+	name=illuminance,
+	seealso={brightness},
+	description=\nopostdesc
+}
+
 \newglossaryentry{illuminant}
 {
 	name=illuminant,
-	see={digital scene},
+	seealso={virtual scene},
 	description={
 		A source of light, meant to focus on the part of a light-emitting object that
 	    specifically emits the light, as opposed to other elements of it. All together
@@ -106,14 +286,22 @@ Commission on Illumination}
 \newglossaryentry{luminous efficacy}
 {
 	name={luminous efficacy},
-	description={The ability of a light source to emit visible light, normally measured in
-		\unit{\lumen\per\watt}}
+	description={The ratio of light emitted by a source to its absorbed power.
+		More precisely, the ratio of luminous power to radiant power for the source,
+		a quantity measured in \unit{\lumen\per\watt}}
+}
+
+\newglossaryentry{material model}
+{
+	name={material model},
+	seealso={shader},
+	description={TODO}
 }
 
 \newglossaryentry{photometry}
 {
 	name={photometry},
-	see={radiometry},
+	seealso={radiometry},
 	description={The science of measurement of the strength of visible light, 
 		through which are defined units that capture its perceived brightness 
 		to the human eye. In photometry, light has \textsl{luminous power} 
@@ -134,34 +322,182 @@ Commission on Illumination}
 \newglossaryentry{radiance}
 {
 	name=radiance,
-	description={The fundamental elemental quantity for light transport}
+	description={The fundamental elemental quantity for light transport, radiance
+		is the subject of~\cref{ch:radiance}}
+}
+
+\newglossaryentry{radiant power}
+{
+	name={radiant power},
+	seealso={spectral},
+	description={The power $\Phi_e$ emitted by a source as electromagnetic waves,
+		also known as \textsl{radiant flux} and measured in 
+		$\unit{\watt} = \unit{\joule\per\second}$. 
+		Sometimes there is discussion of \textsl{spectral radiant power},
+		which is the radiant power per unit frequency or wavelength.
+		In most cases the radiant power is the integral of spectral radiant power
+		over all wavelengths, but for the purposes of this document it is occasionally 
+		a useful thought excercise to restrict the integration domain to just the
+		visible wavelengths instead}
 }
 
 \newglossaryentry{radiometry}
 {
 	name={radiometry},
-	see={photometry},
+	seealso={photometry},
 	description={The science of measurement of the strength of electromagnetic radiation,
 		measuring its total energy, or in some cases the energy corresponding to a part of
 		its spectrum. In radiometry, visible light has \textsl{radiant power},
 		measured in \unit{\watt}}
 }
 
+\newglossaryentry{scene}
+{
+    name={scene},
+	description={In filmmaking and theater, a scene is a sequence of actions that compose
+		a small narrative unit (in cinema a scene is composed by several 
+		\textsl{shots}). 
+		The word takes of an additional meaning in virtual cinematography, 
+		where a \textsl{scene} is also a set of objects intended to be rendered.
+		These virtual scenes are kept in files edited with 
+		Digital Content Creation software.
+		In rendering, the scene will comprise all the objects to be rendered for one frame,
+		including their material models, the lights and the cameras}
+}
+
 \newglossaryentry{sensor}
 {
 	name=sensor,
-	see={filmback},
+	seealso={filmback},
 	description={
-		In a camera, the device installed at the filmback onto which the image is formed}
+		In a digital camera, the device installed at the filmback onto which the image is 
+		formed. Photons hitting the sensor displace electrons or otherwise build an electric
+		field proportional to the photon count. An \glsname{ADC} then provides a 
+		digital readout of the magnitude of this field}
+}
+
+\newglossaryentry{shader}
+{
+	name={shader},
+	description={A program meant to compute the visual appearance of an object. 
+		This is usually achieved implementing one or more material models in 
+		software which is then fed to a renderer along with geometric descriptions
+		of the object to be represented.
+		Shaders often read data from files called \textsl{textures} to provide 
+		surface detail such as patterns or surface decorations, 
+		and also often use procedural approaches to synthesize other surface
+		details such as rust marks, stains or scuffs.
+		In many cases shaders are written in domain specific languages, such as 
+		\glsname{RSL} or \glsname{CUDA} that facilitate certain aspects of the 
+		implementation or control of specific hardware}
+}
+
+\newglossaryentry{shot}
+{
+	name={shot},
+	seealso={scene},
+	description={In filmmaking, a shot is a series of frames that runs for an uninterrupted
+		period of time, typically a few seconds to a few minutes. Shots are then composed
+		to form scenes through the editing process, using cuts and other kinds of transitions}
+}
+
+\newglossaryentry{shutter}
+{
+	name={shutter},
+	seealso={aperture,camera lens,exposure time,filmback},
+	description={A component in a camera design to open for a brief period of time, called the 
+		\textsl{exposure time}, to permit light to arrive at the filmback. 
+		Most often the shutter is mounted on the camera body between the camera lens 
+		and the filmback, but in large format photography leaf shutters are available as 
+		independent parts of the kit, and are sometimes installed ``sandwiched'' in the
+		middle of a so-called two-part lens, so it sits as close as possible to the
+		aperture}
+}
+
+\newglossaryentry{shutter speed}
+{    
+	name={shutter speed},
+	see={exposure time},
+	description=\nopostdesc
+}
+
+\newglossaryentry{spectral}
+{    
+	name={spectral},
+	description={An adjective to indicate the value in question (usually a radiometric quantity)
+		is to be intended as per unit wavelength. For example, \textsl{spectral radiant power}
+		$\Phi_\lambda = \partial\Phi_e / \partial\lambda$ is the partial derivative of 
+		radiant power with respect to the wavelength. This is measured in 
+		\unit{\watt\per\meter} or sometimes \unit{\watt\per\nano\meter}.
+		It is also common (but not used in this document), to use the partial derivative
+		with respect to frequency, for which a $\nu$ subscript is used, as in $\Phi_\nu$}
+}
+
+\newglossaryentry{spectral distribution}
+{
+	name={spectral distribution},
+	see={spectral},
+	description={A function (\textsl{distribution}) relating the spectral density of a 
+		quantity to a given wavelength. For example, the spectral power distribution \glsname{SPD} is the partial derivative of radiant power with respect to
+		wavelength}
+}
+
+\newglossaryentry{stop}
+{
+	name={stop},
+	seealso={film speed,exposure time,aperture},
+	description={In photography, stops are changes to the exposure settings that
+		double or halve the amount of light admitted during one exposure. 
+		They are so called because they correspond to the action of going to the 
+		next detent position on the shutter timing gear on the camera or on the 
+		aperture ring on the lens barrel, which respectively doubles the 
+		exposure time or the aperture area.
+		For consistency, film stock is usally rated also in stops, 
+		resulting in the base ratings as described in \gls{film speed}. 
+		Stops tend to be subdivided in thirds, which correspond
+		to an increment of 1 unit on the \glsname{DIN} sensisitivity scale}
+}
+
+\newglossaryentry{T-stop}
+{
+	name={T-stop},
+	seealso={f-number,aperture number,camera lens},
+	description={A \textsl{transmission stop} is a way to mark aperture numbers on a camera lens
+		where the physical size of the aperture is calibrated at manufacturing time 
+		to compensate for the light lost through the various elements of the lens, 
+		so to admit as much light as it would be admitted if these elements had $100\%$
+		transmittance.
+		Camera lenses intended for cinema use are normally calibrated with T-stops, 
+		because this enables producing footage of identical brightness independent of
+		which one camera lens is used from the cinematographer's lens kit selected for the show}
 }
 
 \newglossaryentry{tilt-shift lens}
 {
 	name={tilt-shift lens},
-	description={In a camera, a lens built in such a manner that its barrel can be \emph{shifted},
-		that is moved parallel to its axis, and \emph{tilted}, that is moved so make the lens axis 
-		lay at an angle with respect to the filmback. These lenses are sometimes called
+	description={A camera lens built in such a manner that its barrel can be \emph{shifted},
+		(moved parallel to its axis), and \emph{tilted} (moved so make the lens axis 
+		lay at some angle with respect to the filmback). These camera lenses are sometimes called
 		\emph{perspective-control lenses}}
 }
 
+\newglossaryentry{virtual}
+{    
+	name={virtual},
+	description={We use the word \textsl{virtual} to indicate a digital counterpart to some
+		real-world process, object or set of objects}
+}
 
+\newglossaryentry{virtual scene}
+{
+	name={virtual scene},
+	alias={scene},
+	description=\nopostdesc
+}
+
+\newglossaryentry{wattage}
+{    
+	name={wattage},
+	alias={radiant power},
+	description=\nopostdesc
+}
