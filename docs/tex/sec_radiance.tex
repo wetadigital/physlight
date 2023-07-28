@@ -1,3 +1,5 @@
+% tell biblatex that the references here should be local to only this chapter
+\begin{refsection}
 \chapter{Radiance}
 \label{ch:radiance}
 
@@ -106,28 +108,28 @@ original---\textit{Ed.}]}
 lists the radiometric quantities, symbols, and units used in this paper.
 
 Sometimes radiance is defined as applying only to sources of radiation
-(see \citerad{kelton1963infrared}\footnote{[Cited in the original as ``Report of
+(see \cite{kelton1963infrared}\footnote{[Cited in the original as ``Report of
 WGIRB (Working Group on Infrared Backgrounds)---Infrared Target and Background
 Radiometric Measurements---Concepts, Units, and Techniques'', Report 2389-64-T,
 NAVEXOS P-2406 (IRIA, Institute of Science and Technology, University of
 Michigan, Ann Arbor, Michigan, January 1962), pp. 3-4 Contract No. Nonr-1224(12)
----\textit{Ed.}]}, \citerad{bell59}\footnote{Essentially the same
+---\textit{Ed.}]}, \cite{bell59}\footnote{Essentially the same
 material also appears as “Report of the Working Group on Infrared Backgrounds;
 Part II: Concepts and Units for the Presentation of Infrared Background
 information,” Report No. 2389-3-5 (Engineering Research Institute, University of
 Michigan, Ann Arbor, Michigan, November 1956), Contract No. Nonr-1224 (12)}
-and~\citerad{jenkins50}). Frequently it is applied also to images of a source,
+and~\cite{jenkins50}). Frequently it is applied also to images of a source,
 and it is shown that, in the absence of attenuation, the radiance (or luminance)
 of an image is equal to that of the source in the direction of any ray reaching
-it from the source (see~\citerad{jenkins50}).
+it from the source (see~\cite{jenkins50}).
 
 The usefulness of defining radiance more broadly as a field quantity which can
 be evaluated at any point along a ray is also pointed out, particularly with
 reference to diffuse sources such as a volume of emitting gas
-(see~\citerad{kelton1963infrared}).
+(see~\cite{kelton1963infrared}).
 It is established that radiance has the same value everywhere and in all
 directions, within an isotropic region in thermal equilibrium
-(see~\citerad[p.~183--196]{planck57} and~\citerad{richtmyer47}).
+(see~\cite[p.~183--196]{planck57} and~\cite{richtmyer47}).
 However, I have not found anywhere a completely general treatment of invariant
 property of radiance, defined as a field quantity, although such a treatment can
 greatly simplify the understanding of many radiometric situations, as well as
@@ -191,7 +193,7 @@ traveling along rays which are perfectly parallel\footnote{\label{note:nicodemus
 The assumptions involved here are discussed with greater rigor by Planck. It can
 be shown that his analysis does not conflict with the results presented here,
 although there are apparent differences due to the very different terminology
-and symbols used. See~\citerad[pp.~173--177]{planck57}}.
+and symbols used. See~\cite[pp.~173--177]{planck57}}.
 
 \begin{figure}
 \begin{center}
@@ -430,8 +432,8 @@ Also,
 Thus, \emph{the quantity $L / n^2$ in the direction of a ray is invariant along
 that ray}, even as it passes through a smooth boundary surface between media of
 different refractive indices, if there are no losses by reflection, absorption,
-or scattering (see~\citerad{martin60}\footnote{\label{note:nicodemus8}Martin's proof is given
-only for the luminance $L_v$ of an image\citerad[pp.
+or scattering (see~\cite{martin60}\footnote{\label{note:nicodemus8}Martin's proof is given
+only for the luminance $L_v$ of an image\cite[pp.
 266--268]{martin60}, but with
 only slight modification it, too, is easily generalized to apply to any
 point along a ray.}). It is also apparent from \cref{eqn:nicodemus17}
@@ -829,12 +831,12 @@ L_e A \Omega^\perp
 \qquad \left[\unit{\watt}\right].
 \end{equation}
 The expression $\Omega^\perp = \int \int \cos\theta \d \omega$ has been called the
-``weighted solid angle'' or ``projected solid angle''(see~\citerad{jones60}).
+``weighted solid angle'' or ``projected solid angle''(see~\cite{jones60}).
 The area-solid-angle-product, ``optical invariant''
-(see~\citerad{jones62a}\footnote{Although not flagged out, the concept of
+(see~\cite{jones62a}\footnote{Although not flagged out, the concept of
 invariance of the $A\Omega$ product is also used by R. Clark Jones in two other
-papers: \citerad{jones53,jones62b}}), ``throughput''\cref{note:nicodemus7} or
-``\'etendue'' (see~\citerad{connes58}\footnote{I am indebted to Dr. R. Clark
+papers: \cite{jones53,jones62b}}), ``throughput''\cref{note:nicodemus7} or
+``\'etendue'' (see~\cite{connes58}\footnote{I am indebted to Dr. R. Clark
 Jones for calling my attention to this reference}) can be given for the
 unvignetted beam through a plane surface or aperture of area $A$ as
 \begin{equation}
@@ -867,8 +869,13 @@ the development of this treatment of the subject would have been impossible
 without such help and encouragement.
 
 % put this bibliography as a section, numbered
-\let\originalbibsection\bibsection
-\renewcommand{\bibsection}{\section{\refname}}
-\bibliographystylerad{plainnat}
-\bibliographyrad{bibliography_radiance}
-\let\bibsection\originalbibsection
+%\let\originalbibsection\bibsection
+%\renewcommand{\bibsection}{\section{\refname}}
+%\bibliographystylerad{plainnat}
+%\bibliographyrad{bibliography_radiance}
+%\let\bibsection\originalbibsection
+\defbibheading{bibliography}[\bibname]{\section{#1}}
+\printbibliography
+% reset to chapter
+\defbibheading{bibliography}[\bibname]{\chapter{#1}}
+\end{refsection}

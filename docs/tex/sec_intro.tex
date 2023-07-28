@@ -32,8 +32,8 @@ In this document we focus on the specification of \gls{virtual} \glspl{illuminan
 \glspl{sensor} and make the case for using the same conventions and physical units as
 used by lighters and photographers on a motion picture set or in a photographic studio. 
 For example, it is preferable in terms of predictability to think about brightness of a 
-light source in terms of \gls{photometric} units, i.e., units which represent brightness as
-perceived by a \gls{human observer}, rather than \gls{radiometric} ones 
+light source in terms of \glsdisp{photometry}{photometric} units, i.e., units which represent brightness as
+perceived by a \gls{human observer}, rather than \glsdisp{radiometry}{radiometric} ones 
 (commonly called \gls{wattage}) for two reasons: 
 firstly there is convention: the normally used wattage reported on a light fixture or bulb 
 is a measure of the power absorbed by the object, not the power of the radiation it emits in the visible range\footnote{This is effectively the concept of  
@@ -41,7 +41,7 @@ is a measure of the power absorbed by the object, not the power of the radiation
 	to the luminous power emitted. 
 	What used to be the common household lightbulb, containing incandescent tungsten and 
 	rated for 100W, had a luminous efficacy of roughly $15\unit{\lumen\per\watt}$, 
-	a contemporary \gls{LED} lightbulb would be somewhere between 
+	a contemporary \glsname{LED} lightbulb would be somewhere between 
 	$100\unit{\lumen\per\watt}$ and $200\unit{\lumen\per\watt}$, 
 	a Xenon arc-lamp somewhere between $30\unit{\lumen\per\watt}$ and
 	$90\unit{\lumen\per\watt}$.} onto the \gls{scene}. 
@@ -70,7 +70,11 @@ The specification of how units from the \gls{si} are injected in
 the pipeline and the mathematics that corresponds to the quantities 
 involved are here described in detail.
 The resulting system has been in use in the
-production pipeline at W\=et\=a FX since about 2015.  
+production pipeline at W\=et\=a FX since about 2015.
+Because of the origin of this system in the motion picture industry,
+several terms of the trade have made it into this document. 
+We hope our glossary in \cref{sec:main} might help clarify 
+potential issues arising from our use of movie-making jargon.
 
 This document is divided in parts: \cref{part:models}
 contains an introduction on basic quantities that are relevant in
@@ -97,23 +101,24 @@ we have changed the equations to use contemporary conventions for quantity names
 
 \section{Pipeline integration}
 
-As a digital movie making pipeline is comprised of many parts, from content creation, to
+As a virtual movie making pipeline is comprised of many parts, from content creation, to
 scene assembly and asset management, there is a need to
 be certain that all interpretations of values match across the various components.
 
 Components that will likely need adaptation or revision are:
 
 \begin{itemize}
-\item Host applications (such as Maya, Motion Builder, Katana)
-\item Scene translation bridges
+\item Host applications / \gls{DCC} tools (such as Maya, Motion Builder, Katana, Houdini)
+\item Scene translation bridges and scene representation formats, such as \gls{USD}
 \item Light management systems
 \item Shader libraries
 \item Renderers
 \end{itemize}
 this is a fairly direct consequence of common custom so far. Until this point, it has been
-fairly common to use physical units in simulation systems, but not for lighting descriptions.
+fairly common to use physical units in physics simulation systems, 
+but not for lighting descriptions.
 Much like cameras have their focal length specified in millimeters in the user interface,
-similar adaptations will be needed for various other quantities, such as film back, light 
+similar adaptations will be needed for various other quantities, such as filmback, light 
 sensitivity and so on. Similarly, as the renderers will be adapted to receive data
 referred to physical units, the bridges would need to make sure they are capable of transporting
 and translating such data appropriately, and various shading libraries might need various levels
@@ -132,14 +137,33 @@ For example, in \gls{RIB} this might look like this:
 Option "units" "float length" [0.01]    # scene unit is 1 cm
                "float time"   [0.04166] # 24 fps
 \end{ribcode}
-where \Verb/units:length/ is the size of a scene unit in meters,
-and \Verb/units:time/ is the size of a time unit in seconds.
+where \Verb/units:length/ is the size of $1$ scene unit in meters,
+and \Verb/units:time/ is the size of $1$ time unit in seconds.
 
 \section{Quantities in light transport}
 
-A common way of reasoning about image generation is built on the notion of a
-light ray, which is the fundamental element of geometrical optics. Light rays
-are straight line segments through space along which light travels in the scene.
+The prevalent way of reasoning about image synthesis through rendering is 
+built on the notion of the \textsl{light ray}, which is the fundamental element 
+of geometrical optics. 
+Light rays are the path segments\footnote{
+	In the vast majority of renderers in use today, rays are implemented as 
+	straight line segments, which enormously simplifies the implementation of the
+	code that finds their endpoints. This ignores two effects: the first is that 
+	gravity bends light rays: this won't be an important effect for scenes with 
+	extents up to maybe hundreds of thousands of kilometers, likely more depending
+	on the accuracy needed. Famously, the movie~\cref{interstellar2014} instead did 
+	need to capture this effect accurately, and a specialized rendering system was 
+	developed for the show. The task was complex enough that the Nobel laureate
+	Kip Thorne was included as part of the team developing this technology. 
+	The second is that variations in the index of refraction of the medium that
+	the light is traversing can also bend the light paths. This is a 
+	substantially more common effect, for example it's the origin of the 
+	\textsl{mirage} phenomenon. While there are several research projects that
+	have built renderers able to capture this effect, the computational costs
+	associated with this capability are high enough to make it impractical for
+	more everyday use
+} through space that light follows when traveling across the \gls{virtual scene}. 
+
 Thinking about photons, light rays represent paths along which photons flow,
 each of them carrying a quantity of energy dependent on its wavelength $\lambda$
 and equal to $E = hc/\lambda$ (where $h$ is Planck's constant and $c$ the speed
@@ -152,27 +176,25 @@ into components so that we can understand what quantity flows through a ``ray of
 light''.
 For this reason, we start from the amount of power emitted by our source $S$:
 the \textsl{emissive radiant power}.
-It can be seen as the energy flux through a sphere fully enclosing $S$.
+This can be seen as the energy flowing through a sphere fully enclosing $S$.
 More precisely, we define the \textsl{emissive radiant flux} $\Phi_e$ of a
 source $S$ through a given surface $A$ as the amount of energy from $S$ that
 crosses $A$ per unit time. This flux will be called \textsl{total} when the surface
 $A$ fully encloses the source $S$. Total flux will be called \textsl{power} in
-this
-document, radiant flux is measured in watts $[\unit{\watt}]$.
+this document, and is measured in watts $[\unit{\watt}]$.
 
 It is natural to think of radiant power as originating from a region $\delta S$ on our source:
-for instance a source could emit different energy over its surface. This leads to an
-intuitive notion of radiant power from a point $x$ on the surface of the source
-$M_e(x)$, which
-we would like defined in such a way that power originated from our source $S$
-can be computed
-directly by integration over its surface:
+for instance a source like a stained glass window would emit different amounts of energy 
+across its surface, as a consequence of the different absorptions of the different pieces of
+colored glass that it's made of. 
+This leads to an intuitive notion of radiant power from a specific point $x$ on the surface 
+of the source $M_e(x)$, and we would like this to be defined so that total power 
+from our source $S$ would be computed directly by integration over all of its surface:
 \begin{displaymath}
 \Phi_e = \int_{S} M_e(x) \d x \qquad [\unit{\watt}]
 \end{displaymath}
-this quantity $M_e$ is called \textsl{radiosity} and represent the power density
-of our
-source with respect to its surface area, formally
+this quantity $M_e$ is called \textsl{radiosity} and represents the area density
+of radiant power coming from our source, formally
 \begin{displaymath}
 M_e = \frac{\d\Phi_e}{\d S} \qquad \left[\unit{\watt\per\square\meter}\right]
 \end{displaymath}
@@ -424,7 +446,7 @@ of a source $S$ (called \textsl{luminous flux}) is measured in
 \textit{lumens} $[\unit{\lumen}]$, and is the amount of energy per unit time
 weighted by the \textsl{photopic luminous efficiency function} $\bar y(\lambda)$. 
 This function was designed to model the response of the human visual system as a function of wavelength $\lambda$\footnote{
-	The photopic luminosity function $\bar y(\lambda)$ is the result of a series of experiments and tabulations first published by the \gls{CIE} in 1924 (the function was called $V(\lambda)$ at the time) and then included in the color matching functions for the \emph{standard 2 degree colorimetric observer}~\citep{cie1931}.}.
+	The photopic luminosity function $\bar y(\lambda)$ is the result of a series of experiments and tabulations first published by the \gls{CIE} in 1924 (the function was called $V(\lambda)$ at the time) and then included in the color matching functions for the \emph{standard 2 degree colorimetric observer}~\parencite{smithgould1931}.}.
 
 This means that two different light sources emitting the same luminous
 power will appear as having about the same brightness even when having
@@ -469,7 +491,7 @@ The radiant intensity of $1/683\unit{\watt\per\steradian}$ was chosen to make th
 Note that the above definition is an updated version of the original definition, which had been
 valid since 1933 and was based on the emission of a blackbody radiator
 at the freezing point of platinum, about \num{2042}\unit{\kelvin}. This 
-historical definition is sometimes also found in literature~\citep{Meyer-Arendt:68}.
+historical definition is sometimes also found in literature~\parencite{Meyer-Arendt:68}.
 
 Using Eqn.~\eqref{eqn:rad_to_photo} and the Dirac delta distribution $\delta$, the
 above definition can be written as
@@ -479,7 +501,7 @@ above definition can be written as
     = K_m \cdot \frac{\bar y(555.016\unit{\nano\meter})}{683}\unit{\watt\per\steradian},
 \end{displaymath}
 from which it follows that $K_m \approx 683.002 \;\unit{\lumen\per\watt}$. In 
-practice, however, it is safe to use the value of $683\;\unit{\lumen\per\watt}$~\citep{cie1996,wyszecki2000}.
+practice, however, it is safe to use the value of $683\;\unit{\lumen\per\watt}$~\parencite{cie1996,wyszecki2000}.
 
 \Cref{tab:radiophoto} lists important radiometric quantities and their photometric equivalents.
 

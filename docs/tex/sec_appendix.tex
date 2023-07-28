@@ -61,9 +61,9 @@ lifting procedures: out of the infinitely many spectra that, in general,
 correspond to any given tristimulus value, one needs to be selected.
 
 One possible selection criterion is spectrum smoothness, because naturally occurring
-reflectance spectra are generally smooth functions of wavelength~\citep{maloney86}. 
+reflectance spectra are generally smooth functions of wavelength~\parencite{maloney86}. 
 The widely
-used technique by~\citet{smits99} therefore attempts to find spectra that
+used technique by~\textcite{smits99} therefore attempts to find spectra that
 maximize a specific smoothness criterion in an expensive precomputation.
 The precomputation is run for seven colors: the sRGB primaries 
 Red$(\lambda)$, Green$(\lambda)$, and Blue$(\lambda)$, 
@@ -91,13 +91,13 @@ which corresponds to the input color since \cref{eqn:color_matching} is linear.
 
 This technique is bound to the sRGB color space, and the sparse sampling with only
 seven precomputed spectra can lead to poor results if a wider-gamut color space is
-used, instead~\citep{meng2015}: saturated primary colors correspond to narrow
+used, instead~\parencite{meng2015}: saturated primary colors correspond to narrow
 band spectra, which in turn produce mixtures of narrow band spectra in Smits' lifting
 procedure. This can limit the maximum attainable reflectance if per-wavelength energy conservation
-is required~\citep{schroedinger19}, and can be detrimental in rendering systems based
+is required~\parencite{schroedinger19}, and can be detrimental in rendering systems based
 on random or quasi-random Monte Carlo integration.
 
-\citet{meng2015} generalize the method using a much denser sampling of the xy chromaticity
+\textcite{meng2015} generalize the method using a much denser sampling of the xy chromaticity
 space, decoupling the spectral lifting method from the input color space.
 
 Other authors have argued that a simple smoothness criterion can be problematic
@@ -106,7 +106,7 @@ General smoothness simply ensures that the spectrum
 will be reasonably well-behaved under reflection as even narrow band incident lighting is
 reflected by a wide band reflectance spectrum. However, in the presence of multiple
 reflections, intricate color shifts may occur in natural materials.
-\citet{otsu2017} therefore attempt to extract, for any given input color, a metameric spectrum 
+\textcite{otsu2017} therefore attempt to extract, for any given input color, a metameric spectrum 
 a principle component analysis on measured spectral reflectance data.
 
 This approach might benefit from domain-specific measured data sets: For example, there might

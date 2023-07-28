@@ -1,6 +1,12 @@
 % SPDX-License-Identifier: Apache-2.0
 % Copyright (c) Contributors to the PhysLight Project.
 
+
+% meant for biblatex/biber
+% TODO
+% use the date field with an ISO formatted date, e.g. date = {2010} or urldate = {2010-08-11}
+% make more use of @string
+
 @string{josa={Journal of the Optical Society of America}}
 
 
@@ -15,42 +21,27 @@
       doi = {10.1119/1.1969512}
 }
 
-@techreport{siunits06,
-  author        = "{BIPM}",
-  address       = {Paris},
-  collaboration = {Organisation Intergouvernementale de la Convention du M\`etre},
-  edition       = {8th},
-  //onlineversion = {http://www.bipm.org/en/si/si_brochure/general.html},
-  institution     = {Bureau International des Poids et Mesures},
-  title         = {The {I}nternational {S}ystem of {U}nits (\gls{si})},
-  year          = {2006}
+@techreport{bipm06,
+         type = {Standard},
+         year = {2006},
+        title = {The {I}nternational {S}ystem of {U}nits (\glsname{si})},
+      edition = {8th},
+      address = {Paris},
+  institution = {Bureau International des Poids et Mesures},
+       author = "{BIPM}",
+collaboration = {Organisation Intergouvernementale de la Convention du M\`etre},
+          url = {http://www.bipm.org/en/si/si_brochure/general.html},
 }
 
-@article{cie1931,
-  author={T. Smith and J. Guild},
-  title={The \gls{CIE} colorimetric standards and their use},
-  journal={Transactions of the Optical Society},
-  volume={33},
-  number={3},
-  pages={73},
-  year={1931},
-  abstract={The new international standards, which define a standard observer,
-three standard illuminants, standard conditions of illuminating and viewing
-opaque specimens, a standard for evaluating the brightness factor of opaque
-specimens, and a standard trichromatic system for the expression of colour
-measurements, are stated and their origin explained. In addition to the
-numerical tables which are appended to the resolutions setting up these
-standards, there are given a table specifying the trichromatic coordinates for
-the standard observer of all spectral colours at wave-length intervals of 1 mμ,
-tables to facilitate the calculation of the standard coordinates and the
-brightness factor of a material illuminated by any one of the three standard
-illuminants from spectrophotometric measurements on the material, and a table
-giving the coordinates of some stimuli of special importance on the N.P.L.
-system, the standard system, and another system which occurs in the resolutions.
-Some new colorimetric terms
-are proposed, partly to avoid misinterpretation and partly to meet new needs.
-The theory of colour transformations, and points which arise in the application
-of the system and in the calibration of instruments, are discussed.}
+@techreport{iso80000,
+	type = {Standard},
+	key = {ISO 80000:2019(E)},
+	month = aug,
+	year = {2019},
+	title = {Quantities and units -- {P}art 7: Light and radiation},
+	address = {Geneva, CH},
+	institution = {International Organization for Standardization},
+	url = {https://www.iso.org/obp/ui/\#iso:std:iso:80000:-7:ed-2:v1:en}
 }
 
 @techreport{stdilluminants,
@@ -61,25 +52,21 @@ of the system and in the calibration of instruments, are discussed.}
 }
 
 @techreport{ciecolorimetry,
+  type   = {CIE technical report},
+  year   = {2004},
   title  = {Colorimetry: technical report},
   author = {CIE},
   isbn   = {9783901906336},
-  series = {CIE technical report},
-  year   = {2004},
-  publisher = {Commission Internationale de l'{\'E}clairage, CIE Central
-Bureau},
-  institution = {Commission Internationale de l'{\'E}clairage, CIE Central
-Bureau}
+  institution = {Commission Internationale de l'{\'E}clairage, CIE Central Bureau}
 }
 
 @book{cie1996,
+  type   = {CIE publications},
+  year   = {1996},
   title  = {The Basis of Physical Photometry},
   author = {CIE},
   isbn   = {9789290340188},
-  series = {CIE publications},
-  year   = {1996},
-  publisher = {Commission Internationale de l'{\'E}clairage, CIE Central
-Bureau}
+  publisher = {Commission Internationale de l'{\'E}clairage, CIE Central Bureau}
 }
 
 @book{wyszecki2000,
@@ -99,6 +86,33 @@ Bureau}
   series = {USA Standard},
   year   = {1967},
   publisher = {United States of America Standards Institute}
+}
+
+@article{smithgould1931,
+	author={T. Smith and J. Guild},
+	title={The \glsname{CIE} colorimetric standards and their use},
+	journal={Transactions of the Optical Society},
+	volume={33},
+	number={3},
+	pages={73},
+	year={1931},
+	abstract={The new international standards, which define a standard observer,
+	three standard illuminants, standard conditions of illuminating and viewing
+	opaque specimens, a standard for evaluating the brightness factor of opaque
+	specimens, and a standard trichromatic system for the expression of colour
+	measurements, are stated and their origin explained. In addition to the
+	numerical tables which are appended to the resolutions setting up these
+	standards, there are given a table specifying the trichromatic coordinates for
+	the standard observer of all spectral colours at wave-length intervals of 1 mμ,
+	tables to facilitate the calculation of the standard coordinates and the
+	brightness factor of a material illuminated by any one of the three standard
+	illuminants from spectrophotometric measurements on the material, and a table
+	giving the coordinates of some stimuli of special importance on the N.P.L.
+	system, the standard system, and another system which occurs in the resolutions.
+	Some new colorimetric terms
+	are proposed, partly to avoid misinterpretation and partly to meet new needs.
+	The theory of colour transformations, and points which arise in the application
+	of the system and in the calibration of instruments, are discussed.}
 }
 
 @article{Meyer-Arendt:68,
@@ -268,4 +282,12 @@ radiosity, ray-tracing},
     volume=367,
     Number=15,
     Pages={603--622}
+}
+
+@movie{interstellar2014,
+	title =   {Interstellar},
+	producer= {Thomas, Emma and Nolan, Christopher and Obst, Lynda},
+	director = {Nolan, Christopher},
+	year = {2014},
+	publisher = {Paramount Pictures and Warner Bros. Pictures}
 }

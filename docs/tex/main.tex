@@ -2,7 +2,7 @@
 % Copyright (c) Contributors to the PhysLight Project.
 %
 % !TeX TXS-program:compile = txs:///lualatex/[--shell-escape]
-% !TeX TXS-program:bibliography = txs:///bibtex
+% !TeX TXS-program:bibliography = txs:///biber
 % The line above instructs TeXStudio on how to compile this document correctly
 % you still need TeXLive, Pygments and the fonts installed correctly
 % 
@@ -12,7 +12,11 @@
 
 \usepackage{import}
 
-\newcites{rad}{References}
+% load bibliographies
+\defbibheading{rad}{References}
+
+\addbibresource{bibliography.bib}
+\addbibresource[label=rad]{bibliography_radiance.bib}
 
 \usetikzlibrary{arrows}
 
@@ -29,6 +33,10 @@
 % load the glossary into this file
 \makeglossaries
 \loadglsentries{glossary}
+
+% make the glossary available as \cref{sec:main}
+% this needs numberedsection=autolabel passed to the package
+\renewcommand*{\glsautoprefix}{sec:}
 
 % disable the first-use flag for a few well-known acronyms
 \glsunset{RGB}
@@ -112,7 +120,11 @@
 \graphicspath{{.}{figures/}}
 
 \begin{document}
-%\setacronymstyle{long-sc-short}
+
+% to test bibliography, an explicit list can be generated with
+% > grep @ bibliography.bib | tr '{,' '  ' | awk -e '{ print "\\nocite{" $2 "}"; }'
+\nocite{*}
+
 \begin{titlepage}
 \begin{center}
 
@@ -162,10 +174,9 @@
 \printglossaries
 
 % put this bibliography as a chapter and add it to the toc
-\bibliographystyle{plainnat}
 \clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{\bibname}
-\bibliography{bibliography}
+\printbibliography
 
 \end{document}

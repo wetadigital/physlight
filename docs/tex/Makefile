@@ -25,7 +25,7 @@ TEXOPTS := --shell-escape --file-line-error --synctex=1
 DIRS := built
 
 LATEX := lualatex
-BIBTEX := bibtex
+BIBTEX := biber
 
 all: $(OUTPUTNAME).pdf
 
@@ -52,7 +52,7 @@ clean:
 $(OUTPUTNAME).pdf: $(FILES) Makefile | $(DIRS)
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
 	for f in $(OUTPUTNAME) $(BIB_AUX); do \
-	    (cd $(OUTDIR) && BIBINPUTS=..: $(BIBTEX) $$f.aux) \
+	    (cd $(OUTDIR) && BIBINPUTS=..: $(BIBTEX) $$f.bcf) \
 	done
 	(cd $(OUTDIR) && makeindex -s $(OUTPUTNAME).ist -o $(OUTPUTNAME).gls $(OUTPUTNAME).glo)
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))

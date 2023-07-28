@@ -124,6 +124,8 @@
 \swapepsilontrue
 
 \ifhaveopentype
+	% enable finer glossing on the layout
+	\RequirePackage{microtype}
 	% TeX Gyre Pagella is the main document font
 	\setmainfont{TeX Gyre Pagella}
 	\setmathfont{TeX Gyre Pagella Math} 
@@ -198,8 +200,9 @@
 
 % used for font color
 \PassOptionsToPackage{usenames}{xcolor}
-\PassOptionsToPackage{square,comma,sort&compress}{natbib}
-\PassOptionsToPackage{makeindex,toc}{glossaries}
+\PassOptionsToPackage{style=authoryear,backend=biber,hyperref=true,backref=true}{biblatex}
+%\PassOptionsToPackage{square,comma,sort&compress}{natbib}
+\PassOptionsToPackage{makeindex,toc,numberedsection=autolabel}{glossaries}
 \PassOptionsToPackage{undefaction=warn}{glossaries-extra}
 \PassOptionsToPackage{makeindex}{imakeidx}
 \PassOptionsToPackage{colorlinks=true}{hyperref} 
@@ -232,12 +235,12 @@
 \RequirePackage{chngcntr}
 \RequirePackage{etoolbox}
 
-% well, natbib :-)
-\RequirePackage{natbib}
+% set up bibliography
+\RequirePackage{biblatex}
 % used for end-of-chapter bibliographies
-\RequirePackage{multibib}
+%\RequirePackage{multibib}
 % provide citation page numbers in the bibliography
-\RequirePackage{citeref}
+%\RequirePackage{citeref}
 
 % for \url, has to come after amsmath
 \RequirePackage{hyperref} 
@@ -398,13 +401,15 @@
 		texcl=true}
 \fi
 
+% [glossaries-extra] setup acronyms to be displayed in letterspaced small caps
+\newcommand{\wideletterspacedsc}[1]{\textls[75]{\textsc{#1}}}
+\renewcommand*{\glsfirstabbrvdefaultfont}[1]{\wideletterspacedsc{#1}}
+\renewcommand*{\glsabbrvdefaultfont}[1]{\wideletterspacedsc{#1}}
+
 % [glossaries] there seems to be some odd interaction between fancyfonts and setacronym
-\ifdefined\setacronymstyle
-  \setabbreviationstyle[acronym]{long-short-sc}
+\ifdefined\setabbreviationstyle
+  \setabbreviationstyle[acronym]{long-short}
 \fi
-% [glossaries] setup acronyms to be displayed in letterspaced small caps
-\renewcommand*{\firstacronymfont}[1]{\textsc{\addfontfeature{LetterSpace=5}#1}}
-\renewcommand*{\acronymfont}[1]{\textsc{\addfontfeature{LetterSpace=5}#1}}
 
 % [caption] setup styling for our captions
 \captionsetup{font=small,labelfont=bf,textfont=it}
