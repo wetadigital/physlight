@@ -1,6 +1,6 @@
 % A simple class inheriting from "report" that configures it with our stile
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesClass{physlight}[2022/04/29 Class for the physlight document]
+\ProvidesClass{physlight}[2023/07/23 Class for the physlight document]
 
 % used to set up a few symbols the way I want them to look like
 \newif\ifkeepphi
@@ -200,8 +200,18 @@
 
 % used for font color
 \PassOptionsToPackage{usenames}{xcolor}
-\PassOptionsToPackage{style=authoryear,backend=biber,hyperref=true,backref=true}{biblatex}
-%\PassOptionsToPackage{square,comma,sort&compress}{natbib}
+% isbn=false suppress isbn from the .bib file. url=false, doi=false and eprint=false for the corresponding
+% dashed=false: if dashed = true repeated authors are replaced with an m-dash
+\PassOptionsToPackage{
+	style=physlight,
+	labeldate=year,
+	maxcitenames=2,  % max two authors in citations, then use et al.
+	maxalphanames=2, % max two authors in bibliography labels well
+	minalphanames=1,
+	sorting=nyt,
+	backend=biber,
+	hyperref=true,
+	backref=true}{biblatex}
 \PassOptionsToPackage{makeindex,toc,numberedsection=autolabel}{glossaries}
 \PassOptionsToPackage{undefaction=warn}{glossaries-extra}
 \PassOptionsToPackage{makeindex}{imakeidx}
@@ -235,12 +245,8 @@
 \RequirePackage{chngcntr}
 \RequirePackage{etoolbox}
 
-% set up bibliography
+% set up bibliography with biblatex
 \RequirePackage{biblatex}
-% used for end-of-chapter bibliographies
-%\RequirePackage{multibib}
-% provide citation page numbers in the bibliography
-%\RequirePackage{citeref}
 
 % for \url, has to come after amsmath
 \RequirePackage{hyperref} 
@@ -307,6 +313,9 @@
 
 % add \sfrac t typeset slash fractions
 \RequirePackage{xfrac}
+
+% create files from inside the document
+\RequirePackage{filecontents}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Other various setup
@@ -410,6 +419,9 @@
 \ifdefined\setabbreviationstyle
   \setabbreviationstyle[acronym]{long-short}
 \fi
+
+% [biblatex] adjust spacing inbetween items in the bibliography
+\setlength{\bibitemsep}{\itemsep}
 
 % [caption] setup styling for our captions
 \captionsetup{font=small,labelfont=bf,textfont=it}

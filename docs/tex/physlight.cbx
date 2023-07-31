@@ -1,0 +1,8 @@
+\ProvidesFile{physlight.dbx}[2023/07/23 v1.0 biblatex citation style for physlight]
+% add support for the @movie bib entry and supply an author-year citation style otherwise
+
+\RequireCitationStyle{authoryear}
+
+% our "normal" cite is [<author>, <year>], except for movies
+% where it's <title> (<year>)
+%\DeclareCiteCommand{\cite}[\mkbibparens]{}{}{}{}

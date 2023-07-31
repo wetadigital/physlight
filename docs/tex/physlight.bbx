@@ -1,0 +1,40 @@
+\ProvidesFile{physlight.dbx}[2023/07/23 v1.0 biblatex bibliography style for physlight]
+% add support for the @movie bib entry and supply an author-year style otherwise
+
+\RequireBibliographyStyle{alphabetic}
+
+\DeclareDelimFormat{nameyeardelim}{\addcomma\space}
+
+% make the bibliography show the label as presentes in the text
+\DeclareFieldFormat{bbx@introcite}{\mkbibbrackets{#1}}
+
+% longer authors lists use "et al."
+\renewcommand*{\labelalphaothers}{\addspace et al{.}}
+
+% prepare a label as we like it and set the bib item below it
+% strwidth only prints the first N letters of each name
+\DeclareLabelalphaTemplate{
+  \labelelement{
+    \field[strwidth=20,strside=left,ifnames=3-, namessep={\space}]{labelname}
+    \field[strwidth=20,strside=left,ifnames=2, namessep={\space and\space}]{labelname}
+    \field[strwidth=20,strside=left]{labelname}
+  }
+  \labelelement{\literal{,~}}
+  \labelelement{
+    \field[strwidth=4,strside=right]{year}
+  }
+}
+
+\DeclareBibliographyDriver{movie}{%
+\usebibmacro{begentry}%
+\printfield{title}%
+\newunit\newblock
+\printnames{director}\printtext{\space(dir)}% dir could be a localized string via an .lbx file
+\newunit\newblock
+\printnames{producer}\printtext{\space(prod)}% prod could be a localized string via an .lbx file
+\newunit\newblock
+\printlist{studio}%
+\newunit
+\printdate%
+\usebibmacro{finentry}}
+

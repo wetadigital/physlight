@@ -1,0 +1,22 @@
+\ProvidesFile{physlight.dbx}[2023/07/23 v1.0 biblatex data model]
+% add support for the @movie bib entry
+
+\blx@inputonce{standard.dbx}{Data model for the movie biblio entry}{}{}{}{}
+
+\DeclareDatamodelEntrytypes{movie}
+\DeclareDatamodelFields[type=list,datatype=name]{
+	director,
+	producer,
+}
+\DeclareDatamodelFields[type=list,datatype=literal]{	
+	studio,
+}
+\DeclareDatamodelEntryfields[movie]{
+	title,
+	producer,
+	director,
+	year,
+	month,
+	day,
+	studio
+}

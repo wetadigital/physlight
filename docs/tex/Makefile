@@ -15,7 +15,10 @@ FILES := main.tex \
     sec_notations.tex \
     bibliography.bib \
     bibliography_radiance.bib \
-    physlight.cls
+    physlight.cls \
+    physlight.dbx \
+    physlight.cbx \
+    physlight.bbx
 
 MAIN := main
 BIB_AUX := $(shell grep newcites $(MAIN).tex | tr '{}' '  ' | awk '{print $$2}')
