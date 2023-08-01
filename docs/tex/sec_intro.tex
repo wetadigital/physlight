@@ -413,7 +413,7 @@ either by differentiation along $\lambda$ or by substitution from above
 
 \section{Measuring light and brightness}
 
-\begin{table}
+\begin{sidewaystable}
 %\small
 \fontsize{9}{10.8}\selectfont
 {
@@ -422,41 +422,43 @@ either by differentiation along $\lambda$ or by substitution from above
 \renewcommand{\arraystretch}{1.1}% only valid inside for this table due to scoping
 % reduce spacing between columns
 \renewcommand{\tabcolsep}{.125em}
-\begin{tabular}{l c c c |@{$\;$} l c c c}
-\multicolumn{4}{c|@{$\;$}}{Radiometric spectral} & \multicolumn{4}{c}{Photometric} \\
-  name	             & \multicolumn{2}{c}{unit} & symbol
-& name               & \multicolumn{2}{c}{unit} & symbol \\ \hline
+\begin{tabular}{r c l l |@{$\;$} r c l l |@{$\;$} r c l l}
+\multicolumn{4}{c|@{$\;$}}{Radiometric} & \multicolumn{4}{c|@{$\;$}}{Radiometric spectral} & \multicolumn{4}{c}{Photometric} \\
+  name	             & symbol & \multicolumn{2}{c|@{$\;$}}{unit} 
+& name	             & symbol & \multicolumn{2}{c|@{$\;$}}{unit}  
+& name               & symbol & \multicolumn{2}{c}{unit} \\ \hline
 %
-  Radiance           &                  &
-\unit{\watt\per\square\meter\per\steradian\per\meter} & $L_{\lambda}$
-& Luminance          & \textsl{nit}     & $\unit{\nit} =
-\unit{\lumen\per\square\meter\per\steradian}$          & $L_v$ \\
+  Radiant energy          & $Q_{e}$         & $\unit{\joule} = \unit{\watt\second}$                     & \textsl{joule}  
+& Spectral Radiant energy & $Q_{e,\lambda}$ & $\unit{\joule\per\meter} = \unit{\watt\second\per\meter}$ & \textsl{joule}  
+& Luminous energy         & $Q_v$           & $\unit{\talbot} = \unit{\lumen\second}$                   & \textsl{talbot} \\
 %
-  Irradiance         &                  & \unit{\watt\per\square\meter\per\meter}               & $E_{\lambda}$
-& Illuminance        & \textsl{lux}     & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & $E_v$  \\
+  Radiant power          & $\Phi_{e}$          & \unit{\watt}                                          & \textsl{watt}  
+& Spectral Radiant power & $\Phi_{e,\lambda}$  & \unit{\watt\per\meter}                                & \textsl{watt}  
+& Luminous power         & $\Phi_v$            & \unit{\lumen}                                         & \textsl{lumen} \\
 %
-  Radiosity          &        & \unit{\watt\per\square\meter\per\meter}
-   & $J_{\lambda}$
-& Luminosity         & \textsl{lux}     & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & $J_v$ \\
+  Radiant exitance          & $M_{e}$         & \unit{\watt\per\square\meter}                           &              
+& Spectral Radiant exitance & $M_{e,\lambda}$ & \unit{\watt\per\square\meter\per\meter}                 &              
+& Luminous emittance        & $M_v$           & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & \textsl{lux} \\
 %
-  Radiant emittance  &                  & \unit{\watt\per\square\meter\per\meter}
-             & $M_{\lambda}$
-& Luminous emittance & \textsl{lux}     & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & $M_v$ \\
+  Radiosity          & $J_{e}$         & \unit{\watt\per\square\meter}                                &              
+& Spectral Radiosity & $J_{e,\lambda}$ & \unit{\watt\per\square\meter\per\meter}                      &              
+& Luminosity         & $J_v$           & $\unit{\lux} = \unit{\lumen\per\square\meter}$               & \textsl{lux} \\
 %
-  Radiant intensity  &                  & \unit{\watt\per\steradian\per\meter}
-             & $I_{\lambda}$
-& Luminous intensity & \textsl{candela} & $\unit{\candela} = \unit{\lumen\per\steradian}$         & $I_v$ \\
+  Irradiance          & $E_{e}$         & \unit{\watt\per\square\meter}                           &                  
+& Spectral Irradiance & $E_{e,\lambda}$ & \unit{\watt\per\square\meter\per\meter}                 &                  
+& Illuminance         & $E_v$           & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & \textsl{lux}     \\
 %
-  Radiant power      & \textsl{watt}    & \unit{\watt\per\meter}                                & $\Phi_{\lambda}$
-& Luminous power     & \textsl{lumen}   & \unit{\lumen}                                         & $\Phi_v$ \\
+  Radiant intensity           & $I_{e}$         & \unit{\watt\per\steradian}                            &                  
+& Spectral Radiant intensity  & $I_{e,\lambda}$ & \unit{\watt\per\steradian\per\meter}                  &                  
+& Luminous intensity          & $I_v$           & $\unit{\candela} = \unit{\lumen\per\steradian}$       & \textsl{candela} \\
 %
-  Radiant energy     & \textsl{joule}   & $\unit{\joule\per\meter} =
-\unit{\watt\second\per\meter}$ & $Q_{\lambda}$
-& Luminous energy    & \textsl{talbot}  & $\unit{\talbot} = \unit{\lumen\second}$
-               & $Q_v$
-\end{tabular}\\[2mm]
-\begin{tabular}{l c c}
+  Radiance           & $L_{e}$         & \unit{\watt\per\square\meter\per\steradian}                  &                  
+& Spectral Radiance  & $L_{e,\lambda}$ & \unit{\watt\per\square\meter\per\steradian\per\meter}        &                  
+& Luminance          & $L_v$           & $\unit{\nit} = \unit{\lumen\per\square\meter\per\steradian}$ & \textsl{nit}     \\
+\end{tabular}\\[4mm]
+\begin{tabular}{l @{$\;$} c @{$\;$} c}
 Throughput (\'etendue) & \unit{\square\meter\steradian} & $G$ \\
+Absorptance            & & $\alpha$ \\
 Reflectance            & & $\rho$ \\
 Transmittance          & & $\tau$ \\
 \end{tabular}
@@ -469,9 +471,10 @@ Transmittance          & & $\tau$ \\
 unit for magnetic flux \textit{tesla}.
 We also use the convention of subscripting photometric quantities
 with $v$ (for \textit{visual}), radiometric quantities with $e$ (for
-\textit{energetic}) and spectral radiometric quantities with $\lambda$;
-this follows the recommendations in documents such as~\cite{united1967usa}.}
-\end{table}
+\textit{energetic}) and spectral radiometric quantities with $e,\lambda$;
+this follows the recommendations in~\cite{iso:80000-7:2019,cie:s017.2020,iec:60050-845:2020}.}
+\end{sidewaystable}
+
 
 One of the central points of this document is to put units to the pixel values in a raster image. 
 For the scope of this introductory section, we will ignore the chromatic issue, and focus on 
@@ -510,7 +513,7 @@ The two approaches have historically used a great many units, a few of which wer
 included in the \gls{si} at the Eleventh Conference on Weights and Measures
 held in 1960.  Many details around various historical and \gls{si} units are
 described in~\cite{Meyer-Arendt:68}. As discussed before, we follow here the harmonized
-vocabulary resulting from \cite{iso:80000-7:2019,cie:s017.2020,iec:60050-845:2020}.
+vocabulary resulting from~\cite{iso:80000-7:2019,cie:s017.2020,iec:60050-845:2020}.
 
 From the point of view of \textsl{\gls{radiometry}}, we saw how the \textsl{radiant power} 
 of a source $S$ is measured in \textit{watts} $[\unit{\watt}]$ and is the total amount 

@@ -317,6 +317,9 @@
 % create files from inside the document
 \RequirePackage{filecontents}
 
+% support for \begin{sidewaystable}
+\RequirePackage{rotating}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Other various setup
 
