@@ -62,10 +62,10 @@
     \put(0,0){\includegraphics[width=\unitlength,page=3]{flux_etc.pdf}}%
     \put(0.17586346,0.5191766){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246502\unitlength}\centering $\Phi_e$ \end{minipage}}}%
     \put(0.56406482,0.51878376){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35299257\unitlength}\centering $I_e(\omega)$ \end{minipage}}}%
-    \put(0.08059979,0.23379243){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35299257\unitlength}\centering $M_e(x)$ \end{minipage}}}%
-    \put(0.56406482,0.23379243){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35299257\unitlength}\centering $L_e(x,\omega)$ \end{minipage}}}%
-    \put(0.17586346,0.34170944){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246502\unitlength}\centering $S$ \end{minipage}}}%
-    \put(0.65932848,0.34170944){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246502\unitlength}\centering $S$ \end{minipage}}}%
+    \put(0.08059979,0.23379243){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35299257\unitlength}\centering $E_e(x)$ \end{minipage}}}%
+    \put(0.56406482,0.23379243){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35299257\unitlength}\centering $L^\downarrow_e(x,\omega)$ \end{minipage}}}%
+    \put(0.17586346,0.34170944){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246502\unitlength}\centering $R$ \end{minipage}}}%
+    \put(0.65932848,0.34170944){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246502\unitlength}\centering $R$ \end{minipage}}}%
     \put(0.17586346,0.03588392){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246502\unitlength}\centering $x$ \end{minipage}}}%
     \put(0.65932848,0.03588392){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246502\unitlength}\centering $x$ \end{minipage}}}%
   \end{picture}%

@@ -79,13 +79,16 @@ System of Units}
 {
 	name=aperture,
 	seealso={aperture number},
-	description={In an optical system, an opening (usually mounted inside the 
-		barrel of a camera lens) that admits light. 
-		This is also called \textsl{entrance pupil} or a \textsl{diaphragm}.
+	description={
+		An opening through which light can pass. 
+		In an optical system such as a camera lens this is also called 
+		\textsl{entrance pupil} or \textsl{diaphragm} and is normally
+		mounted inside the barrel of the lens to admit light through it. 
 		When the aperture is well approximated by a circle, it is normally measured 
 		in one of two ways: either the diameter is specified directly, 
-		usually in \unit{\milli\meter},
-		or its ratio to the focal length is given, called the \textsl{aperture number}}
+		usually in $[\unit{\milli\meter}]$, or when discussing camera lenses, the ratio 
+		of the aperture's diameter to the focal length is given, 
+		and is called the \textsl{aperture number}}
 }
 
 \newglossaryentry{aperture number}
@@ -103,6 +106,12 @@ System of Units}
 		each in an approximate ratio of $\sqrt{2}$ to the next one, corresponding to a doubling/halving of admitted light from the previous one.
 	    The aperture number if also called \textsl{f-number} and indicated with the symbol
     	$N$, where $N=8$ indicates an $\sfrac{f}{8}$ aperture}
+}
+
+\newglossaryentry{black body}
+{
+	name={black body},
+	description=\nopostdesc
 }
 
 \newglossaryentry{brightness}
@@ -132,6 +141,15 @@ System of Units}
 		can serve double duty and precisely open just to the desired aperture size}
 }
 
+\newglossaryentry{color}
+{
+	name={color},
+	description={The visual perception based on the distribution of photon wavelengths arriving
+		at an observer's eye. Care should be taken to keep in mind that color is a property of
+		light, as opposed to materials. All materials do is reflect, transmit or absorb light
+		thereby \emph{altering} its color}
+}
+
 \newglossaryentry{diffuse}
 {
 	name={diffuse},
@@ -142,12 +160,24 @@ System of Units}
 		case of \textsl{diffuse transmission})}
 }
 
+\newglossaryentry{emission}
+{
+	name={emission},
+	description={TODO}
+}
 
 \newglossaryentry{entrance pupil}
 {
 	name={entrance pupil},
-	alias={aperture},
+	see={aperture},
 	description=\nopostdesc
+}
+
+\newglossaryentry{exitant}
+{
+	name={exitant},
+	description={In radiometry and photometry, and adjective used to characterize the direction of
+		flow as leaving the object}
 }
 
 \newglossaryentry{exposure meter}
@@ -285,6 +315,13 @@ System of Units}
         these constitute a \textsl{light fixture}}
 }
 
+\newglossaryentry{incident}
+{
+	name={incident},
+	description={In radiometry and photometry, and adjective used to characterize the direction of
+		flow as arriving at an object}
+}
+
 \newglossaryentry{luminous efficacy}
 {
 	name={luminous efficacy},
@@ -343,6 +380,12 @@ System of Units}
 		visible wavelengths instead}
 }
 
+\newglossaryentry{radiant intensity}
+{
+	name={radiant intensity},
+	description=\nopostdesc
+}
+
 \newglossaryentry{radiometry}
 {
 	name={radiometry},
@@ -353,10 +396,22 @@ System of Units}
 		measured in \unit{\watt}}
 }
 
+\newglossaryentry{radiosity}
+{
+	name={radiosity},
+	description=\nopostdesc
+}
+
+\newglossaryentry{reflection}
+{
+	name={reflection},
+	description={TODO}
+}
+
 \newglossaryentry{rendering}
 {
 	name={rendering},
-	seealso={shading,virtual scene},
+	seealso={shader,material model,virtual scene},
 	description={The process of generating an image from a virtual model, or virtual scene by 
 		means of a computer program. This is also called \textsl{image synthesis}. A scene file
 		will normally contain information about the shapes of the objects to be rendered, their
@@ -494,6 +549,12 @@ System of Units}
 		\emph{perspective-control lenses}}
 }
 
+\newglossaryentry{transmission}
+{
+	name={transmission},
+	description={TODO}
+}
+
 \newglossaryentry{virtual}
 {    
 	name={virtual},
@@ -513,4 +574,10 @@ System of Units}
 	name={wattage},
 	alias={radiant power},
 	description=\nopostdesc
+}
+
+\newglossaryentry{wavelength}
+{    
+	name={wavelength},
+	description={TODO}
 }
