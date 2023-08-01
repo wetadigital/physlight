@@ -3,6 +3,51 @@
 
 \chapter{Reference implementation}\label{ch:implementation}
 
+\section{Pipeline integration}
+
+\begin{inconstruction}
+	Review this section
+\end{inconstruction}
+
+As a virtual movie making pipeline is comprised of many parts, from content creation, to
+scene assembly and asset management, there is a need to
+be certain that all interpretations of values match across the various components.
+
+Components that will likely need adaptation or revision are:
+
+\begin{itemize}
+	\item Host applications / \gls{DCC} tools (such as Maya, Motion Builder, Katana, Houdini)
+	\item Scene translation bridges and scene representation formats, such as \gls{USD}
+	\item Light management systems
+	\item Shader libraries
+	\item Renderers
+\end{itemize}
+this is a fairly direct consequence of common custom so far. Until this point, it has been
+fairly common to use physical units in physics simulation systems, 
+but not for lighting descriptions.
+Much like cameras have their focal length specified in millimeters in the user interface,
+similar adaptations will be needed for various other quantities, such as filmback, light 
+sensitivity and so on. Similarly, as the renderers will be adapted to receive data
+referred to physical units, the bridges would need to make sure they are capable of transporting
+and translating such data appropriately, and various shading libraries might need various levels
+of adaptation for correctness. These changes are discussed in detail in the rest of this document:
+while \cref{ch:imaging} focuses on the theoretical background for these revisions,
+\cref{ch:implementation} has code reference for the specifics of a working implementation.
+
+\paragraph{Scene representation}
+
+Scene representations will now need bindings from scene units to \gls{si} units,
+so the renderer is aware of the physical dimensions of the entities involved.
+
+For example, in \gls{RIB} this might look like this:
+
+\begin{ribcode}
+	Option "units" "float length" [0.01]    # scene unit is 1 cm
+	"float time"   [0.04166] # 24 fps
+\end{ribcode}
+where \Verb/units:length/ is the size of $1$ scene unit in meters,
+and \Verb/units:time/ is the size of $1$ time unit in seconds.
+
 Although light transport simulations are fundamentally spectral, at present
 the majority of the commercially available image synthesis systems have been
 based on tristimulus \gls{RGB} transport.

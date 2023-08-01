@@ -60,21 +60,38 @@ to develop an accurate understanding of brightness, but also be aware
 of how \gls{spectral} data flows through the \gls{pipeline}.
 
 
-%The objective is to formalize a system of physical absolute units to be used
-%when describing lighting, \glspl{material model} and imaging in the
-%process of digital image synthesis. 
-%This allows us to bring scene values in line
-%with real-life measurements, in order to facilitate integration of
-%live action footage and digitally created content. 
-The specification of how units from the \gls{si} are injected in 
-the pipeline and the mathematics that corresponds to the quantities 
-involved are here described in detail.
+
 The resulting system has been in use in the
 production pipeline at W\=et\=a FX since about 2015.
 Because of the origin of this system in the motion picture industry,
 several terms of the trade have made it into this document. 
-We hope our glossary in \cref{sec:main} might help clarify 
-potential issues arising from our use of movie-making jargon.
+
+
+The prevalent way of reasoning about image synthesis through rendering is 
+built on the notion of the \textsl{light ray}, which is the fundamental element 
+of geometrical optics. 
+Light rays are the path segments\footnote{
+	In the vast majority of renderers in use today, rays are implemented as 
+	straight line segments, which enormously simplifies the implementation of the
+	code that finds their endpoints. This ignores two effects: the first is that 
+	gravity bends light rays: this won't be an important effect for scenes with 
+	extents up to maybe hundreds of thousands of kilometers, likely more depending
+	on the accuracy needed. 
+	There are exceptions, however: for example the movie~\cite{interstellar2014} 
+	instead did need to capture the bending effect of gravity onto light paths 
+	accurately, and a specialized rendering system was developed for the show. 
+	The task was complex enough that the Nobel laureate and Cal Tech professor 
+	Kip Thorne was included as consultant to support the team developing this 
+	technology. 
+	The second effect ignored by the straight-line approximation is that 
+	variations in the index of refraction of the medium that
+	the light is traversing can also bend the light paths. 
+	This is a substantially more common effect at human scale, for example 
+	it's the origin of the \textsl{mirage} phenomenon. 
+	While there are several research projects that have built renderers able 
+	to capture this effect, the computational costs associated with this capability 
+	are high enough to make it impractical for everyday use
+} through space that light follows when traveling across the \gls{virtual scene}. 
 
 This document is divided in parts: \cref{part:models}
 contains an introduction on basic quantities that are relevant in
@@ -97,83 +114,73 @@ excellent 1963 paper~\cite{nicodemus63} in which the concept of \textsl{\gls{rad
 is introduced: unsurprisingly we found his explanation far clearer than what we 
 had been able to come up with, so we decided to retype his text, with the only change being
 we have changed the equations to use contemporary conventions for quantity names, and adopted
-\gls{si} units throughout.
+contemporary \glsname{si} units throughout.
 
-\section{Pipeline integration}
-
-As a virtual movie making pipeline is comprised of many parts, from content creation, to
-scene assembly and asset management, there is a need to
-be certain that all interpretations of values match across the various components.
-
-Components that will likely need adaptation or revision are:
-
-\begin{itemize}
-\item Host applications / \gls{DCC} tools (such as Maya, Motion Builder, Katana, Houdini)
-\item Scene translation bridges and scene representation formats, such as \gls{USD}
-\item Light management systems
-\item Shader libraries
-\item Renderers
-\end{itemize}
-this is a fairly direct consequence of common custom so far. Until this point, it has been
-fairly common to use physical units in physics simulation systems, 
-but not for lighting descriptions.
-Much like cameras have their focal length specified in millimeters in the user interface,
-similar adaptations will be needed for various other quantities, such as filmback, light 
-sensitivity and so on. Similarly, as the renderers will be adapted to receive data
-referred to physical units, the bridges would need to make sure they are capable of transporting
-and translating such data appropriately, and various shading libraries might need various levels
-of adaptation for correctness. These changes are discussed in detail in the rest of this document:
-while \cref{ch:imaging} focuses on the theoretical background for these revisions,
-\cref{ch:implementation} has code reference for the specifics of a working implementation.
-
-\paragraph{Scene representation}
-
-Scene representations will now need bindings from scene units to \gls{si} units,
-so the renderer is aware of the physical dimensions of the entities involved.
-
-For example, in \gls{RIB} this might look like this:
-
-\begin{ribcode}
-Option "units" "float length" [0.01]    # scene unit is 1 cm
-               "float time"   [0.04166] # 24 fps
-\end{ribcode}
-where \Verb/units:length/ is the size of $1$ scene unit in meters,
-and \Verb/units:time/ is the size of $1$ time unit in seconds.
+Because this document is the result of work started from the movie industry, 
+we are aware several concepts may not be as well known to our readers from different backgrounds. 
+For this reasons we have compiled a reference of notation and symbols used in~\cref{ch:notation} 
+as well as a glossary in \cref{sec:main} with the hope these might help clarify potential issues arising 
+from our use of movie-making jargon.
 
 \section{Quantities in light transport}
 
-The prevalent way of reasoning about image synthesis through rendering is 
-built on the notion of the \textsl{light ray}, which is the fundamental element 
-of geometrical optics. 
-Light rays are the path segments\footnote{
-	In the vast majority of renderers in use today, rays are implemented as 
-	straight line segments, which enormously simplifies the implementation of the
-	code that finds their endpoints. This ignores two effects: the first is that 
-	gravity bends light rays: this won't be an important effect for scenes with 
-	extents up to maybe hundreds of thousands of kilometers, likely more depending
-	on the accuracy needed. Famously, the movie~\cite{interstellar2014} instead did 
-	need to capture this effect accurately, and a specialized rendering system was 
-	developed for the show. The task was complex enough that the Nobel laureate
-	Kip Thorne was included as part of the team developing this technology. 
-	The second is that variations in the index of refraction of the medium that
-	the light is traversing can also bend the light paths. This is a 
-	substantially more common effect, for example it's the origin of the 
-	\textsl{mirage} phenomenon. While there are several research projects that
-	have built renderers able to capture this effect, the computational costs
-	associated with this capability are high enough to make it impractical for
-	more everyday use
-} through space that light follows when traveling across the \gls{virtual scene}. 
+We discussed how \gls{rendering} is concerned with simulating how light travels around in 
+a \gls{virtual scene}, so this section introduces names for the quantities transported 
+along these paths during the simulation and outlines the theory behind them. 
+The naming we adopt for them is in line with several contemporary international standards, 
+among which we mention ISO/IEC Standard 80000, 
+\emph{Quantities and units, part 7: Light and radiation}~\cite{iso:80000-7:2019}, 
+the \emph{International lighting vocabulary} published\footnote{Can also be consulted 
+	online at \url{https://cie.co.at/e-ilv}} by the \gls{CIE}~\cite{cie:s017.2020},
+and the lighting section of the so-called ``Electropedia'' from the \gls{IEC}~\cite{iec:60050-845:2020}.
+Work in recent years has gone into harmonizing these bodies of knowledge so that the resulting 
+vocabularies are fully aligned. 
 
-Thinking about photons, light rays represent paths along which photons flow,
-each of them carrying a quantity of energy dependent on its wavelength $\lambda$
-and equal to $E = hc/\lambda$ (where $h$ is Planck's constant and $c$ the speed
-of light in vacuum).
+%The objective is to formalize a system of physical absolute units to be used
+%when describing lighting, \glspl{material model} and imaging in the
+%process of digital image synthesis. 
+%This allows us to bring scene values in line
+%with real-life measurements, in order to facilitate integration of
+%live action footage and digitally created content. 
+The specification of how units from the \gls{si} are injected in 
+the pipeline and the mathematics that corresponds to the quantities 
+involved are here described in detail.
 
-As much as photons are the elements of light transport, at first we only have an
-aggregate measure of their condition in terms of power of a source.
-The intention here is to break down the aggregate notion of power of a source
-into components so that we can understand what quantity flows through a ``ray of
-light''.
+Thinking about light flowing through a scene, rendering is concerned with the so-called
+\textsl{particle theory} of light: these particles are called \textsl{photons}, 
+and \textsl{light rays} represent paths along which these photons flow.
+The particle theory of light describes a photon as a very small ``object'' 
+(a \textsl{particle}) having no mass and no electrical charge, 
+instead being made entirely of energy\footnote{
+	All readers troubled by this description are in good company. In fact there are 
+	certainly substantial theoretical and experimental problems in describing precisely
+ 	aspects of a photon such as its position. For example the \textsl{Heisenberg uncertainty}
+ 	in a way only begins to scratch the surface of this problem}. Planck talked about
+energy \textsl{quanta}: because of what photons are, energy can only come to be in 
+certain specific amounts as can be captured by integral amounts of photons (there is no
+such thing as $0.234$ photons, photons are integer and indivisible, they are viewed in
+this theory are \textsl{elementary particles}).
+So each photon effectively \emph{is} a (small) quantity of energy, and this in turn 
+depends on its wavelength $\lambda$ and is equal to $Q_p = hc/\lambda$ 
+(where $h$ is Planck's constant and $c$ the speed of light in vacuum). Equivalently,
+the energy of a photon could be expressed as $Q_p = h\nu$ where $\nu = c/\lambda$ is the
+photon's \textsl{frequency}. In this work we have chosen to work with wavelengths, so we won't
+see much discussion of frequency and $\nu$'s.
+
+As much as photons are the elemental ingredients of light transport, 
+they obviously must come from somewhere, which we call \textsl{light sources}.
+Given a light source that has been shining for a period of time, it will have emitted a
+certain number $N_p$ of photons, delivering a corresponding amount of energy $Q_e$, measured in
+joule \unit{\joule}. 
+And this brings us to discuss the notion of \textsl{power} of our source, being its ability
+to emit light over a unit of time. Given that light is energy, and as we said we measure energy
+in \unit\joule, the emission rate of time over time $Q_e/t$ will be measured in watts \unit\watt,
+which are just joules per second $\unit\watt = \unit{\joule\per\second}$.
+
+What we are going to do over the rest of this section is to continue to break down 
+this aggregate notion of ``power of a light source'' into simpler components, so 
+that we can understand what quantity flows through a ``ray of light''.
+%%%%%%%%%%%%%%%%%%%%%%%% HERE
 For this reason, we start from the amount of power emitted by our source $S$:
 the \textsl{emissive radiant power}.
 This can be seen as the energy flowing through a sphere fully enclosing $S$.
