@@ -1,3 +1,6 @@
+% SPDX-License-Identifier: Apache-2.0
+% Copyright (c) Contributors to the PhysLight Project.
+%
 % A simple class inheriting from "report" that configures it with our stile
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{physlight}[2023/07/23 Class for the physlight document]
