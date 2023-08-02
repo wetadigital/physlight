@@ -478,18 +478,52 @@ narrow a meaning.
 Our discussion will then proceed to specify the exact meaning in question more 
 precisely and give it an appropriate name.
 
+\begin{figure}
+	{
+		\hfill
+		\includegraphics[width=.8\linewidth]{images/Infrared+photo+vs+Ultraviolet+photo.jpg}
+		\hfill
+	}	
+
+	\caption{\label{fig:uv_ir_photo}
+		Two views of the same scene: the left hand side
+		shows intensity of a relatively narrow infrared band around 850 \unit{\nano\meter},
+		while the right hand side shows ultraviolet light, 
+		in the 345--380 \unit{\nano\meter} band. 
+		Both bands are moderately beyond what is visible by humans}
+	{\footnotesize\hfill
+		Photograph by Tomas \url{https://www.nofocus.blog/}
+	}
+\end{figure}
+
 As we have just seen, radiometric quantities can be used to measure brightness in 
 terms of \emph{\gls{radiant power}} and its derived quantities.
 However, if our image was generated using values proportional to this quantity,
-we would obtain an image that will likely not correspond well to the subjective 
+we would obtain an image that will not correspond well to the subjective 
 sense of brightness in the scene as experienced by a person looking at it. 
 And it wouldn't look much like a black-and-white photograph either, not one made
-with stock a photographer would commonly use, anyways.
+with film stock a photographer would commonly use, or the black-and-white mode 
+of a digital camera anyways.
+The reason is two-fold: on the one side radiant power includes \emph{all} radiation
+bands, and so this radiant power ``image'' would have information about all sorts 
+of wavelengths that have little to do with vision. 
+If such a wide-band device existed it would conceivably capture energy of wavelengths
+in the millimeters (say radar waves or far infrared waves) all the way to maybe
+single nanometers\footnote{And for short wavelengths all sorts of
+	problems appear, for example many materials such as flesh cease being opaque, or 
+	scattering photons that much, a key trait for medical imaging} 
+(which would be X-rays). Even without going to these extremes, even bands
+quite near to the visible range look substantially different than they do in the
+visible, as you can see in~\cref{fig:uv_ir_photo}. On the other side,
+even in the visible range, our sensitivity to brightness exhibits a marked dependency
+on the wavelength (as you can see in a plot of the luminous efficiency 
+function $V(\lambda)$, for example in~\cref{fig:illumspectra}).
 
-This is because the human visual system is not equally sensitive to all wavelengths
-of light. In fact the opposite is true: our eyes may well perceive light emanating or reflecting 
-off two objects with different radiosity as having the same brightness, 
-as a consequence of differences in the spectral distributions only. 
+Because of how the human visual system is not equally sensitive to all wavelengths
+of light, our eyes may well perceive light emanating or reflecting 
+off two objects with different radiant intensity as having the same brightness, 
+as a consequence of differences in the spectral distributions compensating 
+away the difference in intensity. 
 Conversely, \glspl{spectral distribution} carrying the same amount
 of radiant power are likely to be perceived as having different brightness levels 
 when they appear to have different colors.
@@ -501,8 +535,8 @@ for the workings of human perception, called \textsl{photometric}.
 The two approaches have historically used a great many units, 
 until the \textsl{\gls{candela}} $[\unit\candela]$ was adopted as a base unit 
 as part of Resolution 6 of the Tenth Conference on Weights and Measures
-held in 1954~\cite[p. 163]{bipm:si.2019}, and then supplemented by derived units
-\textsl{\gls{luminous flux}} $[\unit\lumen]$, 
+held in 1954~\cite[p. 163]{bipm:si.2019}, and then supplemented by derived units for
+quantities \textsl{\gls{luminous flux}} $[\unit\lumen]$, 
 \textsl{\gls{luminance}} $[\unit{\candela\per\square\meter}]$ 
 and \textsl{\gls{illuminance}} $[\unit\lux]$ at the Eleventh Conference on Weights 
 and Measures held in 1960.  
