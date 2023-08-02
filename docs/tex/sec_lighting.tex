@@ -131,7 +131,7 @@ light source $A$, the angular domain $\Omega$ (typically the front hemisphere
 for planar, forward only sources, or an entire sphere for most other sources)
 and the wavelength domain
 \begin{equation}
-\Phi_v = k_e K_m \int_\lambda \int_\Omega \int_A
+\Phi_v = k_e K_{cd} \int_\lambda \int_\Omega \int_A
 \overline{L}^\uparrow_{\lambda}(x, \omega, \lambda) \bar y (\lambda) \cos\theta
 \d x \d\omega \d\lambda
 \qquad [\unit{\lumen}]
@@ -139,7 +139,7 @@ and the wavelength domain
 In our case $\Phi_v$ is given as a parameter of the light, and $k_e$ can be
 determined by inversion:
 \begin{equation}
-k_e = \frac{\Phi_v}{K_m \int_\lambda \int_\Omega \int_A T(x, \lambda) \cdot
+k_e = \frac{\Phi_v}{K_{cd} \int_\lambda \int_\Omega \int_A T(x, \lambda) \cdot
 \hat{L}(\lambda) \cdot D(\omega) \cdot \bar y (\lambda) \; \cos\theta \d x \d\omega
 \d\lambda \qquad}
 \end{equation}
@@ -168,12 +168,12 @@ follows:
 \end{itemize}
 with these relations we can rewrite luminous power as
 \begin{equation}
-\Phi_v = k_e K_m A \|D\| \big\langle \|T_{col}\|,\; \|col\cdot \hat{L}\|_{\bar
+\Phi_v = k_e K_{cd} A \|D\| \big\langle \|T_{col}\|,\; \|col\cdot \hat{L}\|_{\bar
 y} \big\rangle
 \end{equation}
 so that the expression for the emission constant is simply
 \begin{equation}
- k_e = \frac{\Phi_v}{K_m A \|D\| \big\langle \|T_{col}\|,\; \|col\cdot \hat{L}\|_{\bar y} \big\rangle }
+ k_e = \frac{\Phi_v}{K_{cd} A \|D\| \big\langle \|T_{col}\|,\; \|col\cdot \hat{L}\|_{\bar y} \big\rangle }
 \end{equation}
 
 We observe that the tinting vector can be precomputed once for texture maps, the
@@ -229,9 +229,9 @@ radiance from an \gls{IBL} source is not dependent on the receiver's location
 but only on its orientation. The emission constant is the estimated in terms of
 illuminance $E^+_v$ from the top hemisphere
 \begin{align*}
-E^+_v &= K_m \int_{\Omega^+} \int_\lambda L_{\lambda}^\downarrow(\omega,\lambda)
+E^+_v &= K_{cd} \int_{\Omega^+} \int_\lambda L_{\lambda}^\downarrow(\omega,\lambda)
 \cdot\bar y(\lambda) \cos\theta \d\omega\d\lambda \\
-&= k_e K_m\int_{\Omega^+}\int_{\lambda} T(\lambda) \cdot \hat{L}(\omega,\lambda)
+&= k_e K_{cd}\int_{\Omega^+}\int_{\lambda} T(\lambda) \cdot \hat{L}(\omega,\lambda)
 \cdot\bar y(\lambda) \cos\theta \d\omega\d\lambda
 \qquad [\unit{\lux}]
 \end{align*}
@@ -239,7 +239,7 @@ where $\Omega^+$ indicates integration over the top hemisphere, intuitively
 modeling the idea of a receiver (such as a grey card or a hemispherical light
 meter) set horizontally and facing upwards. This gives us:
 \begin{equation}
-k_e = \frac{E^+_v}{K_m\int_{\Omega^+}\int_{\lambda} T(\lambda) \cdot
+k_e = \frac{E^+_v}{K_{cd}\int_{\Omega^+}\int_{\lambda} T(\lambda) \cdot
 \hat{L}(\omega,\lambda) \cdot \bar y(\lambda)\cos\theta \d\omega\d\lambda}
 \end{equation}
 
@@ -279,7 +279,7 @@ product of the color spaces $col_1$ and $col_2$.
 This decomposition lets us compute the emission constant for \gls{IBL} sources
 as follows
 \begin{equation}
-k_e = \frac{E^+_v} {K_m \langle \|\hat{L}_{col}\|, \|T \cdot col\|_{\bar y}
+k_e = \frac{E^+_v} {K_{cd} \langle \|\hat{L}_{col}\|, \|T \cdot col\|_{\bar y}
 \rangle}
 \end{equation}
 
@@ -330,11 +330,11 @@ This time no function is dependent on more than one variable, so a factorization
 To compute the emission constant we again use the definition of illuminance
 $E^+_v$
 \begin{equation}
-E^+_v = K_m \int_\lambda \int_{\Omega^+} L^\downarrow_{\lambda}(\omega,\lambda) \cdot\bar y(\lambda)\cos\theta\d\omega \d\lambda
+E^+_v = K_{cd} \int_\lambda \int_{\Omega^+} L^\downarrow_{\lambda}(\omega,\lambda) \cdot\bar y(\lambda)\cos\theta\d\omega \d\lambda
 \end{equation}
 which gives us:
 \begin{equation}
-k_e = \frac{E^+_v}{K_m\int_{\Omega^+}\int_{\lambda} T(\lambda)\cdot D_{\omega_c}(\omega)\cdot \hat{L}(\lambda) \cdot \bar y(\lambda)\cos\theta\d\omega \d\lambda}
+k_e = \frac{E^+_v}{K_{cd}\int_{\Omega^+}\int_{\lambda} T(\lambda)\cdot D_{\omega_c}(\omega)\cdot \hat{L}(\lambda) \cdot \bar y(\lambda)\cos\theta\d\omega \d\lambda}
 \end{equation}
 \\
 If $T(\lambda)$ is defined in some color space $col$, we can break the down the double integral into:
@@ -350,7 +350,7 @@ If $T(\lambda)$ is defined in some color space $col$, we can break the down the 
 \end{itemize}
 This gives us the emission constant $k_e$ as
 \begin{equation}
-k_e = \frac{E^+_v}{K_m\cdot \|D_{\omega_c}\|\cdot \big\langle T_{col}, \; \|col \cdot \hat{L}\|_{\bar{y}} \big\rangle}
+k_e = \frac{E^+_v}{K_{cd}\cdot \|D_{\omega_c}\|\cdot \big\langle T_{col}, \; \|col \cdot \hat{L}\|_{\bar{y}} \big\rangle}
 \end{equation}
 
 Once the emission constant has been computed, exitant radiance from the source

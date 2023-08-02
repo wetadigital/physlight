@@ -134,18 +134,8 @@ the \emph{International lighting vocabulary} published\footnote{Can also be cons
 	online at \url{https://cie.co.at/e-ilv}} by the \gls{CIE}~\cite{cie:s017.2020},
 and the lighting section of the so-called ``Electropedia'' from the \gls{IEC}~\cite{iec:60050-845:2020}.
 Work in recent years has gone into harmonizing these bodies of knowledge so that the resulting 
-vocabularies and symbols are in alignment. 
-
-%The objective is to formalize a system of physical absolute units to be used
-%when describing lighting, \glspl{material model} and imaging in the
-%process of digital image synthesis. 
-%This allows us to bring scene values in line
-%with real-life measurements, in order to facilitate integration of
-%live action footage and digitally created content. 
-
-%The specification of how units from the \gls{si} are injected in 
-%the pipeline and the mathematics that corresponds to the quantities 
-%involved are here described in detail.
+vocabularies and symbols are in alignment. All the units in use descend directly
+from the \gls{si} system, descibed in~\cite{bipm:si.2019}.
 
 Thinking about light flowing through a scene, rendering is concerned with the so-called
 \textsl{particle theory} of light: these particles are called \textsl{photons}, 
@@ -506,19 +496,25 @@ when they appear to have different colors.
 
 It is therefore useful, and in a way \emph{necessary}, to reason about the power 
 of light in two different ways, one dealing with energy levels as you would have in 
-physics, called \textsl{radiometric}, 
-and the other tuned or rebalanced, to account for the workings of human perception, 
-called \textsl{photometric}. 
-The two approaches have historically used a great many units, a few of which were
-included in the \gls{si} at the Eleventh Conference on Weights and Measures
-held in 1960.  Many details around various historical and \gls{si} units are
+physics, called \textsl{radiometric}, and the other tuned or rebalanced, to account 
+for the workings of human perception, called \textsl{photometric}. 
+The two approaches have historically used a great many units, 
+until the \textsl{\gls{candela}} $[\unit\candela]$ was adopted as a base unit 
+as part of Resolution 6 of the Tenth Conference on Weights and Measures
+held in 1954~\cite[p. 163]{bipm:si.2019}, and then supplemented by derived units
+\textsl{\gls{luminous flux}} $[\unit\lumen]$, 
+\textsl{\gls{luminance}} $[\unit{\candela\per\square\meter}]$ 
+and \textsl{\gls{illuminance}} $[\unit\lux]$ at the Eleventh Conference on Weights 
+and Measures held in 1960.  
+At this Eleventh conference the base units (which were six at the time) were first
+given the name ``Syst\`eme International d’Unit\'es” and its abbreviation \glsname{si}.
+Many more details around various historical and \gls{si} units are
 described in~\cite{Meyer-Arendt:68}. As discussed before, we follow here the harmonized
 vocabulary resulting from~\cite{iso:80000-7:2019,cie:s017.2020,iec:60050-845:2020}.
 
 From the point of view of \textsl{\gls{radiometry}}, we saw how the \textsl{radiant power} 
 of a source $S$ is measured in \textit{watts} $[\unit{\watt}]$ and is the total amount 
 of energy per unit time emitted by $S$.
-
 From the point of view of \textsl{\gls{photometry}}, there is a corresponding definition
 of \textsl{luminous power} for our source $S$ (also called \textsl{luminous flux} like before) 
 which is measured in \textit{lumens} $[\unit{\lumen}]$, and is the amount of energy per unit time
@@ -548,38 +544,39 @@ Their definition follows one-to-one the corresponding radiometric quantity: for 
 given radiometric spectral quantity $X_{e,\lambda}$ we can construct its
 corresponding photometric quantity $X_v$ integrating like this
 \begin{equation}
-	X_v(\ldots) = K_m \int X_{\lambda}(\ldots,\lambda)\; \bar y (\lambda) \d\lambda.
+	X_v(\ldots) = K_{cd} \int X_{\lambda}(\ldots,\lambda)\; V(\lambda) \d\lambda.
 \label{eqn:rad_to_photo}
 \end{equation}
 the corresponding names will also change, replacing ``(spectral) radiant'' with ``luminous''.
-For example, given spectral radiant power $\Phi_{\lambda}(\lambda)$, the
+For example, given spectral radiant power $\Phi_{e,\lambda}(\lambda)$, the
 corresponding luminous power $\Phi_v$ is
 \begin{displaymath}
-\Phi_v = K_m \int \Phi_{\lambda}(\lambda)\; \bar y(\lambda) \d\lambda.
+\Phi_v = K_{cd} \int \Phi_{e,\lambda}(\lambda)\; V(\lambda) \d\lambda.
 \end{displaymath}
 
-The scaling constant $K_m$, formally called \textsl{maximum luminous efficacy}, 
-converts watts to lumens. 
-It can be determined from the \gls{si} unit \textsl{candela} $[\unit{\candela}]$, 
-which was adopted at the General Conference on Weights and Measures in 1979 and
-there formally defined as follows:
-\begin{quote}
-\emph{One candela is the amount of luminous intensity of a source of
-monochromatic radiation of frequency $\num{540}\;[\unit{\tera\hertz}]$ and
-a radiant intensity of $1/683\;[\unit{\watt\per\steradian}]$.}
-\end{quote}
+The scaling constant $K_{cd} = 683\;\unit{\lumen\per\watt}$, formally called \textsl{luminous efficacy of monochromatic radiation}, 
+scales these ``reweighted watts'' to lumens and is currently one of the seven defining constants 
+for the \gls{si}. 
+As such it defines\footnote{
+	The details of the current definition are in~\cite[p. 135]{bipm:si.2019}.
+	The frequency of $\num{540}\;[\unit{\tera\hertz}]$ corresponds to a wavelength of 
+	about $\num{555.016}\;[\unit{\nano\meter}]$ in \gls{standard air}, a wavelength in the 
+	greens to which the eye of the standard observer is most sensitive.
+	The radiant intensity of $1/683\;[\unit{\watt\per\steradian}]$ was chosen to make 
+	the amount of $1\;[\unit\candela]$ about equal to the older unit
+	\textit{standard candle}, which it superseded. 
+	This definition has been updated several times from the original definition, 
+	which had been established in 1933, based on the emission of a black body radiator
+	at the freezing point of platinum (about $\num{2042}\;[\unit{\kelvin}]$). 
+	This outdated definition is sometimes also found in 
+	literature~\parencite{Meyer-Arendt:68}.
+} the base \gls{si} unit \textsl{candela} $[\unit{\candela}]$, 
+as the amount of luminous intensity of a source of monochromatic radiation of frequency 
+$\num{540}\;[\unit{\tera\hertz}]$ having a radiant intensity of $1/683\;[\unit{\watt\per\steradian}]$
 
-The frequency of $\num{540}\;[\unit{\tera\hertz}]$ corresponds to a wavelength of 
-about $\num{555.016}\;[\unit{\nano\meter}]$ in standard air, a wavelength in the 
-greens to which the eye of the standard observer is most sensitive.
-The radiant intensity of $1/683\;[\unit{\watt\per\steradian}]$ was chosen to make 
-the amount of $1\;[\unit\candela]$ about equal to the older unit
-\textit{standard candle}, which it superseded. 
+\ifomit
 
-Note that the above definition is an updated version of the original definition, which had been
-valid since 1933 and was based on the emission of a black body radiator
-at the freezing point of platinum, about $\num{2042}\;[\unit{\kelvin}]$. This 
-historical definition is sometimes also found in literature~\parencite{Meyer-Arendt:68}.
+%This relates to the old definition of $K_m$, kept for archeological purposes
 
 Using Eqn.~\eqref{eqn:rad_to_photo} and the Dirac delta distribution $\delta$, the
 above definition can be written as
@@ -588,9 +585,12 @@ above definition can be written as
     = K_m \int \frac{\delta(\lambda-555.016\unit{\nano\meter})}{683} \unit{\watt\per\steradian}\;V(\lambda) \d\lambda
     = K_m \cdot \frac{V(555.016\unit{\nano\meter})}{683}\,\left[\unit{\watt\per\steradian}\right],
 \end{displaymath}
-from which it follows that $K_m \approx 683.002 \;[\unit{\lumen\per\watt}]$. 
+from which it follows that $K_{m} \approx 683.002 \;[\unit{\lumen\per\watt}]$. 
 In practice, however, it is safe to use the value of 
-$683\;[\unit{\lumen\per\watt}]$~\parencite{cie1996,wyszecki2000}.
+$683\;[\unit{\lumen\per\watt}]$~\parencite{cie:018.2019,wyszecki2000}.
+\fi
 
-\Cref{tab:radiophoto} lists important radiometric quantities and their photometric equivalents.
+
+\Cref{tab:radiophoto} lists summarized names, units and symbols of the radiometric quantities we've discussed,
+as well as their spectral and photometric counterparts.
 

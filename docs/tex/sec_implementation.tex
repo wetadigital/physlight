@@ -183,7 +183,7 @@ described luminaire.
 The emission constant \Verb|k_e| is computed as
 
 \begin{c++code}
-const float K_m = 683.002;
+const float K_{cd} = 683;
 
 float Phi_v = /* luminous power from light parameters */;
 float A     = /* area of the light from geometry */;
@@ -192,7 +192,7 @@ float  angularnorm = /* computed as above */;
 float3 tint        = /* computed as above */;
 float3 redlum_sRGB = /* computed as above */;
 
-float k_e = Phi_v / (K_m * A * angularnorm * dot(tint, redlum_sRGB));
+float k_e = Phi_v / (K_{cd} * A * angularnorm * dot(tint, redlum_sRGB));
 \end{c++code}
 
 
@@ -388,7 +388,7 @@ public void construct()
     float k_i = 4 * 683 / 312.5;
 
     // scale as per \cref{eqn:imaging_y2}
-    // note the missing division by $K_m$ as here Ci is already in
+    // note the missing division by $K_{cd}$ as here Ci is already in
     // radiometric units
     c_imagingRatio = c_exposureTime * k_i * filmSpeed * c_apertureRatio;
 }

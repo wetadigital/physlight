@@ -42,7 +42,7 @@ Note that this formulation means that the image stores values that are
 resolution independent, which is achieved by means of the division by
 $A_p^{img}$. In the case in which $W(x, \lambda)$ is the identity function, the
 result of the integral would be measured in $[\unit{\joule\per\square\meter}]$,
-whereas using $W(x, \lambda) = K_m \bar y(\lambda)$ would result in quantities
+whereas using $W(x, \lambda) = K_{cd} \bar y(\lambda)$ would result in quantities
 measured in $[\unit{\lux\second}]$.
 
 \begin{inconstruction}
@@ -106,7 +106,7 @@ W_{loc}(x) = \frac{1}{\cos\theta_x}
 The remaining factor in the sensor response function $W(x,\lambda)$ is the
 imaging constant $k_i$, which is defined as
 \begin{equation}\label{eqn:imaging_ki}
- k_i = \frac{4K_m}{C} \simeq \frac{4\cdot683}{312.5} = 8.7424.
+ k_i = \frac{4K_{cd}}{C} \simeq \frac{4\cdot683}{312.5} = 8.7424.
 \end{equation}
 The constant $C$ (valued at $312.5$ in this document) is sometimes called the \textsl{incident light meter
 calibration constant} and effectively defines the units for the \gls{film speed} $S$.
@@ -166,7 +166,7 @@ and we can rewrite Equation~\eqref{eqn:imaging1} in terms of luminance
 $L_v^{\downarrow img}$ passing through the aperture:
 \begin{equation}\label{eqn:imaging_y}
 Y(p^{img}) 
-           = \frac{k_i\; \Delta t \; S}{K_m\;A^{img}_p} \;
+           = \frac{k_i\; \Delta t \; S}{K_{cd}\;A^{img}_p} \;
              \int_{A_p^{img}} 
              \int_{\Omega_a^{img}} 
                 L^{\downarrow img}_{v}(x, \omega) \;
@@ -206,7 +206,7 @@ Consequently,
 \end{equation}
 Substituting into Equation~\eqref{eqn:imaging_y}, we obtain
 \begin{equation}\label{eqn:pixel_value_area_solidangle}
-  Y(p^{img}) = \frac{k_i\; \Delta t \; S}{K_m\;A^{img}_p} \; A_p^{obj} \Omega_a^{obj}L_v^{\uparrow obj}.
+  Y(p^{img}) = \frac{k_i\; \Delta t \; S}{K_{cd}\;A^{img}_p} \; A_p^{obj} \Omega_a^{obj}L_v^{\uparrow obj}.
 \end{equation}
 
 \begin{figure}[t]
@@ -242,7 +242,7 @@ and the center of the aperture. In this configuration we have simply
 \end{equation}
 Substituting both results into Equation~\eqref{eqn:pixel_value_area_solidangle}, we obtain
 \begin{equation}\label{eqn:imaging_y2}
-Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_m\;} \frac{(o-a)^2}{a^2} \frac{\pi\;r^2}{(o-a)^2}\; L_v^{\uparrow obj}.
+Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_{cd}\;} \frac{(o-a)^2}{a^2} \frac{\pi\;r^2}{(o-a)^2}\; L_v^{\uparrow obj}.
 \end{equation}
 If the object distance $o$ is far greater than the focal length $f$ we have
 \begin{equation}
@@ -250,8 +250,8 @@ f \ll o \Rightarrow  f \simeq a
 \end{equation}
 and thus
 \begin{equation}
-  Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_m\;} \frac{\pi\;r^2}{a^2}\; L_v^{\uparrow obj} \stackrel{\eqref{eqn:aperture_radius}}{=}
-   \frac{\pi\; k_i\; \Delta t \; S}{4\;N^2\;K_m} L_v^{\uparrow obj} 
+  Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_{cd}\;} \frac{\pi\;r^2}{a^2}\; L_v^{\uparrow obj} \stackrel{\eqref{eqn:aperture_radius}}{=}
+   \frac{\pi\; k_i\; \Delta t \; S}{4\;N^2\;K_{cd}} L_v^{\uparrow obj} 
 \end{equation}
 which using Equation~\eqref{eqn:imaging_ki} concludes our proof. \hfill $\square$
 
@@ -262,7 +262,7 @@ which using Equation~\eqref{eqn:imaging_ki} concludes our proof. \hfill $\square
 %   An expression similar to the formula for $Y$ lets us determine illuminance at a pixel:
 %   \begin{equation}
 %   Y_v(p^{img}) = \frac{1}{A_p^{img}} \int_{A_p^{img}} \int_{\Omega_a^{img}}
-%   K_m \int_\lambda L_{\lambda}^{\downarrow img}(x,\omega,\lambda) \bar y (\lambda) \cos\theta \d\omega \d x \d\lambda
+%   K_{cd} \int_\lambda L_{\lambda}^{\downarrow img}(x,\omega,\lambda) \bar y (\lambda) \cos\theta \d\omega \d x \d\lambda
 %   \qquad [\unit{\lux}]
 %   \end{equation}
 %   \end{inconstruction}
