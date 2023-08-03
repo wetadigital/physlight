@@ -85,7 +85,7 @@ spectroscope. Once this condition has been achieved, it is useless to attempt
 to focus more radiant power through the instrument from the same source.
 
 If it is given that the earth's surface radiates a total (in all directions) of
-$w\unit{\watt\per\square\meter}$, how can we quickly estimate the irradiance
+$w\;\unit{\watt\per\square\meter}$, how can we quickly estimate the irradiance
 $E_e$,
 in $\unit{\watt\per\square\meter}$ due to this source alone without atmospheric
 attenuation, at a horizontal receiving surface carried on an earth satellite
@@ -162,8 +162,7 @@ in the given direction through the given point of the surface)
 $[\unit{\steradian}]$,
 $A =$ the area of the surface (including, of course, the given point)
 $[\unit{\square\meter}]$, and $\theta = $ the angle between the given direction
-and the normal to the surface at the given point $[\langle dimensionless
-\rangle]$.
+and the normal to the surface at the given point $[\unit\radian]$.
 We return to this definition later as the basic radiometric quantities are
 presented in a logical sequence leading up to the proof of the invariance
 property. It is shown that the value of $L$ in the direction of any ray
@@ -206,20 +205,20 @@ and symbols used. See~\cite[pp.~173--177]{planck57}}.
 In order to analyze this situation, let us first consider only the distribution
 of power flow as a function of direction. We define an elementary pencil of rays
 through a point $Q$ as including all of the rays which pass from $Q$ through an
-element of area $dA$ at a distance $D$ from $Q$ which is very large in relation
+element of area $\d A$ at a distance $D$ from $Q$ which is very large in relation
 to
-the linear dimensions of $dA$ (see \cref{fig:nicodemus1}).
-The solid angle subtended at $Q$ by $dA$ is given by
+the linear dimensions of $\d A$ (see \cref{fig:nicodemus1}).
+The solid angle subtended at $Q$ by $\d A$ is given by
 \begin{equation*}
 \d\omega = \frac{\cos\theta \d A}{D^2}
 \qquad \left[\unit{\steradian}\right],
 \end{equation*}
-where $\theta$ is the angle between the normal to $dA$ and the pencil of rays,
-i.e., $\cos\theta\cdot dA$, is the projected area of $dA$ normal to this pencil.
+where $\theta$ is the angle between the normal to $\d A$ and the pencil of rays,
+i.e., $\cos\theta \d A$, is the projected area of $\d A$ normal to this pencil.
 If we next consider $Q$ not as a mathematical point, but as having dimensions
-which, however, are very small compared to the dimensions of $dA$ (and, hence,
+which, however, are very small compared to the dimensions of $\d A$ (and, hence,
 extremely small compared to $D$), the power which flows along the rays in this
-pencil from $Q$ to $dA$ can be expressed as
+pencil from $Q$ to $\d A$ can be expressed as
 \begin{equation*}
 \d\Phi_e = I_e \d\omega = I_e \frac{\cos\theta \d A}{D^2}
 \qquad \left[\unit{\watt}\right],
@@ -232,7 +231,7 @@ I_e \equiv \frac{\partial \Phi_e}{\partial \omega}
 is defined as the \textsl{radiant intensity} (see \cref{tab:radiophoto}) of
 $Q$ as a “point” source of radiation (e.g., a virtual source, such as the image
 of an illuminated pin hole) \emph{in the direction of the pencil} (the direction of
-$dA$ from $Q$). Note that $I_e$ may vary with direction and is a constant only
+$\d A$ from $Q$). Note that $I_e$ may vary with direction and is a constant only
 for an isotropic source. In general, the power received from a distant “point"
 source is given by
 \begin{equation}
@@ -245,7 +244,7 @@ the source by the receiver.
 For completeness, we also look briefly at the purely spatial variation, although
 this quantity is more easily understood and is not so often a source of
 difficulty
-or misunderstanding. If we consider an element of surface $dA$, situated
+or misunderstanding. If we consider an element of surface $\d A$, situated
 anywhere
 in a radiation field, the total amount of radiant power passing through it
 (either
@@ -268,7 +267,7 @@ M_e \equiv \frac{\partial \Phi_e}{\partial A}
 \qquad \left[\unit{\watt\per\square\meter}\right]
 \end{equation}
 %page 372
-is the \textsl{radiant emittance} (see \cref{tab:radiophoto}), the surface
+is the \textsl{radiant exitance}\footnote{[\textsl{radiant emittance} in the original---\textit{Ed.}]} (see \cref{tab:radiophoto}), the surface
 density of radiant power flowing out of the surface at a point into a complete
 hemisphere. Both of these quantities may vary from point to point over an
 extended

@@ -438,11 +438,11 @@ either by differentiation along $\lambda$ or by substitution from above
 & name               & symbol & \multicolumn{2}{c}{unit} \\ \hline
 %
   Radiant energy          & $Q_{e}$         & $\unit{\joule} = \unit{\watt\second}$                     & \textsl{joule}  
-& Spectral Radiant energy & $Q_{e,\lambda}$ & $\unit{\joule\per\meter} = \unit{\watt\second\per\meter}$ & \textsl{joule}  
+& Spectral Radiant energy & $Q_{e,\lambda}$ & $\unit{\joule\per\meter} = \unit{\watt\second\per\meter}$ &   
 & Luminous energy         & $Q_v$           & $\unit{\talbot} = \unit{\lumen\second}$                   & \textsl{talbot} \\
 %
   Radiant power          & $\Phi_{e}$          & \unit{\watt}                                          & \textsl{watt}  
-& Spectral Radiant power & $\Phi_{e,\lambda}$  & \unit{\watt\per\meter}                                & \textsl{watt}  
+& Spectral Radiant power & $\Phi_{e,\lambda}$  & \unit{\watt\per\meter}                                &  
 & Luminous power         & $\Phi_v$            & \unit{\lumen}                                         & \textsl{lumen} \\
 %
   Radiant exitance          & $M_{e}$         & \unit{\watt\per\square\meter}                           &              
@@ -465,11 +465,17 @@ either by differentiation along $\lambda$ or by substitution from above
 & Spectral Radiance  & $L_{e,\lambda}$ & \unit{\watt\per\square\meter\per\steradian\per\meter}        &                  
 & Luminance          & $L_v$           & $\unit{\nit} = \unit{\lumen\per\square\meter\per\steradian}$ & \textsl{nit}     \\
 \end{tabular}\\[4mm]
-\begin{tabular}{l @{$\;$} c @{$\;$} c}
-Throughput (\'etendue) & \unit{\square\meter\steradian} & $G$ \\
-Absorptance            & & $\alpha$ \\
-Reflectance            & & $\rho$ \\
-Transmittance          & & $\tau$ \\
+\begin{tabular}{r @{\quad} c @{\quad} l}
+$\left.
+\begin{array}{r}
+	\text{Throughput} \\ 
+	\text{\'etendue} \\
+	\text{area-solid-angle-product} \\
+	A\Omega\text{ product} \\
+\end{array}\right\}$    & $G$ & \unit{\square\meter\steradian} \\
+Absorptance            & $\alpha$ & \\
+Reflectance            & $\rho$ & \\
+Transmittance          & $\tau$ & \\
 \end{tabular}
 \caption{Correspondence between radiometric and photometric units \label{tab:radiophoto}}
 
