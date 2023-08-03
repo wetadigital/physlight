@@ -21,6 +21,22 @@
 \addbibresource{bibliography.bib}
 \addbibresource[label=rad]{bibliography_radiance.bib}
 
+
+\defbibheading{refs}[References]{\chapter{#1}\markboth{#1}{#1}}
+\defbibfilter{refs}{not subtype=stdbody and not type=movie}
+\defbibnote{refs}{Documents published by standards organizations
+	and motion pictures are in their own sections}
+
+\defbibheading{stdbody}[Standards and technical reports]{\chapter{#1}\markboth{#1}{#1}}
+\defbibfilter{stdbody}{subtype=stdbody}
+\defbibnote{stdbody}{This section lists standards 
+	and technical reports}
+
+\defbibheading{movies}[Motion pictures]{\chapter{#1}\markboth{#1}{#1}}
+\defbibfilter{movies}{type=movie}
+\defbibnote{movies}{This section lists motion pictures}
+
+
 \usetikzlibrary{arrows}
 
 % get ourselves some colors
@@ -123,7 +139,7 @@
 
 % to test bibliography, an explicit list can be generated with
 % > grep @ bibliography.bib | tr '{,' '  ' | awk -e '{ print "\\nocite{" $2 "}"; }'
-\nocite{*}
+% \nocite{*}
 
 \begin{titlepage}
 \begin{center}
@@ -171,12 +187,14 @@
 %\printindex
 %\indexprologue{This is a list of names}
 %\printindex[persons]
-\printglossaries
+\printglossary[title={Index and glossary}]
 
 % put this bibliography as a chapter and add it to the toc
 \clearpage
 \phantomsection
 \addcontentsline{toc}{chapter}{\bibname}
-\printbibliography
+\printbibliography[heading=refs,filter=refs,prenote=refs,segment=0]
+\printbiblist[env=shorthand,heading=stdbody,prenote=stdbody,filter=stdbody,segment=0]{shorthand} 
+\printbibliography[heading=movies,prenote=movies,filter=movies,segment=0]
 
 \end{document}

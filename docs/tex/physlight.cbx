@@ -1,11 +1,27 @@
 % SPDX-License-Identifier: Apache-2.0
 % Copyright (c) Contributors to the PhysLight Project.
 %
-\ProvidesFile{physlight.dbx}[2023/07/23 v1.0 biblatex citation style for physlight]
-% add support for the @movie bib entry and supply an author-year citation style otherwise
+\ProvidesFile{physlight.cbx}[2023/07/23 v1.0 biblatex citation style for physlight]
+% TODO: add support for the @movie bib entry and supply an author-year citation style otherwise
 
 \RequireCitationStyle{authoryear}
 
 % our "normal" cite is [<author>, <year>], except for movies
 % where it's <title> (<year>)
-%\DeclareCiteCommand{\cite}[\mkbibparens]{}{}{}{}
+\DeclareCiteCommand{\cite}
+  {\usebibmacro{prenote}}%
+  {\ifentrytype{movie}
+  	 {%
+        \printfield{title}%
+        \space%
+        \mkbibparens{\usebibmacro{cite:labeldate+extradate}}%
+     }
+  	 {%
+  	 	\bibopenbracket%
+        \usebibmacro{citeindex}%
+        \usebibmacro{cite}%
+        \bibclosebracket
+     }%
+  }
+  {\multicitedelim}
+  {\usebibmacro{postnote}}

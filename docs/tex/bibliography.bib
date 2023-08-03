@@ -8,20 +8,14 @@
 
 @string{josa={Journal of the Optical Society of America}}
 
-
-
-@article{nicodemus63,
-   author = {Nicodemus, Fred~E.},
-    title = "Radiance",
-  journal = {American Journal of Physics},
-     year = 1963,
-   volume = 31,
-    pages = {368-377},
-      doi = {10.1119/1.1969512}
-}
+% we annotate all documents from a standards body with
+% entrysubtype = {stdbody}
+% these are listed in a separate bibliography section and all come with
+% citation shorthands
 
 @techreport{bipm:si.2019,
         type = {Standard},        
+entrysubtype = {stdbody},
          key = {BIPM SI.2019},
    shorthand = {BIPM SI.2019},
        month = dec,
@@ -35,73 +29,78 @@
 }
 
 @techreport{cie:015.2018,
-       type = {Technical Report},
-        key = {CIE 015.2018},
-  shorthand = {CIE 015.2018},
-    edition = {Fourth},
-        day = 1,
-      month = oct,
-       year = {2018},
-     author = {CIE},
-      title = {Colorimetry},
-    address = {Vienna, AT},
-institution = {{C}ommission {I}nternationale de l'{\'E}clairage},
-       isbn = {978-3-902842-13-8},
-        doi = {10.25039/TR.015.2018},
-        url = {https://cie.co.at/publications/colorimetry-4th-edition}
+        type = {Technical Report},
+entrysubtype = {stdbody},       
+         key = {CIE 015.2018},
+   shorthand = {CIE 015.2018},
+     edition = {Fourth},
+         day = 1,
+       month = oct,
+        year = {2018},
+      author = {CIE},
+       title = {Colorimetry},
+     address = {Vienna, AT},
+ institution = {{C}ommission {I}nternationale de l'{\'E}clairage},
+        isbn = {978-3-902842-13-8},
+         doi = {10.25039/TR.015.2018},
+         url = {https://cie.co.at/publications/colorimetry-4th-edition}
 }
 
 @techreport{cie:s017.2020,
-       type = {Standard},
-        key = {CIE S 017.2020},
-  shorthand = {CIE S 017.2020},
-    edition = {Second},
-        day = 1,
-      month = dec,
-       year = {2020},
-     author = {CIE},       
-      title = {{ILV}: International Lighting Vocabulary},
-    address = {Vienna, AT},
-institution = {{C}ommission {I}nternationale de l'{\'E}clairage},
-        doi = {10.25039/S017.2020},
-        url = {https://cie.co.at/publications/ilv-international-lighting-vocabulary-2nd-edition-0}
+        type = {Standard},
+entrysubtype = {stdbody},       
+         key = {CIE S 017.2020},
+   shorthand = {CIE S 017.2020},
+     edition = {Second},
+         day = 1,
+       month = dec,
+        year = {2020},
+      author = {CIE},       
+       title = {{ILV}: International Lighting Vocabulary},
+     address = {Vienna, AT},
+ institution = {{C}ommission {I}nternationale de l'{\'E}clairage},
+         doi = {10.25039/S017.2020},
+         url = {https://cie.co.at/publications/ilv-international-lighting-vocabulary-2nd-edition-0}
 }
 
 @techreport{cie:018.2019,
-       type = {Technical Report},
-        key = {CIE 018.2019},
-  shorthand = {CIE 018.2019},
-    edition = {Third},
-        day = 20,
-      month = may,
-       year = {2019},
-     author = {CIE},       
-      title = {The basis of physical photometry},
-    address = {Vienna, AT},
-institution = {{C}ommission {I}nternationale de l'{\'E}clairage},
-       isbn = {978-3-902842-24-4},
-        doi = {10.25039/TR.018.2019},
-        url = {https://cie.co.at/publications/basis-physical-photometry-3rd-edition}
+        type = {Technical Report},
+entrysubtype = {stdbody},       
+         key = {CIE 018.2019},
+   shorthand = {CIE 018.2019},
+     edition = {Third},
+         day = 20,
+       month = may,
+        year = {2019},
+      author = {CIE},       
+       title = {The basis of physical photometry},
+     address = {Vienna, AT},
+ institution = {{C}ommission {I}nternationale de l'{\'E}clairage},
+        isbn = {978-3-902842-24-4},
+         doi = {10.25039/TR.018.2019},
+         url = {https://cie.co.at/publications/basis-physical-photometry-3rd-edition}
 }
 
 @techreport{iec:60050-845:2020,
-       type = {Standard},
-        key = {IEC 60050-845:2020},
-  shorthand = {IEC 60050-845:2020},
-    edition = {Second},
-        day = 7,
-      month = dec,
-     author = {IEC},      
-       year = {2020},
-      title = {{IEV}: International Electrotechnical Vocabulary -- Part 845: Lighting},
-    address = {Geneva, CH},
-institution = {{I}nternational {E}lectrotechnical {C}ommission},
-        url = {https://webstore.iec.ch/publication/26592}
+        type = {Standard},
+entrysubtype = {stdbody},       
+         key = {IEC 60050-845:2020},
+   shorthand = {IEC 60050-845:2020},
+     edition = {Second},
+         day = 7,
+       month = dec,
+      author = {IEC},      
+        year = {2020},
+       title = {{IEV}: International Electrotechnical Vocabulary -- Part 845: Lighting},
+     address = {Geneva, CH},
+ institution = {{I}nternational {E}lectrotechnical {C}ommission},
+         url = {https://webstore.iec.ch/publication/26592}
 }
 
 @techreport{iso:9288:2022,
 	type = {Standard},
-	key = {ISO 9288:2022(E)},
+entrysubtype = {stdbody},	
+	key = {ISO 09288:2022(E)},
 	shorthand = {ISO 9288:2022},
 	edition = {Second},
 	month = aug,
@@ -115,7 +114,8 @@ institution = {{I}nternational {E}lectrotechnical {C}ommission},
 
 @techreport{isocie:11664-2:2022,
 	type = {Standard},
-	key = {ISO/CIE 11664-2:2022(E)},
+	entrysubtype = {stdbody},
+	key = {ISO 11664-2:2022(E)},
 	shorthand = {ISO/CIE 11664-2:2022},
 	month = aug,
 	year = {2022},
@@ -129,6 +129,7 @@ institution = {{I}nternational {E}lectrotechnical {C}ommission},
 
 @techreport{iso:80000-7:2019,
 	type = {Standard},
+	entrysubtype = {stdbody},
 	key = {ISO 80000-7:2019(E)},
 	shorthand = {ISO 80000-7:2020},
 	month = aug,
@@ -238,6 +239,16 @@ Matching Functions},
    url     = {http://jcgt.org/published/0002/02/01/},
    //url     = {http://www.ppsloan.org/publications/XYZJCGT.pdf},
    issn    = {2331-7418}
+}
+
+@article{nicodemus63,
+	author = {Nicodemus, F. E.},
+	title = "Radiance",
+	journal = {American Journal of Physics},
+	year = 1963,
+	volume = 31,
+	pages = {368-377},
+	doi = {10.1119/1.1969512}
 }
 
 @incollection{nicodemus77,

@@ -61,7 +61,7 @@ lifting procedures: out of the infinitely many spectra that, in general,
 correspond to any given tristimulus value, one needs to be selected.
 
 One possible selection criterion is spectrum smoothness, because naturally occurring
-reflectance spectra are generally smooth functions of wavelength~\parencite{maloney86}. 
+reflectance spectra are generally smooth functions of wavelength~\cite{maloney86}. 
 The widely
 used technique by~\textcite{smits99} therefore attempts to find spectra that
 maximize a specific smoothness criterion in an expensive precomputation.
@@ -91,10 +91,10 @@ which corresponds to the input color since \cref{eqn:color_matching} is linear.
 
 This technique is bound to the sRGB color space, and the sparse sampling with only
 seven precomputed spectra can lead to poor results if a wider-gamut color space is
-used, instead~\parencite{meng2015}: saturated primary colors correspond to narrow
+used, instead~\cite{meng2015}: saturated primary colors correspond to narrow
 band spectra, which in turn produce mixtures of narrow band spectra in Smits' lifting
 procedure. This can limit the maximum attainable reflectance if per-wavelength energy conservation
-is required~\parencite{schroedinger19}, and can be detrimental in rendering systems based
+is required~\cite{schroedinger19}, and can be detrimental in rendering systems based
 on random or quasi-random Monte Carlo integration.
 
 \textcite{meng2015} generalize the method using a much denser sampling of the xy chromaticity

@@ -123,8 +123,14 @@ as well as a glossary in \cref{sec:main} with the hope these might help clarify 
 from our use of movie-making jargon.
 
 \section{Quantities in light transport}
+\epigraph{%
+	\emph{It has been	my experience that most people find it peculiarly difficult to master 
+	the fundamental concepts and relations of radiometry (or photometry) as they apply 
+	to extended sources. And I have come to believe that the key to this difficulty 
+	lies in the interrelated concepts of an elementary beam of radiation and its 
+	radiance (or luminance)}}{\textsc{Fred Nicodemus}, 1963}
 
-We discussed how \gls{rendering} is concerned with simulating how light travels around in 
+\noindent We discussed how \gls{rendering} is concerned with simulating how light travels around in 
 a \gls{virtual scene}, so this section introduces names for the quantities transported 
 along these paths during the simulation and outlines the theory behind them. 
 The naming we adopt is in line with several current international standards, 
@@ -135,7 +141,7 @@ the \emph{International lighting vocabulary} published\footnote{Can also be cons
 and the lighting section of the so-called ``Electropedia'' from the \gls{IEC}~\cite{iec:60050-845:2020}.
 Work in recent years has gone into harmonizing these bodies of knowledge so that the resulting 
 vocabularies and symbols are in alignment. All the units in use descend directly
-from the \gls{si} system, descibed in~\cite{bipm:si.2019}.
+from the \gls{si}, descibed in~\cite{bipm:si.2019}.
 
 Thinking about light flowing through a scene, rendering is concerned with the so-called
 \textsl{particle theory} of light: these particles are called \textsl{photons}, 
@@ -151,7 +157,7 @@ instead being made entirely of energy\footnote{
 Max Planck talked about energy \textsl{quanta}: because of what photons are 
 (namely, little ``drops'' of energy), 
 energy can only come to be in certain specific amounts as can be captured by integral 
-amounts of photons: there is no such thing as $1.736$ photons, because photons are integer and 
+amounts of photons. There is no such thing as $1.736$ photons: because photons are integer and 
 indivisible, they are viewed in this theory as \textsl{elementary particles}, 
 so one can only have 1 photon, or 2 photons or 3 and so on, and this limits the possible
 amounts of energy one can have.
@@ -166,26 +172,35 @@ and $c$ is the speed of light in vacuum\footnote{This concept of \textsl{wavelen
 	present everywhere along our ``light ray'' and is called \textsl{wave} because the strength 
 	of this field oscillates over time at a given frequency $\nu = c/\lambda$, 
 	measured in $[\unit\hertz]$. 
-	In fact, the energy of a photon is more rigorously defined as 
-	$Q_p = h\nu$ with $\nu$ defined as above. 
+	In fact, the energy of a photon is technically defined as $Q_p = h\nu$. 
 	Because we're mainly concerned with a geometric-optics/particle-theory view of light, 
 	in this work we have chosen to work with wavelengths, so we won't
 	see much discussion, if any, of frequency and $\nu$'s}. 
-The subscript $p$ indicates we are discussing photon quantities, we will need to introduce more of
-these subscripts as we go along to differentiate under what perspective we are considering the
-quantities in play.
+The subscript $\square_p$ indicates we are discussing photon quantities: 
+we will need to introduce more of these subscripts as we go along to differentiate under 
+what perspective we are considering the quantities in play.
 For what concerns graphics and rendering, light rays are \textsl{thin} objects, by which we mean 
-if we imagined a ray like a tube, or a pipe, it would have a cross section, or width of $0$. However it is occasionally
-useful to think about the ``size'' of a photon, and it turns out a good model for a photon's size is
-to use its wavelength as a measure of its cross-section diameter.
+if we imagined a ray like a tube, or a pipe, it would have a cross section, or width, of $0$. 
+However it is occasionally useful to think about the ``size'' of a photon, and it turns out a 
+good model for a photon's size is to use its wavelength as a measure of its cross-section diameter.
+This is far from an abstract concern: photons will only travel through openings that are bigger 
+than their own size (which is relatively natural to expect, thinking about photons as particles).
+They will also be relatively undisturbed by things that are substantially smaller than their
+size (which instead is natural to expect from a view where photons are waves: it's similar to
+how you would observe waves in a lake behave).
 
 As much as photons are the elemental ingredients of light transport, 
 they obviously must come from somewhere, which we call \textsl{light sources}.
 Given a light source that has been shining for a period of time, it will have emitted a
 certain number $N_p$ of photons, delivering a corresponding amount of energy $Q_e$, measured in
-joule $[\unit{\joule}]$. Note how the subscript here is $e$, for \textsl{energetic}, indicating
-we are looking at a quantity coming from \textsl{\gls{radiometry}}.
-And this brings us to discuss the notion of \textsl{power} of our source, being its ability
+joule $[\unit{\joule}]$. Note how the subscript here is $\square_e$, for \textsl{energetic}, indicating
+we are looking at a quantity coming from \textsl{\gls{radiometry}}. 
+If all of these photons had the same wavelength $\lambda$, maybe because they were coming 
+from a laser source, we would have $Q_e = N_p Q_p = N_p  hc/\lambda$. In the general case
+of light sources emitting in several different frequencies, we'd have to tally them separately
+and sum patiently, or integrate their distribution if we had access to it.
+
+One way or the other, this brings us to discuss the notion of \textsl{power} of our source, being its ability
 to emit light over time. Given that light is energy, and as we said we measure energy
 in $[\unit\joule]$, the emission rate of light (which \emph{is} energy) over time $Q_e/t$ 
 will be measured in watts $[\unit\watt]$, being joules per 
@@ -222,7 +237,7 @@ Lastly, as much as it's valuable to discuss light through a specific given apert
 sometime we will want to talk about all the light that leaves a source without much of an
 interest as to where exactly this flow happens: in this case the mental model
 is to think about all light flowing through an imaginary sphere surrounding the whole source.
-When there is a need to underline we're talking about all the light in this sense, we will use the
+When there is a need to underline that we're talking about all the light in this sense, we will use the
 adjective \textsl{total}, so for a light source we will say in short ``radiant power'' in
 most cases meaning ``total exitant radiant power''.
 
@@ -267,7 +282,8 @@ while others photons might just travel through the surface in \textsl{\gls{trans
 
 The sum of these three components is called \textsl{\gls{radiosity}}, and it's the only quantity
 in this document that is not covered by standardized lighting vocabulary. 
-Rather it's a concept borrowed from the heat transfer field (see for example~\cite{iso:9288:2022}).
+Rather it's a name and quantity borrowed from the heat transfer vocabulary 
+(see for example~\cite{iso:9288:2022}).
 So in general we would have radiosity defined as
 \begin{displaymath}
 	J_e = M_e + J_{e,r} + J_{e,tr} \qquad \left[\unit{\watt\per\square\meter}\right]
@@ -281,8 +297,8 @@ This is what is done in architectural modeling to capture the lighting patterns 
 specific physical light fixtures, for example: the source \emph{per se} is considered to have
 negligible spatial extents, but the shape of the light it gives off is of interest to 
 study how a given room would receive light.
-As before we would like this quantity defined so that the power in a range of
-directions all coming from the source, which has no lateral extents
+As before we would like this quantity defined so that the power comprised within a range of
+directions, all coming from this small source which has no lateral extents,
 could be directly computed by integration over a solid angle $\Omega$:
 \begin{displaymath}
 	\Phi_e = \int_\Omega I_e(\omega) \d\omega \qquad [\unit{\watt}]
@@ -318,7 +334,6 @@ flow for our rays, for this reason we'll annotate \gls{exitant} radiance
 and \gls{incident} radiance with a little arrow in the exponent:
 exitant radiance pointing up $L_e^\uparrow$ and incident radiance pointing down
 $L_e^\downarrow$.
-
 Here, $\theta$ denotes the angle between the direction $\omega$ and the normal.
 The so called \emph{projected solid angle} $\d\omega^\bot := \cos \theta \d \omega$
 accounts for the change of flux received per infinitesimal area by a beam of light
@@ -355,15 +370,16 @@ arrive there, and as before this also can vary across our region
 (imagine the light cast by our stained glass window from before onto a floor,
 or the dappling of light and shadow you'd have when standing under a tree)
 so it is natural to formulate a notion of \emph{incident} power density across 
-an area of a receiver.
+an area of a receiver. 
 The total incident radiant power over a region $R$ on the receiver can then be computed by
 integration across its surface:
 \begin{displaymath}
 	\Phi_e = \int_{R} E_e(x) \d x \qquad [\unit{\watt}]
 \end{displaymath}
 the value $E_e(x)$ is the receiver's area density of incident radiant power and
-is called \textit{irradiance}.
-Much like radiant exitance, irradiance as well has a differential formulation:
+is called \textit{irradiance}, and it's in a way some kind of opposite of radiant exitance
+in that one describes incident flow while the other described exitant flow.
+And indeed, exactly like radiant exitance, irradiance as well has a differential formulation:
 \begin{displaymath}
 	E_e = \frac{\d\Phi_e}{\d R} \qquad \left[\unit{\watt\per\square\meter}\right]
 \end{displaymath}
@@ -380,7 +396,7 @@ and a similar relation holds radiant intensity in terms of an area integral
 \end{displaymath}
 
 Somewhat orthogonally to all the above, we can consider spectral distributions
-of all these quantities, which we simply define as the spectral densities of the
+of all these quantities, which are the spectral densities of the
 quantities above. First we define \textsl{spectral radiant power} as the density of
 radiant power with respect to wavelength:
 \begin{displaymath}
@@ -402,7 +418,10 @@ either by differentiation along $\lambda$ or by substitution from above
 
 
 \section{Measuring light and brightness}
-
+\epigraph{%
+	\emph{We must remember that a photograph can hold just as much as we put into it, 
+		and no one has ever approached the full possibilities of the medium.}}
+	{\textsc{Ansel Adams}}
 \begin{sidewaystable}
 %\small
 \fontsize{9}{10.8}\selectfont
@@ -491,7 +510,7 @@ precisely and give it an appropriate name.
 		while the right hand side shows ultraviolet light, 
 		in the 345--380 \unit{\nano\meter} band. 
 		Both bands are moderately beyond what is visible by humans}
-	{\footnotesize\hfill
+	{\scriptsize\hfill
 		Photograph by Tomas \url{https://www.nofocus.blog/}
 	}
 \end{figure}
@@ -504,20 +523,48 @@ sense of brightness in the scene as experienced by a person looking at it.
 And it wouldn't look much like a black-and-white photograph either, not one made
 with film stock a photographer would commonly use, or the black-and-white mode 
 of a digital camera anyways.
-The reason is two-fold: on the one side radiant power includes \emph{all} radiation
+There two broad classes of reasons why this is the case: 
+on the one side radiant power includes \emph{all} radiation
 bands, and so this radiant power ``image'' would have information about all sorts 
 of wavelengths that have little to do with vision. 
-If such a wide-band device existed it would conceivably capture energy of wavelengths
-in the millimeters (say radar waves or far infrared waves) all the way to maybe
-single nanometers\footnote{And for short wavelengths all sorts of
+Let's imagine for a moment a semi-realistic scenario where we'd build a device 
+capable of capturing energy of wavelengths in the millimeters (say radar waves 
+or far infrared waves) all the way to maybe single nanometers\footnote{
+	And for short wavelengths all sorts of
 	problems appear, for example many materials such as flesh cease being opaque, or 
-	scattering photons that much, a key trait for medical imaging} 
-(which would be X-rays). Even without going to these extremes, even bands
-quite near to the visible range look substantially different than they do in the
-visible, as you can see in~\cref{fig:uv_ir_photo}. On the other side,
-even in the visible range, our sensitivity to brightness exhibits a marked dependency
-on the wavelength (as you can see in a plot of the luminous efficiency 
+	scattering photons that much, a key capability for medical imaging} 
+(which would be X-rays): it might be fun to try and imagine what pictures it would make.
+This brings up many questions, for example: photons in longer wavelengths don't carry
+all that much energy (one by one), so if we imagine that the number of photons arriving
+is roughly even across wavelengths (say maybe in a range of $100:1$) we'd still need to make
+up for the fact that one nanometer photon will be a million times brighter than one millimeter
+photon, so it seems difficult to make useful pictures from such an incredibly wide dynamic range.
+In fact, without going to these extremes, even bands quite near to the visible range look 
+substantially different than they do in the visible, as you can see in~\cref{fig:uv_ir_photo}. 
+The other class of reasons is that, even restricting ourselves to the visible range, 
+our sensitivity to brightness exhibits a marked dependency on the wavelength 
+(as you can see in a plot of the luminous efficiency 
 function $V(\lambda)$, for example in~\cref{fig:illumspectra}).
+When black and white film was originally developed this was a very carefully considered
+affair, as you can see from~\cref{fig:orthopanphoto}.
+
+\begin{figure}
+	{
+		\hfill
+		\includegraphics[width=.8\linewidth]{images/Orthochromatic-Panchromatic-film-1024x768-1.jpg}
+		\hfill
+	}	
+	
+	\caption{\label{fig:orthopanphoto}
+		Reproduction of an old advertisement image, illustrating the difference between
+		orthochromatic film, most sentitive to greens and blues, and panchromatic film,
+		having a somewhat more even response across the visible spectrum. 
+		Note that neither sensitivity curve is all that close to the luminous efficiency
+		function $V(\lambda)$}
+	{\scriptsize\hfill
+		Photograph from \url{https://thedarkroom.com/orthochromatic-vs-panchromatic-film-a-photo-comparison/}
+	}
+\end{figure}
 
 Because of how the human visual system is not equally sensitive to all wavelengths
 of light, our eyes may well perceive light emanating or reflecting 
@@ -531,7 +578,7 @@ when they appear to have different colors.
 It is therefore useful, and in a way \emph{necessary}, to reason about the power 
 of light in two different ways, one dealing with energy levels as you would have in 
 physics, called \textsl{radiometric}, and the other tuned or rebalanced, to account 
-for the workings of human perception, called \textsl{photometric}. 
+for the workings of human perception, called \textsl{photometric}\footnote{ 
 The two approaches have historically used a great many units, 
 until the \textsl{\gls{candela}} $[\unit\candela]$ was adopted as a base unit 
 as part of Resolution 6 of the Tenth Conference on Weights and Measures
@@ -543,7 +590,8 @@ and Measures held in 1960.
 At this Eleventh conference the base units (which were six at the time) were first
 given the name ``Syst\`eme International d’Unit\'es” and its abbreviation \glsname{si}.
 Many more details around various historical and \gls{si} units are
-described in~\cite{Meyer-Arendt:68}. As discussed before, we follow here the harmonized
+described in~\cite{Meyer-Arendt:68}}. 
+As discussed before, in this document we will use \gls{si} units and the harmonized 
 vocabulary resulting from~\cite{iso:80000-7:2019,cie:s017.2020,iec:60050-845:2020}.
 
 From the point of view of \textsl{\gls{radiometry}}, we saw how the \textsl{radiant power} 
@@ -558,7 +606,7 @@ wavelength $\lambda$\footnote{
 	The photopic spectral luminous efficiency function $V(\lambda)$ is the result of a 
 	series of experiments and tabulations first published by the \gls{CIE} in 1924 
 	and then included as $\bar y(\lambda)$ in the color matching functions for 
-	the \emph{standard 2 degree colorimetric observer}~\parencite{smithgould1931}.}.
+	the \emph{standard 2 degree colorimetric observer}~\cite{smithgould1931}.}.
 
 This means that two different light sources emitting the same luminous
 power will appear as having about the same brightness even when having
@@ -570,10 +618,10 @@ different spectral distributions\footnote{This
 	visual systems (called color vision deficiencies or color blindness), 
 	for whom this statement ends up being even less accurate}.
 
-Much like we've been using the subscript $e$ to indicate radiant quantities such as
-radiant power $\Phi_e$ or radiant intensity $I_e$, and the subscript $e,\lambda$ to indicate
+Much like we've been using the subscript $\square_e$ to indicate radiant quantities such as
+radiant power $\Phi_e$ or radiant intensity $I_e$, and the subscript $\square_{e,\lambda}$ to indicate
 their spectral counterparts $\Phi_{e,\lambda}$ and $I_{e,\lambda}$, we will
-indicate \emph{photometric} quantities with the subscript $v$ for ``visual''.
+indicate \emph{photometric} quantities with the subscript $\square_v$ for ``visual''.
 Their definition follows one-to-one the corresponding radiometric quantity: for a
 given radiometric spectral quantity $X_{e,\lambda}$ we can construct its
 corresponding photometric quantity $X_v$ integrating like this
@@ -585,7 +633,7 @@ the corresponding names will also change, replacing ``(spectral) radiant'' with 
 For example, given spectral radiant power $\Phi_{e,\lambda}(\lambda)$, the
 corresponding luminous power $\Phi_v$ is
 \begin{displaymath}
-\Phi_v = K_{cd} \int \Phi_{e,\lambda}(\lambda)\; V(\lambda) \d\lambda.
+\Phi_v = K_{cd} \int \Phi_{e,\lambda}(\lambda)\; V(\lambda) \d\lambda \;[\unit\lumen]
 \end{displaymath}
 
 The scaling constant $K_{cd} = 683\;\unit{\lumen\per\watt}$, formally called \textsl{luminous efficacy of monochromatic radiation}, 
@@ -603,7 +651,7 @@ As such it defines\footnote{
 	which had been established in 1933, based on the emission of a black body radiator
 	at the freezing point of platinum (about $\num{2042}\;[\unit{\kelvin}]$). 
 	This outdated definition is sometimes also found in 
-	literature~\parencite{Meyer-Arendt:68}.
+	literature~\cite{Meyer-Arendt:68}.
 } the base \gls{si} unit \textsl{candela} $[\unit{\candela}]$, 
 as the amount of luminous intensity of a source of monochromatic radiation of frequency 
 $\num{540}\;[\unit{\tera\hertz}]$ having a radiant intensity of $1/683\;[\unit{\watt\per\steradian}]$
@@ -621,7 +669,7 @@ above definition can be written as
 \end{displaymath}
 from which it follows that $K_{m} \approx 683.002 \;[\unit{\lumen\per\watt}]$. 
 In practice, however, it is safe to use the value of 
-$683\;[\unit{\lumen\per\watt}]$~\parencite{cie:018.2019,wyszecki2000}.
+$683\;[\unit{\lumen\per\watt}]$~\cite{cie:018.2019,wyszecki2000}.
 \fi
 
 

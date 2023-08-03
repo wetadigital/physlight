@@ -1,14 +1,14 @@
 % SPDX-License-Identifier: Apache-2.0
 % Copyright (c) Contributors to the PhysLight Project.
 %
-\ProvidesFile{physlight.dbx}[2023/07/23 v1.0 biblatex bibliography style for physlight]
-% add support for the @movie bib entry and supply an author-year style otherwise
+\ProvidesFile{physlight.bbx}[2023/07/23 v1.0 biblatex bibliography style for physlight]
+% TODO: add support for the @movie bib entry and supply an author-year style otherwise
 
 \RequireBibliographyStyle{alphabetic}
 
 \DeclareDelimFormat{nameyeardelim}{\addcomma\space}
 
-% make the bibliography show the label as presentes in the text
+% make the bibliography show the label as presented in the text
 \DeclareFieldFormat{bbx@introcite}{\mkbibbrackets{#1}}
 
 % longer authors lists use "et al."
@@ -29,15 +29,16 @@
 }
 
 \DeclareBibliographyDriver{movie}{%
-\usebibmacro{begentry}%
-\printfield{title}%
-\newunit\newblock
-\printnames{director}\printtext{\space(dir)}% dir could be a localized string via an .lbx file
-\newunit\newblock
-\printnames{producer}\printtext{\space(prod)}% prod could be a localized string via an .lbx file
-\newunit\newblock
-\printlist{studio}%
-\newunit
-\printdate%
-\usebibmacro{finentry}}
+	\usebibmacro{begentry}%
+	\printfield{title}%
+	\newunit\newblock
+	\printnames{director}\printtext{\space(dir)}% dir could be a localized string via an .lbx file
+	\newunit\newblock
+	\printnames{producer}\printtext{\space(prod)}% prod could be a localized string via an .lbx file
+	\newunit\newblock
+	\printlist{studio}%
+	\newunit
+	\printdate%
+	\usebibmacro{finentry}
+}
 
