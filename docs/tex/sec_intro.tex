@@ -200,16 +200,17 @@ from a laser source, we would have $Q_e = N_p Q_p = N_p  hc/\lambda$. In the gen
 of light sources emitting in several different frequencies, we'd have to tally them separately
 and sum patiently, or integrate their distribution if we had access to it.
 
-One way or the other, this brings us to discuss the notion of \textsl{power} of our source, being its ability
-to emit light over time. Given that light is energy, and as we said we measure energy
-in $[\unit\joule]$, the emission rate of light (which \emph{is} energy) over time $Q_e/t$ 
-will be measured in watts $[\unit\watt]$, being joules per 
-second $[\unit\watt] = [\unit{\joule\per\second}]$. 
+One way or the other, this brings us to discuss the notion of \textsl{power} of our source, 
+being its ability to emit light over time. 
+Given that light is energy, and as we said we measure energy in $[\unit\joule]$, the emission 
+rate of light (which \emph{is} energy) over time $Q_e/t$ will be measured in 
+watts $[\unit\watt]$, being joules per second $[\unit\watt] = [\unit{\joule\per\second}]$. 
 This under the assumption that our source emits light at a constant rate, and indeed
 one might as well think of it as $N_p$ photons per second, as long as one also tallies
 accurately the various wavelenghts of these emitted photons exiting the source.
 We will come back to this point later in this work, because it's the key ingredient to be able to
-discuss the light's \emph{\gls{color}}, which is of course a matter of central importance here.
+discuss the light's \emph{\gls{color}}, which is of course a matter of central importance in
+our discussion.
 
 What we are going to do over the rest of this section is to continue to break down 
 this aggregate notion of ``energy from a light source'' into simpler components, aiming 
@@ -395,6 +396,37 @@ and a similar relation holds radiant intensity in terms of an area integral
 	I_e(\omega) = \int_A L_e(x,\omega) \d x \quad
 \end{displaymath}
 
+The last quantity that is of interest to us is \textsl{radiant \gls{exposure}},
+in fact, in terms of making images, one could say this is the \emph{most} important
+quantity of them all. Exposure is a measure of the area density of
+the photons that landed in a region, and it's precisely what a camera measures:
+film cameras contain photosensitive film, where more arriving photons transfer more
+energy onto the sensitive media and give a stronger effect\footnote{
+	Although counterintuitive this implies that the sensitivity grading of physical film
+	stock depends on the size of image being formed. And in fact this is the case in practice:
+	in order to take photographs with the same exposure settings using media of different
+	formats, the larger stock needs to be chemically more sensitive to light to compensate
+	for the lower \textsl{exposure} resulting from the larger area.
+	Manufacturers do take this into account when film is graded
+}, whereas digital cameras (be them \gls{CMOS}-based or \gls{CCD}-based) directly 
+count photons. 
+The definition of \gls{exposure} is similar to the definition of \gls{irradiance}
+\begin{displaymath}
+	H_e(x) = \frac{\d Q_e}{\d R} \qquad \left[\unit{\joule\per\square\meter}\right]
+\end{displaymath}
+where the source radiant power $\Phi_e$ was replaced with the source \emph{energy} $Q_e$.
+Thinking about it, you can convince yourself that exposure is quite clearly what a camera
+sensor does: it receives photons for a certain period of time at a position from all directions.
+This can be seen mathematically too:
+\begin{displaymath}
+	H_e(x) = \int_{\Delta t} E_e(x) \d t 
+	       = \int_{\Delta t} \frac{\d\Phi_e}{\d R} \d t
+	       = \frac{\d}{\d R} \int_{\Delta t} \Phi_e \d t
+	       = \frac{\d Q_e }{\d R} 
+\end{displaymath}
+
+
+
 Somewhat orthogonally to all the above, we can consider spectral distributions
 of all these quantities, which are the spectral densities of the
 quantities above. First we define \textsl{spectral radiant power} as the density of
@@ -406,7 +438,8 @@ and then we obtain the \textsl{spectral} version of all the quantities discussed
 either by differentiation along $\lambda$ or by substitution from above
 \begin{displaymath}
 	M_{e,\lambda} = \frac{\d M_e}{\d\lambda} = \frac{\d\Phi_{e,\lambda}}{\d S} \qquad
-	E_{e,\lambda} = \frac{\d E_e}{\d\lambda} = \frac{\d\Phi_{e,\lambda}}{\d R} 
+	E_{e,\lambda} = \frac{\d E_e}{\d\lambda} = \frac{\d\Phi_{e,\lambda}}{\d R} \qquad
+	H_{e,\lambda} = \frac{\d H_e}{\d\lambda} = \frac{\d Q_{e,\lambda}}{\d R} 
 \end{displaymath}
 \begin{displaymath}
 	I_{e,\lambda} = \frac{\d I_e}{\d\lambda} = \frac{\d\Phi_{e,\lambda}}{\d\Omega} 
@@ -437,17 +470,17 @@ either by differentiation along $\lambda$ or by substitution from above
 & name	             & symbol & \multicolumn{2}{c|@{$\;$}}{unit}  
 & name               & symbol & \multicolumn{2}{c}{unit} \\ \hline
 %
-  Radiant energy          & $Q_{e}$         & $\unit{\joule} = \unit{\watt\second}$                     & \textsl{joule}  
-& Spectral Radiant energy & $Q_{e,\lambda}$ & $\unit{\joule\per\meter} = \unit{\watt\second\per\meter}$ &   
-& Luminous energy         & $Q_v$           & $\unit{\talbot} = \unit{\lumen\second}$                   & \textsl{talbot} \\
+  Radiant Energy          & $Q_{e}$         & $\unit{\joule} = \unit{\watt\second}$                     & \textsl{joule}  
+& Spectral Radiant Energy & $Q_{e,\lambda}$ & $\unit{\joule\per\meter} = \unit{\watt\second\per\meter}$ &   
+& Luminous Energy         & $Q_v$           & $\unit{\lumen\second} = \unit{\talbot}$                   & \textsl{talbot} \\
 %
-  Radiant power          & $\Phi_{e}$          & \unit{\watt}                                          & \textsl{watt}  
-& Spectral Radiant power & $\Phi_{e,\lambda}$  & \unit{\watt\per\meter}                                &  
-& Luminous power         & $\Phi_v$            & \unit{\lumen}                                         & \textsl{lumen} \\
+  Radiant Power          & $\Phi_{e}$          & \unit{\watt}                                          & \textsl{watt}  
+& Spectral Radiant Power & $\Phi_{e,\lambda}$  & \unit{\watt\per\meter}                                &  
+& Luminous Power         & $\Phi_v$            & \unit{\lumen}                                         & \textsl{lumen} \\
 %
-  Radiant exitance          & $M_{e}$         & \unit{\watt\per\square\meter}                           &              
-& Spectral Radiant exitance & $M_{e,\lambda}$ & \unit{\watt\per\square\meter\per\meter}                 &              
-& Luminous emittance        & $M_v$           & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & \textsl{lux} \\
+  Radiant Exitance          & $M_{e}$         & \unit{\watt\per\square\meter}                           &              
+& Spectral Radiant Exitance & $M_{e,\lambda}$ & \unit{\watt\per\square\meter\per\meter}                 &              
+& Luminous Exitance        & $M_v$           & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & \textsl{lux} \\
 %
   Radiosity          & $J_{e}$         & \unit{\watt\per\square\meter}                                &              
 & Spectral Radiosity & $J_{e,\lambda}$ & \unit{\watt\per\square\meter\per\meter}                      &              
@@ -457,9 +490,14 @@ either by differentiation along $\lambda$ or by substitution from above
 & Spectral Irradiance & $E_{e,\lambda}$ & \unit{\watt\per\square\meter\per\meter}                 &                  
 & Illuminance         & $E_v$           & $\unit{\lux} = \unit{\lumen\per\square\meter}$          & \textsl{lux}     \\
 %
-  Radiant intensity           & $I_{e}$         & \unit{\watt\per\steradian}                            &                  
-& Spectral Radiant intensity  & $I_{e,\lambda}$ & \unit{\watt\per\steradian\per\meter}                  &                  
-& Luminous intensity          & $I_v$           & $\unit{\candela} = \unit{\lumen\per\steradian}$       & \textsl{candela} \\
+  Exposure          & $H_{e}$         & \unit{\joule\per\square\meter}                           &                  
+& Spectral Exposure & $H_{e,\lambda}$ & \unit{\joule\per\square\meter\per\meter}                 &                  
+& Luminous Exposure & $H_v$           & $\unit{\lux\second} = \unit{\talbot\per\square\meter}$   &  \\
+
+%
+  Radiant Intensity           & $I_{e}$         & \unit{\watt\per\steradian}                            &                  
+& Spectral Radiant Intensity  & $I_{e,\lambda}$ & \unit{\watt\per\steradian\per\meter}                  &                  
+& Luminous Intensity          & $I_v$           & $\unit{\candela} = \unit{\lumen\per\steradian}$       & \textsl{candela} \\
 %
   Radiance           & $L_{e}$         & \unit{\watt\per\square\meter\per\steradian}                  &                  
 & Spectral Radiance  & $L_{e,\lambda}$ & \unit{\watt\per\square\meter\per\steradian\per\meter}        &                  

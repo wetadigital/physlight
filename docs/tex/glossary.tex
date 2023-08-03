@@ -12,6 +12,14 @@
 
 \newacronym{ANSI}{ansi}{American National Standards Institute}
 
+\newacronym[
+	description={An integrated device containing an array of linked capacitors,
+		these can be charged upon receiving photons and their charge later read out to
+		recover what is effectively a photon count. 
+		Used in this document to indicate a specific class of photosensors used in contemporary
+		digital cameras}, seealso={CMOS}
+]{CCD}{ccd}{Charge-Coupled Device}
+
 \newacronym{CCT}{cct}{Correlated Color Temperature}
 
 \newacronym[description={The traditional system of units in use in Europe for physics
@@ -25,6 +33,12 @@
 	(International Commission on Illumination) is the international standards body that regulates over quantities related to 
 	illumination}]{CIE}{cie}{International
 	Commission on Illumination}
+
+\newacronym[
+	description={Currently one of the main technologies used in integrated circuit construction,
+		this is used in this document to indicate a specific class of photosensors used in contemporary
+		digital cameras}, seealso={CCD}
+]{CMOS}{cmos}{Complementary Metal Oxide Semconductor}
 
 \newacronym{CRI}{cri}{Color Rendering Index}
 
@@ -186,6 +200,11 @@ System of Units}
 		flow as leaving the object}
 }
 
+\newglossaryentry{exposure}{
+	name={exposure},
+	description={A measure of the area density of incident energy}
+}
+
 \newglossaryentry{exposure meter}
 {
 	name={exposure meter},
@@ -326,6 +345,13 @@ System of Units}
 	name={incident},
 	description={In radiometry and photometry, and adjective used to characterize the direction of
 		flow as arriving at an object}
+}
+
+\newglossaryentry{irradiance}
+{
+	name=irradiance,
+	seealso={brightness},
+	description=\nopostdesc
 }
 
 \newglossaryentry{luminous efficacy}
