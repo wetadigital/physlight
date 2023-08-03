@@ -4,46 +4,114 @@
 \chapter{Imaging and lighting models}\label{ch:lighting}
 \section{Describing imaging}\label{ch:imaging}
 
-Imaging is the process of transforming the radiant power of a specific scene
-configuration into pixel values. This is done by creating a camera and sensor
-or film model and computing their response to the energy flow in the scene.
-The imaging parameters are:
-\begin{itemize}
-\item $f$ -- focal length $[\unit{\milli\meter}]$
-\item $N$ -- aperture number $[\unit{\fnumber}]$  (artificially valid for
-non-DoF renders)
-\item $o$ -- focus distance $[\unit{\meter}]$
-\item $\Delta t$ -- exposure time $[\unit{\second}]$
-\item $S$ -- film speed $[\unit{\iso}]$
-\item $T$ -- white point as a temperature $[\unit{\kelvin}]$  (from black body
-chromaticity)
-\item filmback size $[\unit{\square\meter}]$
-\item pixel resolution $[\unit{\pixel}]$
-\end{itemize}
+Imaging is the process of capturing the \gls{radiant power} resulting 
+from a specific \gls{scene} configuration and turning it into pixel values. 
+This is done by creating a camera and sensor or film model and computing 
+their response to the energy flowing through the scene.
+The imaging parameters describe how specifically this conversion should happen, 
+their symbols and dimensions are:
 
-The pixels in the image being synthesized are typically stored as triples of
-floating point numbers, also known as \textsl{tristimulus values}, their
-magnitudes being linear in the spectral radiant energy reaching the area of each
-pixel.
-This process can be modelled by introducing the notion of \textsl{film response
-function} $W(x,\lambda): \R^2\times\R \to \R^3$ to model the correspondence
-between spectral radiance $L^{\downarrow img}_{\lambda}(x, \omega, \lambda, t)$
-reaching a given pixel $p^{img}$ and the tristimulus data $C_{col}(p^{img})$ for
-that pixel in color space $col$:
+\vskip 2mm
+\begin{center}
+\begin{tabular}{r c l}
+	focal length        & $f$ & $[\unit{\milli\meter}]$ \\
+	aperture number     & $N$ & $[\unit{\fnumber}]$ \\
+	focus distance      & $o$ & $[\unit{\meter}]$ \\
+	exposure time       & $\Delta t$ & $[\unit{\second}]$ \\
+	film speed          & $S$ & $[\unit{\iso}]$ \\
+	\glsname{CCT} of the white point & $T_{cp}$ & $[\unit{\kelvin}]$ \\
+	filmback dimensions &     & $[\unit{\square\meter}]$ \\
+	image resolution    &     & $[\unit{\pixel}]$
+\end{tabular}
+\end{center}
+
+\vskip 2mm
+
+In our imaging model, the pixels in the image are triples of
+floating point numbers, known as \textsl{\gls{tristimulus values}}, their
+magnitudes being linear in the spectral radiant \gls{exposure} of the various
+pixels. 
+The \textsl{\gls{imaging equation}}, relating the final color $C_{col}$ of a pixel
+$p^{img}$ to the incoming \gls{spectral} \gls{radiance} may appear daunting at first
 \begin{equation}\label{eqn:imaging1}
-C_{col}(p^{img})  = \frac1{A_p^{img}}\int_{\lambda} \int_{A_p^{img}}
-\int_{\Omega^{img}_a} \int_{\Delta t} W(x, \lambda) L^{\downarrow
-img}_{\lambda}(x, \omega, \lambda, t) \cos\theta\d x\d\omega\d\lambda\d t
+	C_{col}(p^{img})  = \frac1{A_p^{img}}
+	\int_{\Delta t} \int_{\lambda} \int_{\Omega^{img}_a} \int_{A_p^{img}}
+	  W(x, \lambda) L^{\downarrow
+		img}_{e,\lambda}(x, \omega, \lambda, t) \cos\theta\d x\d\omega\d\lambda\d t
 \end{equation}
-where $A_p^{img}$ is the area spanned by pixel $p^{img}$ on the image plane and
-$\Omega^{img}_a$ is the solid angle spanned by the aperture $a$ as seen from
-the image side.
-Note that this formulation means that the image stores values that are
-resolution independent, which is achieved by means of the division by
-$A_p^{img}$. In the case in which $W(x, \lambda)$ is the identity function, the
+
+In order to understand what's happening, we'll start making a simplifying assumption:
+we will ignore for the time being the dependency of $W(x,\lambda)$ on $x$, and pretend it was simply
+$W(\lambda)$. Once we have a clearer vision of how the imaging equation would work in this
+simpler case, it'll be clear what to do in the more general case. We will also explain
+what's the purpose of $W(x,\lambda)$.
+
+We've seen before how we would like the value of a pixel to be proportional 
+to the \textsl{luminous \gls{exposure}} there. In practice two realities will 
+manifest: one is that the pixel has a certain, non-$0$ area, we used the symbol
+$A^{img}_p$ for this little region\footnote{
+	We'll be using the $\square^{img}$ superscript to indicate \textsl{\gls{image}} space 
+	locations, positions on the plane where the image is formed (we call this 
+	the \gls{filmback}). And we're using a $\square_p$ subscript to signify we're 
+	interested in the specific location $p$, which will normally be an argument of a 
+	function being defined. To reduce clutter we won't repeat the $\square^{img}$ 
+	superscript in more than one place in a single symbol}, while the other is that over this area the incoming \gls{spectral} 
+\gls{radiance} won't be uniform (at least not in the general case). 
+The innermost integral
+\begin{displaymath}
+	\bar L^{\downarrow img}_{e,\lambda}(x, \omega, \lambda, t) = \frac1{A_p^{img}} \int_{A_p^{img}} L^{\downarrow img}_{e,\lambda}(x, \omega, \lambda, t) \d x
+\end{displaymath}
+is how we replace the incident \gls{spectral} \gls{radiance} $L^{\downarrow}$ with 
+its own average $\bar L^{\downarrow}$ over $A^{img}_p$. There is no $W(\lambda)$ here:
+it doesn't depend on $x$ so we can factor it out of this integration step.
+
+The next integral is then 
+\begin{displaymath}
+	E_{e,\lambda}(x,\lambda,t) = \int_{\Omega^{img}_a} \bar L^{\downarrow img}_{e,\lambda}(x, \omega, \lambda, t) \cos\theta \d\omega
+\end{displaymath}
+which is an expression to compute \gls{spectral} \gls{irradiance} over this given
+solid angle $\Omega^{img}_a$: much like $p$ is our location on the image, 
+$a$ is the opening that makes up our aperture, so that 
+$\Omega^{img}_a$ is the solid angle with apex at our image (ie. filmback) that spans it\footnote{
+	Our eagle-eyed readers will have observed that $\Omega^{img}_a$ will have a dependency 
+	on $p$ as well: we've omitted it from the symbol to avoid making the notation even 
+	more complex. Note that $\cos\theta$ does take the dependency into account correctly}.
+And there is no $W(\lambda)$ here either, same as before it doesn't depend on $\omega$ so 
+we can factor it out of this integration step as well.
+
+This next layer of the integral is taking care of the \gls{spectral} side of things:
+\begin{displaymath}
+	E_{col}(x, t) = \int_{\lambda} W(\lambda) E_{e,\lambda}(x,\lambda,t) \d\lambda
+\end{displaymath}
+and here we have to bring $W$ along, obtaining something \emph{similar} to \gls{irradiance} or
+\gls{illuminance}, but not quite. More on this later, the subscript $\square_{col}$ reminds us 
+there is something to look into here.
+We can now finish turning our \gls{irradiance}/\gls{illuminance}-like quantity into 
+a corresponding \gls{exposure}-like quantity integrating over time:
+\begin{displaymath}
+	H_{col}(x) = \int_t E_{col}(x,t) \d t
+\end{displaymath}
+and this concludes our analysis of the \textsl{imaging equation}.
+
+Now that the mathematical meaning of the equation is explained, we still need to go
+and understand what is the story with that original $W(x,\lambda)$ term. 
+This function is called \textsl{\gls{film response function}} 
+and it captures how the film or sensor responds to \gls{spectral} \gls{radiance}
+(ie. a series of photons landing on it). Because in certain situations the
+sensitivity is no spatially uniform across the filmback, we've had to pull
+this reweighting factor all the way in the middle of our integral.
+
+It will probably help gain some intuition for the purpose and meaning 
+of $W$ if we go and see what happens in a few practical cases.
+In the case in which $W(x, \lambda)$ is the identity function, the
 result of the integral would be measured in $[\unit{\joule\per\square\meter}]$,
-whereas using $W(x, \lambda) = K_{cd} \bar y(\lambda)$ would result in quantities
-measured in $[\unit{\lux\second}]$.
+and we would have $H_{col} = H_e$. 
+As discussed in~\cref{sec:lightbrightness}, images constructed this way are unlikely
+to look very natural, or to have much practical use at all.
+However that same discussion might inspire us to use $W(x,\lambda) = K_{cd} V(\lambda)$,
+which would result in $H_{col} = H_v$, giving images that would track fairly well a human's
+sense of brightness of the scene, and provide a passable approximation of
+panchromatic film stock, as illustrated in~\cref{fig:orthopanphoto}.
 
 \begin{inconstruction}
  Details on pixel filtering to be inserted here
