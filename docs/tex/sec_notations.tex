@@ -15,27 +15,42 @@
 
 \item[ {$\delta\square$} ] a small, differential amount of $\square$
 
+% our constants and names
 \item[{$\Omega$}] a solid angle
 \item[{$\omega$}] a direction, usually within the solid angle $\Omega$
-\item[$S$] a light source
+\item[$S$] a light source, or the region where its light originates
+\item[$R$] a light receiver, or the region where it receives light
 \item[ {$t\;[\unit\second]$} ] a time period
+\item[$k_i$] imaging constant: scale factor between luminous exposure and pixel values
+\item[$p^{img}$] location on the filmback or image plane
+\item[$W_{pos}(p^{img})$] local response of the filmback
+\item[$W_{col}(\lambda)$] spectral response of the filmback
+\item[$W(p^{img},\lambda)$] film response function
 
 \item[ {$\lambda\;[\unit\meter]$} ] wavelength
 \item[ {$\nu\;[\unit\hertz]$} ] frequency
 
+% general photography quantities and constants
+\item[{$C$}] incident-light meter calibration constant $312.5 = 100 \sfrac{25}8$ for this document
 \item[{$f$}] focal length
 \item[{$N$}] aperture number
 \item[{$o$}] focus distance
 \item[{$\Delta t$}] exposure time
 \item[{$S$}] film speed
 \item[{$T_{cp}$}] \gls{CCT} of a white point
+\item[{$N$}] aperture number
 
+
+
+% from lighting standard vocabulary
 \item[ {$N_p\;[]$} ] number of photons
 \item[ {$Q_p\;[\unit\joule]$} ] energy of one photon
 \item[ {$Q_e\;[\unit\joule]$} ] radiant energy
 
-\item[ {$h$} ] Planck's constant
-\item[ {$K_{cd}$} ] luminous efficacy of monochromatic radiation
+
+% from SI
+\item[ {$h$} ] Planck's constant (see~\cite{bipm:si.2019})
+\item[ {$K_{cd}$} ] luminous efficacy of monochromatic radiation (see~\cite{bipm:si.2019})
 
 \item[ {$\unit\joule$} ] unit: joule, measures amounts of energy
 \item[ {$\unit\watt$} ] unit: watt, measures power, being energy per 
@@ -46,6 +61,23 @@
 \item[ {$\unit\steradian$} ] unit: steradian, measures solid angles
                    
 \end{description}
+
+\paragraph{Vector-valued functions and integrals}
+
+\begin{inconstruction}
+	Explain the meaning of this expression
+	\begin{displaymath}
+		\begin{pmatrix}X\\Y\\Z\end{pmatrix}
+		= \int_\Lambda S(\lambda)\; 
+		\begin{pmatrix}
+			\bar x(\lambda)\\
+			\bar y(\lambda)\\
+			\bar z(\lambda)
+		\end{pmatrix}
+		\d\lambda
+	\end{displaymath}
+\end{inconstruction}
+
 
 \paragraph{Scalar product}
 

@@ -160,7 +160,7 @@ entrysubtype = {stdbody},
   publisher = {United States of America Standards Institute}
 }
 
-@article{smithgould1931,
+@article{smithguild1931,
 	author={T. Smith and J. Guild},
 	title={The \glsname{CIE} colorimetric standards and their use},
 	journal={Transactions of the Optical Society},
@@ -267,14 +267,24 @@ Matching Functions},
  address = {USA},
 }
 
-@book{pharr2010,
- author = {Pharr, Matt and Humphreys, Greg},
- title = {Physically Based Rendering, Second Edition: From Theory To
+@book{dutre2003,
+	author = {Dutr\'e, Philip and  Bekaert, Philippe and Bala, Kavita},
+	title = {Advanced Global Illumination},
+	year = {2003},
+	isbn = {9781568811772},
+	publisher = {A. K. Peters},
+	address = {Natick, MA},
+}
+
+@book{pharr2023,
+ author = {Pharr, Matt and Wenzel Jakob and Humphreys, Greg},
+ title = {Physically Based Rendering: From Theory To
 Implementation},
- year = {2010},
- isbn = {0123750792, 9780123750792},
- edition = {2nd},
- publisher = {Morgan Kaufmann Publishers Inc.},
+ edition ={Fourth ed.},
+ month = mar,
+ year = {2023},
+ isbn = {9780262048026},
+ publisher = {The MIT Press},
  address = {San Francisco, CA, USA},
 }
 
@@ -295,11 +305,35 @@ Interactive Techniques},
 radiosity, ray-tracing},
 }
 
-@misc{jakob2010,
+@inproceedings{kolb95,
+	author = {Kolb, Craig and Mitchell, Don and Hanrahan, Pat},
+	title = {A Realistic Camera Model for Computer Graphics},
+	year = {1995},
+	isbn = {0897917014},
+	publisher = {Association for Computing Machinery},
+	address = {New York, NY, USA},
+	url = {https://doi.org/10.1145/218380.218463},
+	doi = {10.1145/218380.218463},
+	booktitle = {Proceedings of the 22nd Annual Conference on Computer Graphics and Interactive Techniques},
+	pages = {317–324},
+	numpages = {8},
+	keywords = {lens simulation, camera modeling, sampling, ray tracing},
+	series = {SIGGRAPH '95}
+}
+
+@software{jakob2010,
    Author = {Wenzel Jakob},
    Year = {2010},
    Note = {http://www.mitsuba-renderer.org},
    Title = {Mitsuba renderer}
+}
+
+@software{jakob2022mitsuba3,
+	title = {Mitsuba 3 renderer},
+	author = {Wenzel Jakob and Sébastien Speierer and Nicolas Roussel and Merlin Nimier-David and Delio Vicini and Tizian Zeltner and Baptiste Nicolet and Miguel Crespo and Vincent Leroy and Ziyi Zhang},
+	note = {https://mitsuba-renderer.org},
+	version = {3.0.1},
+	year = 2022,
 }
 
 @book{planck14,
@@ -365,6 +399,21 @@ radiosity, ray-tracing},
     Number=15,
     Pages={603--622}
 }
+
+@article{fairman97,
+	author = {Fairman, Hugh S. and Brill, Michael H. and Hemmendinger, Henry},
+	title = {How the CIE 1931 color-matching functions were derived from Wright-Guild data},
+	journal = {Color Research \& Application},
+	volume = {22},
+	number = {1},
+	pages = {11-23},
+	doi = {https://doi.org/10.1002/(SICI)1520-6378(199702)22:1<11::AID-COL4>3.0.CO;2-7},
+	%url = {https://onlinelibrary.wiley.com/doi/abs/10.1002/%28SICI%291520-6378%28199702%2922%3A1%3C11%3A%3AAID-COL4%3E3.0.CO%3B2-7},
+	%eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1002/%28SICI%291520-6378%28199702%2922%3A1%3C11%3A%3AAID-COL4%3E3.0.CO%3B2-7},
+	%abstract = {Abstract The principles that guided the founders of the CIE 1931 system for colorimetry are examined. The principles are applied to the Wright-Guild experimental determinations of the color mixture data to show in detail how and why each step in the development of the CIE 1931 system for colorimetry came about. These steps are examined in the light of 65 years advanced knowledge of colorimetry. The necessity for each of these principles in the modern world is examined critically to determine whether one might hold to the same principles if the system were being freshly formulated today. © 1997 John Wiley \& Sons, Inc. Col Res Appl, 22, 11–23, 1997.},
+	year = {1997}
+}
+
 
 @movie{interstellar2014,
 	title = {Interstellar},

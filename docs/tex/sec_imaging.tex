@@ -8,8 +8,8 @@ Imaging is the process of capturing the \gls{radiant power} resulting
 from a specific \gls{scene} configuration and turning it into pixel values. 
 This is done by creating a camera and sensor or film model and computing 
 their response to the energy flowing through the scene.
-The imaging parameters describe how specifically this conversion should happen, 
-their symbols and dimensions are:
+The imaging parameters describe how specifically this conversion should happen 
+are collected here together with their symbols and dimensions:
 
 \vskip 2mm
 \begin{center}
@@ -31,7 +31,14 @@ In our imaging model, the pixels in the image are triples of
 floating point numbers, known as \textsl{\gls{tristimulus values}}, their
 magnitudes being linear in the spectral radiant \gls{exposure} of the various
 pixels. 
-The \textsl{\gls{imaging equation}}, relating the final color $C_{col}$ of a pixel
+The \textsl{\gls{imaging equation}}\footnote{
+	This equation is present in~\cite[Eq. 1]{kolb95} in an effectively equivalent form,
+	there it's called the \emph{measurement equation}. 
+	However several other authors don't include in their definition of the
+	\emph{measurement equation} the aspect of integration in the time domain, which is
+	of key importance for our work~\cite[p. 45, Eq 2.33]{dutre2003};~\cite{pharr2023}, so to minimize confusion
+	we chose to use a different name
+}, relating the final color $C_{col}$ of a pixel
 $p^{img}$ to the incoming \gls{spectral} \gls{radiance} may appear daunting at first
 \begin{equation}\label{eqn:imaging1}
 	C_{col}(p^{img})  = \frac1{A_p^{img}}
@@ -44,142 +51,276 @@ In order to understand what's happening, we'll start making a simplifying assump
 we will ignore for the time being the dependency of $W(x,\lambda)$ on $x$, and pretend it was simply
 $W(\lambda)$. Once we have a clearer vision of how the imaging equation would work in this
 simpler case, it'll be clear what to do in the more general case. We will also explain
-what's the purpose of $W(x,\lambda)$.
+what's the meaning and purpose of $W(x,\lambda)$ in~\cref{sec:filmrespfunc}, for the moment we just know we need to do
+\emph{something} to \gls{spectral} \gls{radiance} $L^{\downarrow}_{e,\lambda}$ to make
+pictures out of it.
 
-We've seen before how we would like the value of a pixel to be proportional 
-to the \textsl{luminous \gls{exposure}} there. In practice two realities will 
-manifest: one is that the pixel has a certain, non-$0$ area, we used the symbol
-$A^{img}_p$ for this little region\footnote{
+We've seen in~\cref{sec:lightbrightness} what's the reasoning behind a need for the values 
+of our pixels to be proportional to the \textsl{\glsdisp{photometry}{luminous} \gls{exposure}} there. 
+In practice two realities will manifest: one is that the pixel has a certain, 
+non-$0$ area: we used the symbol $A^{img}_p$ for this little region\footnote{
 	We'll be using the $\square^{img}$ superscript to indicate \textsl{\gls{image}} space 
 	locations, positions on the plane where the image is formed (we call this 
 	the \gls{filmback}). And we're using a $\square_p$ subscript to signify we're 
 	interested in the specific location $p$, which will normally be an argument of a 
 	function being defined. To reduce clutter we won't repeat the $\square^{img}$ 
-	superscript in more than one place in a single symbol}, while the other is that over this area the incoming \gls{spectral} 
-\gls{radiance} won't be uniform (at least not in the general case). 
+	superscript in more than one place in a single symbol}. 
+The other is that over this area the incoming \gls{spectral} 
+\gls{radiance} won't necessarily be uniform (at least not in the general case: 
+there might be a shadow boundary across the pixel, or more likely some kind of 
+gradient across it). 
 The innermost integral
 \begin{displaymath}
-	\bar L^{\downarrow img}_{e,\lambda}(x, \omega, \lambda, t) = \frac1{A_p^{img}} \int_{A_p^{img}} L^{\downarrow img}_{e,\lambda}(x, \omega, \lambda, t) \d x
+	\bar L^{\downarrow img}_{e,\lambda}(p^{img}, \omega, \lambda, t) = \frac1{A_p^{img}} \int_{A_p^{img}} L^{\downarrow img}_{e,\lambda}(x, \omega, \lambda, t) \d x
 \end{displaymath}
 is how we replace the incident \gls{spectral} \gls{radiance} $L^{\downarrow}$ with 
-its own average $\bar L^{\downarrow}$ over $A^{img}_p$. There is no $W(\lambda)$ here:
-it doesn't depend on $x$ so we can factor it out of this integration step.
+its own average $\bar L^{\downarrow}$ over $A^{img}_p$, which is our pixel region located at $p^{img}$. 
+There is no need for $W(\lambda)$ here: it doesn't depend on $x$ so we can factor it 
+out of this integration step.
 
 The next integral is then 
 \begin{displaymath}
-	E_{e,\lambda}(x,\lambda,t) = \int_{\Omega^{img}_a} \bar L^{\downarrow img}_{e,\lambda}(x, \omega, \lambda, t) \cos\theta \d\omega
+	E_{e,\lambda}(p^{img},\lambda,t) = \int_{\Omega^{img}_a} \bar L^{\downarrow img}_{e,\lambda}(p^{img}, \omega, \lambda, t) \cos\theta \d\omega
 \end{displaymath}
 which is an expression to compute \gls{spectral} \gls{irradiance} over this given
-solid angle $\Omega^{img}_a$: much like $p$ is our location on the image, 
+solid angle $\Omega^{img}_a$: much like $p^{img}$ is our location on the image, 
 $a$ is the opening that makes up our aperture, so that 
-$\Omega^{img}_a$ is the solid angle with apex at our image (ie. filmback) that spans it\footnote{
+$\Omega^{img}_a$ is the solid angle with apex at our image location $p^{img}$ (ie. on the filmback) 
+that spans the aperture\footnote{
 	Our eagle-eyed readers will have observed that $\Omega^{img}_a$ will have a dependency 
-	on $p$ as well: we've omitted it from the symbol to avoid making the notation even 
+	on $p^{img}$ as well: we've omitted it from the symbol to avoid making the notation even 
 	more complex. Note that $\cos\theta$ does take the dependency into account correctly}.
-And there is no $W(\lambda)$ here either, same as before it doesn't depend on $\omega$ so 
-we can factor it out of this integration step as well.
+And there is no $W(\lambda)$ here either: like before it doesn't depend on $\omega$ so 
+we can factor it out of this integration step too.
 
-This next layer of the integral is taking care of the \gls{spectral} side of things:
+The next layer of the integral is where we take care of the \gls{spectral} side of things:
 \begin{displaymath}
-	E_{col}(x, t) = \int_{\lambda} W(\lambda) E_{e,\lambda}(x,\lambda,t) \d\lambda
+	E_{col}(p^{img}, t) = \int_{\lambda} W(\lambda) E_{e,\lambda}(p^{img},\lambda,t) \d\lambda
 \end{displaymath}
-and here we have to bring $W$ along, obtaining something \emph{similar} to \gls{irradiance} or
-\gls{illuminance}, but not quite. More on this later, the subscript $\square_{col}$ reminds us 
-there is something to look into here.
+and here we have to include $W(\lambda)$, obtaining something \emph{similar} to \gls{irradiance} or
+\gls{illuminance}, but not quite. Rather, it's some kind of weighted average of the spectral
+irradiance, where $W(\lambda)$ provides the (spectral) weighting. 
+There is light at the end of the tunnel, after all (if you pardon the pun). 
+
+The subscript $\square_{col}$ reminds us there is some weighting that has happened here, 
+and of course it suggests there will have to be some relation to \emph{color} in a way or the 
+other.
 We can now finish turning our \gls{irradiance}/\gls{illuminance}-like quantity into 
 a corresponding \gls{exposure}-like quantity integrating over time:
 \begin{displaymath}
-	H_{col}(x) = \int_t E_{col}(x,t) \d t
+	H_{col}(p^{img}) = \int_t E_{col}(p^{img},t) \d t
 \end{displaymath}
-and this concludes our analysis of the \textsl{imaging equation}.
+and this concludes our analysis of the \textsl{imaging equation}. 
+We've reduced it to a rather innocent looking expression
+\begin{displaymath}
+ 	C_{col}(p^{img}) = H_{col}(p^{img})
+\end{displaymath}
+or in words: ``to make a picture, set the color of each pixel to the exposure there'', 
+but we'll want to pay attention to just what exactly we mean by ``exposure''.
 
-Now that the mathematical meaning of the equation is explained, we still need to go
-and understand what is the story with that original $W(x,\lambda)$ term. 
-This function is called \textsl{\gls{film response function}} 
-and it captures how the film or sensor responds to \gls{spectral} \gls{radiance}
-(ie. a series of photons landing on it). Because in certain situations the
-sensitivity is no spatially uniform across the filmback, we've had to pull
-this reweighting factor all the way in the middle of our integral.
+\subsection{The film response function}\label{sec:filmrespfunc}
+
+With the mathematical meaning of the \textsl{imaging equation} under our belt, 
+we still need to double back and understand what is the story with that original $W(p^{img},\lambda)$ term. 
+We call this function \textsl{\gls{film response function}} 
+and we use it to capture how the film or sensor responds to incident \gls{spectral} \gls{radiance}
+(being a whole bunch of photons landing on it). 
+Because in certain situations the sensitivity is not spatially uniform across the \gls{filmback}, 
+we need to keep this weighting factor right in the heart of our integral.
 
 It will probably help gain some intuition for the purpose and meaning 
 of $W$ if we go and see what happens in a few practical cases.
-In the case in which $W(x, \lambda)$ is the identity function, the
+In the case in which $W(p^{img}, \lambda)$ is the identity function, the
 result of the integral would be measured in $[\unit{\joule\per\square\meter}]$,
 and we would have $H_{col} = H_e$. 
-As discussed in~\cref{sec:lightbrightness}, images constructed this way are unlikely
-to look very natural, or to have much practical use at all.
-However that same discussion might inspire us to use $W(x,\lambda) = K_{cd} V(\lambda)$,
-which would result in $H_{col} = H_v$, giving images that would track fairly well a human's
-sense of brightness of the scene, and provide a passable approximation of
-panchromatic film stock, as illustrated in~\cref{fig:orthopanphoto}.
+As discussed in~\cref{sec:lightbrightness}, images constructed this way, even 
+if they were possible\footnote{
+	As discussed before, film stock or a digital device that behaves like this across a wide region
+	of the electromagnetic spectrum simply cannot be built: if nothing else because photons
+	larger than a pixel on the sensor will just ``bounce'' right off, and photons much smaller
+	than the sensor's components will simply traverse it and continue mostly undisturbed.
+	This makes it impossible to have values even roughly representative of $H_e$.}  
+just won't look natural, and are quite unlikely to have much practical use at all.
 
-\begin{inconstruction}
- Details on pixel filtering to be inserted here
-\end{inconstruction}
+That same discussion might inspire us to use $W(p^{img},\lambda) = K_{cd} V(\lambda)$,
+which would result in $H_{col} = H_v$: doing this would give us images where the
+pixel values are a direct readout of the scene's luminous \gls{exposure}.
+These would be images that track fairly well a human's
+sense of brightness of a scene, and provide a passable, but not very accurate, approximation of
+an orthochromatic film stock with reduced blue sensitivity\footnote{Silver halides
+	are very sensitive to short-wavelength light, so film stock with reduced
+	sensitivity in the blues is exceptionally difficult to produce}, 
+the difference from the look of what we'd normally consider to be a black-and-white
+photo is illustrated in~\cref{fig:orthopanphoto}.
 
-The film response function $W(x, \lambda)$ is typically modeled as a product of
-components potentially dependent on wavelength and position, which we formulate
-as follows
+All this being said, the reality is that in practice the film response functions 
+that one finds in common use are typically modeled as a product of
+components, each dependent either on wavelength or on position, 
+and so we decompose it as follows
 \begin{equation}
-W(x,\lambda) = k_i S W_{loc}(x) W_{col}(\lambda)
+W(p^{img},\lambda) = k_i S W_{pos}(p^{img}) W_{col}(\lambda)
 \end{equation}
-where $k_i$ is the \textsl{imaging constant}, $S$ is the \gls{film speed},
-$W_{loc}(x)$ describes the \textsl{local response} of the filmback and
+where $k_i$ is the \textsl{imaging constant} (defined in~\cref{eqn:imaging_ki}), 
+$S$ is the \gls{film speed},
+$W_{pos}(p^{img})$ describes the \textsl{local response} of the filmback and
 $W_{col}(\lambda)$ describes its \textsl{spectral response}.
 
-% TODO: use \sRGBl here
-\paragraph{Spectral response}
-A common approach in digital image synthesis to construct a spectral sensor
-response function is to use the function $W_{XYZ}(\lambda)$ defined as:
+\subsubsection{Spectral response}
+We've already seen a couple examples of candidates for the spectral component
+of the \gls{film response function}. These however had mostly theoretical value,
+to illustrate the purpose of the film response function as a whole.
+In order for us to make ordinary color images, we need to produce data
+suitable to convert into a color space of our liking.
+
+Color spaces are in turn normally defined using a $3\times3$ matrix, which
+transforms data from \gls{CIE} \gls{XYZ} coordinates to the space of interest. 
+For example to obtain data appropriate for the \gls{sRGB} primaries, starting from
+a color $C_{\XYZ}$ in \gls{CIE} \gls{XYZ} coordinates stored in a column vector, 
+we would use
+\begin{displaymath}
+	C_{\sRGBl} = M_{\sRGBl} C_{\XYZ} = \left[\begin{array}{r@{.}lr@{.}lr@{.}l}
+		3&2404542 & -1&5371385 & -0&4985314 \\
+		-0&9692660 &  1&8760108 &  0&0415560 \\
+		0&0556434 & -0&2040259 &  1&0572252 \\
+	\end{array}\right] C_{\XYZ}
+\end{displaymath}
+
+The reason for this is that the \gls{CIE} \gls{XYZ} color space, described in~\cite{cie:015.2018},
+is a space that was built\footnote{
+	The \gls{CIE} \gls{XYZ} color space was very carefully derived from measurements
+	done in the late 1920's by W. David Wright and John Guild to capture 
+	as accurately as possible how humans see color. 
+	The color space was introduced in~\cite{smithguild1931} and 
+	a fascinating account of the process was collected in~\cite{fairman97} 
+} to capture the response to color of the human visual system. 
+This makes it effectively a \emph{lingua franca} of color, that people can
+use to objectively capture and reproduce a color sensation.
+
+To state in our notation what's commonly done in digital image synthesis 
+we would construct a film response function $W_{\XYZ}(\lambda)$ defined 
+like this:
 \begin{equation}
-W_{XYZ}(\lambda) = \big(\bar x(\lambda), \bar y (\lambda), \bar z(\lambda)\big)
+	W_{\XYZ}(\lambda) = 
+	\left(
+	  \begin{array}{c}
+	  	  \bar x(\lambda)\\ 
+	  	  \bar y(\lambda)\\ 
+	  	  \bar z(\lambda)
+	  \end{array}
+	\right)
 \end{equation}
-to obtain tristimulus values in \gls{CIE} \gls{XYZ} space.
-Multiplication by the $M_{sRGB}$ color space conversion matrix is now all
-that's needed to obtain a linear, scene referred \gls{sRGB} image
-$W_{sRGB}(\lambda) = M_{sRGB} W_{XYZ}(\lambda)$
-(details on this and other color space transformations are available in
-\cref{ch:implementation}).
+this is a function that given a wavelength $\lambda$ returns a column vector
+made from the values of the three defining functions of \gls{CIE} \gls{XYZ} space,
+namely $\bar x(\lambda), \bar y(\lambda), \bar z(\lambda)$.
+
+This is a notational convenience that saves us the work to write down the
+imaging equation three times: with $W_{\XYZ}(\lambda)$ defined this way,
+we obtain a result $C_{\XYZ}$ in \gls{CIE} \gls{XYZ} space.
+We can then construct our \gls{sRGB} image multiplying this result by
+the $M_{\sRGBl}$ matrix as above and applying a gamma function as needed
+according to the definition of \gls{sRGB} space (details on this and other 
+color space transformations are available in~\cref{ch:implementation}).
+
+Equivalently, we can simply transform the \gls{CIE} \gls{XYZ} function
+samples for each wavelength $\lambda$ of interest, thus obtaining a new 
+response function that construct for us directly linear \gls{sRGB} values:
+\begin{displaymath}
+ W_{\sRGBl}(\lambda) = M_{\sRGBl} W_{\XYZ}(\lambda)
+\end{displaymath}
+
 
 Although using \gls{CIE} \gls{XYZ} spectral response is common practice
-in digital image synthesis (see for example \cite{pharr2010, jakob2010,
-ward1994}), it is the recommendation of this document to instead use spectral
-response functions matching the spectral response of the cameras used on set.
-This is done in the interest of trying to match the metamerism of the camera in
-order to minimize changes of appearance of photographed versus synthesized
-objects under varying lighting conditions. This means that a more desirable
-spectral response function $W_{col}(\lambda)$ would actually be
+in digital image synthesis (see for example \cite{pharr2023, jakob2022mitsuba3,
+ward1994}), we actually have in front of us a different, intriguing opportunity
+to explore. 
+In fact it's quite evident that this is not how a camera actually works,
+be that digital or film-based. 
+Rather, the sensing media in the device will have its own spectral response,
+defining a camera-specific \gls{RGB} space which we'll call \camRGBl.
+For analogy with how \gls{CIE} \gls{XYZ} space is defined, we'll call these
+response curves $\bar r(\lambda), \bar g(\lambda), \bar b(\lambda)$, where the 
+$r,g,b$ function names indicate these correspond to our red, green and blue photosites, and
+the overbar inidicates some normalization had been applied.
+With this in hand, our spectral film response function would be
 \begin{equation}
-W_{camera}(\lambda) = \big(\bar r_{camera}(\lambda), \bar g_{camera}(\lambda),
-\bar b_{camera}(\lambda)\big)
+	W_{\camRGBl}(\lambda) = 
+	\left(
+	\begin{array}{c}
+		\bar r_{\camRGBl}(\lambda) \\
+		\bar g_{\camRGBl}(\lambda) \\
+		\bar b_{\camRGBl}(\lambda)
+	\end{array}
+	\right)
 \end{equation}
-Conversion into \gls{sRGB} or other working spaces would then be done employing
-a similar process to that on the raw data from the cameras, further details are
-outlined in~\cref{ch:implementation}.
+giving us a framework which will make our rendered images match our ``camera raw'' 
+data.
+
+This is a valuable thing to do in the interest of matching the metamerism of the 
+camera and in general its specific ability to perceive color. 
+In turn this will eliminate one source of discrepancies in the appearance of 
+photographed objects when compared to renders of their virtual conterparts.
+
+At this point, the same image processing pipeline used for the real camera
+that is being modeled will apply unchanged to the rendered data, further 
+details are outlined in~\cref{ch:implementation}.
 
 
-\paragraph{Local response}
+\subsubsection{Local response}
 As spectral radiance $L^{\downarrow img}_{\lambda}(x, \omega, \lambda, t)$ lands
-on a pixel away from the center of the image, it decreases by a factor
-$\cos\theta$ due to its angle of incidence on the filmback, a phenomenon that
-dominates the appearance of vignetting. In digital image synthesis this is often
-compensated away using a position dependent component of the sensor response
-function
+on a pixel away from the center of the image, its effect on the image decreases 
+by a factor $\cos\theta$ due to its angle of incidence on the filmback, a 
+phenomenon that dominates the appearance of vignetting. 
+In digital image synthesis this is often compensated away using a position 
+dependent component of the sensor response function
 \begin{equation}
-W_{loc}(x) = \frac{1}{\cos\theta_x}
+	W_{pos}(x) = \frac{1}{\cos\theta_{x}}
 \end{equation}
+where $\theta_{x}$ is the angle between the incident ray and the normal to the
+filmback at $x$. 
+
+Note that we're using $x$ here and not $p^{img}$: this function is used within
+our innermost integral, the one we used to compute  
+$\bar L^{\downarrow img}_{\lambda}(p^{img}, \omega, \lambda, t)$
+where $x$ varies over $A_p^{img}$ to compute the average of incoming
+spectral \gls{radiance} across our filmback pixel area.
+
+The real implementation will actually have a wider integration support,
+and $W_{pos}(x)$ will normally also include a band-limiting function\footnote{
+	In rendering this is sometimes called a \textsl{\gls{pixel filter}}, and it's 
+	been a very active area of research. See~\cite{pharr2023} for a detailed
+	introduction to the subject}, 
+used to reduce or eliminate the emergence of \emph{moir\'e patterns} in the image. 
+Introducing band-limiting in the image limits sharpness attainable in pictures,
+which is undesirable in certain application domains. 
+The evolution of digital camera products has been interesting in this respect:
+the early digital cameras simply had a \gls{CCD} or \gls{CMOS} sensor at the 
+filmback and then users started complaining from the appearance of moir\'e 
+patterns in their pictures. 
+To alleviate this, several of the manufacturers introduced cameras where a 
+blurring filter was mounted in front of the sensing element, 
+so that moir\'e was reduced or eliminated. 
+However, as camera resolutions became higher and higher some users became unhappy again
+with these blurring filters, lamenting excessive blur in certain conditions, 
+and models without this filter were reintroduced as premium niche products, 
+for example \companyname{Nikon}'s \productname{D800E} model from 2014.
+
 
 \paragraph{Imaging constant}
 
 The remaining factor in the sensor response function $W(x,\lambda)$ is the
 imaging constant $k_i$, which is defined as
 \begin{equation}\label{eqn:imaging_ki}
- k_i = \frac{4K_{cd}}{C} \simeq \frac{4\cdot683}{312.5} = 8.7424.
+	k_i = \frac{4K_{cd}}{C} \simeq \frac{4\cdot683}{312.5} = 8.7424.
 \end{equation}
-The constant $C$ (valued at $312.5$ in this document) is sometimes called the \textsl{incident light meter
+The constant $C$ (valued at $312.5 = 100 \frac{25}8$ in this document) is sometimes called the \textsl{incident light meter
 calibration constant} and effectively defines the units for the \gls{film speed} $S$.
 Note that as we use exact integration, our value for $C$ is close to what would be used on a meter fitted with a hemispherical receptor and somewhat lower, because our exact implementation doesn't suffer from losses at near-grazing angles as a physical device would.
 
+\begin{inconstruction}
+	Discussion covering the use of $C$ versus $K$ calibration constants and
+	the use of flat-receiver (cosine response) versus hemispherical receiver 
+	(cardioid response).
+\end{inconstruction}
 
 \section{Luminance and sensor response}
 
@@ -188,7 +329,7 @@ relates to the measurement. As we will derive below,
 Equation~\eqref{eqn:imaging1} can be simplified to the following
 compact form.
 \begin{equation}\label{eqn:imaging_response}
-  Y(p^{img}) \approx \frac{ \pi\;\Delta t\;S}{C\; N^2} L_v^{\uparrow obj},
+	Y(p^{img}) \approx \frac{ \pi\;\Delta t\;S}{C\; N^2} L_v^{\uparrow obj},
 \end{equation}
 which directly relates the luminance emitted towards the camera pupil
 with the luminance of the corresponding sensor response value. This approximation
@@ -229,7 +370,7 @@ equation thus yields pixel values in a reasonable range.
 \end{figure}
 
 To see why Equation~\eqref{eqn:imaging_response} is true, first consider that in the center of the sensor,
-$W_{loc}(x) = 1$. The sensitivity then reduces to $W(x,\lambda) = k_i\;S\;\bar y(\lambda)$,
+$W_{pos}(x) = 1$. The sensitivity then reduces to $W(x,\lambda) = k_i\;S\;\bar y(\lambda)$,
 and we can rewrite Equation~\eqref{eqn:imaging1} in terms of luminance
 $L_v^{\downarrow img}$ passing through the aperture:
 \begin{equation}\label{eqn:imaging_y}

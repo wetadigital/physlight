@@ -102,6 +102,15 @@
 % used in tables to make the font small and slanted
 \def\smsl{\footnotesize\sl}
 
+% various well-known names of color spaces
+\def\colspacefont#1{\texttt{#1}}
+\def\XYZ{\ensuremath{\colspacefont{XYZ}}}
+\def\camRGBl{\ensuremath{\colspacefont{cameraRGB}_\ell}}
+\def\sRGBl{\ensuremath{\colspacefont{sRGB}_\ell}}
+\def\sRGBg{\ensuremath{\colspacefont{sRGB}_\gamma}}
+\def\RecSONl{\ensuremath{\colspacefont{Rec709}_\ell}}
+\def\RecSONg{\ensuremath{\colspacefont{Rec709}_\gamma}}
+
 % used for product names
 \newcommand\productname[1]{\textit{#1}}
 \newcommand\codename[1]{\texttt{#1}}

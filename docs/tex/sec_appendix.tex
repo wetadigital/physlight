@@ -73,6 +73,10 @@ Smits uses a run-time interpolation scheme
 that, for any given input color, attempts to use as much as possible 
 of the smoothest available spectrum by first mixing in the white spectrum, 
 then one of the complement color spectra, and only then a primary spectrum.
+This can be conceptualized as an application of something inspired by the 
+Gram-Schmidt process, where an orthonormal basis is constructed by a sequence
+of reductions, each lowering the dimension of the residual.
+
 
 As an example, consider the input color $c_0=(0.9, 0.4, 0.1)_\text{sRGB}$:
 \begin{align*}

@@ -36,7 +36,8 @@ light source in terms of \glsdisp{photometry}{photometric} units, i.e., units wh
 perceived by a \gls{human observer}, rather than \glsdisp{radiometry}{radiometric} ones 
 (commonly called \gls{wattage}) for two reasons: 
 firstly there is convention: the normally used wattage reported on a light fixture or bulb 
-is a measure of the power absorbed by the object, not the power of the radiation it emits in the visible range\footnote{This is effectively the concept of  
+is a measure of the power absorbed by the object, not the power of the radiation it emits 
+\emph{in the visible range}\footnote{This is effectively the concept of  
 	\textsl{\gls{luminous efficacy}}, being the ratio of power absorbed by the emitter
 	to the luminous power emitted. 
 	What used to be the common household lightbulb, containing incandescent tungsten and 
@@ -44,7 +45,10 @@ is a measure of the power absorbed by the object, not the power of the radiation
 	a contemporary \glsname{LED} lightbulb would be somewhere between 
 	$100\unit{\lumen\per\watt}$ and $200\unit{\lumen\per\watt}$, 
 	a Xenon arc-lamp somewhere between $30\unit{\lumen\per\watt}$ and
-	$90\unit{\lumen\per\watt}$.} onto the \gls{scene}. 
+	$90\unit{\lumen\per\watt}$. 
+	Note that conservation of energy dictates that when considering all the
+	radiation emitted by the bulb, the total radiated power \emph{must} be equal 
+	to the absorbed ``electrical'' power} onto the \gls{scene}. 
 Secondly, the perceived \gls{brightness} of a source has a fairly marked dependence on 
 its color, making lights emitting the same amount of radiative power (even when measured 
 limited to the visible spectrum only) appear to have different brightnesses. 
@@ -74,18 +78,20 @@ Light rays are the path segments\footnote{
 	In the vast majority of renderers in use today, rays are implemented as 
 	straight line segments, which enormously simplifies the implementation of the
 	code that finds their endpoints. This ignores two effects: the first is that 
-	gravity bends light rays: this won't be an important effect for scenes with 
-	extents up to maybe hundreds of thousands of kilometers, likely more depending
-	on the accuracy needed. 
-	There are exceptions, however: for example the movie~\cite{interstellar2014} 
-	instead did need to capture the bending effect of gravity onto light paths 
-	accurately, and a specialized rendering system was developed for the show. 
-	The task was complex enough that the Nobel laureate and Cal Tech professor 
+	gravity bends light rays and the second it that variations in the index
+	of refraction will alter the direction of a light ray.
+	Usually bending resulting from gravity won't be an important effect except 
+	for scenes that are particularly large and include body with very high mass 
+	concentrations like black holes.
+	Scenes like this are occasionally rendered, though: for example the 
+	movie~\cite{interstellar2014} did need to capture the bending effect of 
+	gravity onto light paths accurately, and a specialized rendering system 
+	was developed for use on the show. 
+	The task was complex enough that the Nobel laureate and CalTech professor 
 	Kip Thorne was included as consultant to support the team developing this 
 	technology. 
 	The second effect ignored by the straight-line approximation is that 
-	variations in the index of refraction of the medium that
-	the light is traversing can also bend the light paths. 
+	variations in the index of refraction will also bend the light paths. 
 	This is a substantially more common effect at human scale, for example 
 	it's the origin of the \textsl{mirage} phenomenon. 
 	While there are several research projects that have built renderers able 
@@ -133,8 +139,9 @@ from our use of movie-making jargon.
 \noindent We discussed how \gls{rendering} is concerned with simulating how light travels around in 
 a \gls{virtual scene}, so this section introduces names for the quantities transported 
 along these paths during the simulation and outlines the theory behind them. 
-The naming we adopt is in line with several current international standards, 
-among which we mention ISO/IEC Standard 80000, 
+The naming we adopt was originally introduced by Fred Nicodemus in~\cite{nicodemus77} and
+is in line with several current international standards,  
+among which we mention \gls{ISO}/\gls{IEC} Standard 80000, 
 \emph{Quantities and units, part 7: Light and radiation}~\cite{iso:80000-7:2019}, 
 the \emph{International lighting vocabulary} published\footnote{Can also be consulted 
 	online at \url{https://cie.co.at/e-ilv}} by the \gls{CIE}~\cite{cie:s017.2020},
@@ -416,7 +423,8 @@ The definition of \gls{exposure} is similar to the definition of \gls{irradiance
 \end{displaymath}
 where the source radiant power $\Phi_e$ was replaced with the source \emph{energy} $Q_e$.
 Thinking about it, you can convince yourself that exposure is quite clearly what a camera
-sensor does: it receives photons for a certain period of time at a position from all directions.
+sensor does: it receives photons for a certain period of time at a position from all directions
+admitted by the lens aperture.
 This can be seen mathematically too:
 \begin{displaymath}
 	H_e(x) = \int_{\Delta t} E_e(x) \d t 
@@ -567,7 +575,7 @@ sense of brightness in the scene as experienced by a person looking at it.
 And it wouldn't look much like a black-and-white photograph either, not one made
 with film stock a photographer would commonly use, or the black-and-white mode 
 of a digital camera anyways.
-There two broad classes of reasons why this is the case: 
+There are two broad classes of reasons why this is the case: 
 on the one side radiant power includes \emph{all} radiation
 bands, and so this radiant power ``image'' would have information about all sorts 
 of wavelengths that have little to do with vision. 
@@ -642,15 +650,16 @@ From the point of view of \textsl{\gls{radiometry}}, we saw how the \textsl{radi
 of a source $S$ is measured in \textit{watts} $[\unit{\watt}]$ and is the total amount 
 of energy per unit time emitted by $S$.
 From the point of view of \textsl{\gls{photometry}}, there is a corresponding definition
-of \textsl{luminous power} for our source $S$ (also called \textsl{luminous flux} like before) 
-which is measured in \textit{lumens} $[\unit{\lumen}]$, and is the amount of energy per unit time
-weighted by the \textsl{photopic spectral luminous efficiency function} $V(\lambda)$. 
+of \textsl{luminous power} for our source $S$ (also called \textsl{luminous flux} as for the 
+radiometry nomenclature) measured in \textit{lumens} $[\unit{\lumen}]$, and being the 
+amount of energy per unit time weighted by the \textsl{photopic spectral luminous efficiency 
+function} $V(\lambda)$. 
 This function was designed to model the response of the human visual system as a function of 
 wavelength $\lambda$\footnote{
 	The photopic spectral luminous efficiency function $V(\lambda)$ is the result of a 
 	series of experiments and tabulations first published by the \gls{CIE} in 1924 
 	and then included as $\bar y(\lambda)$ in the color matching functions for 
-	the \emph{standard 2 degree colorimetric observer}~\cite{smithgould1931}.}.
+	the \emph{standard 2 degree colorimetric observer}~\cite{smithguild1931}.}.
 
 This means that two different light sources emitting the same luminous
 power will appear as having about the same brightness even when having
@@ -698,7 +707,7 @@ As such it defines\footnote{
 	literature~\cite{Meyer-Arendt:68}.
 } the base \gls{si} unit \textsl{candela} $[\unit{\candela}]$, 
 as the amount of luminous intensity of a source of monochromatic radiation of frequency 
-$\num{540}\;[\unit{\tera\hertz}]$ having a radiant intensity of $1/683\;[\unit{\watt\per\steradian}]$
+$\num{540}\;[\unit{\tera\hertz}]$ having a radiant intensity of $1/683\;[\unit{\watt\per\steradian}]$.
 
 \ifomit
 
