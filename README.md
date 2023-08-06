@@ -6,8 +6,22 @@ that there is not one simple plugin to install to "get" *PhysLight*.
  
 ## Foundation
 
-The documentation contained in docs forms the background and
-foundational mathematics which are the basis for *PhysLight*.
+The documentation contained in `/docs` describes the conceptual background and
+mathematical foundation which are the basis for *PhysLight*.
+It also has fully worked out numerical examples of various common configurations
+that people can use to double-check their work, together with indications and
+reference code segments for all the algorithms and methods described.
+
+We keep a PDF build of the docs right in the 
+[docs directory](https://github.com/wetadigital/physlight/tree/main/docs)
+
+Our latest full PDF build is 
+[here](https://github.com/wetadigital/physlight/blob/main/docs/physLight-v1.3-1bdb6ec3-20230805.pdf)
+corresponding to our in-progress v1.3 sprint on the documentation.
+
+No changes are happening to the definitions, but all the document is being worked on
+and edited for clarity in hopes to make it more useful for people.
+Feedback is _very_ welcome
 
 ### Siggraph 2020 Talk
  
