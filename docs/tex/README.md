@@ -32,6 +32,7 @@ The build has been tested on Linux with
 This document uses these free fonts:
   - Courier Prime (Google - https://fonts.google.com/)
   - Charmon (Google - https://fonts.google.com/)
+  - Galdeano (Google - https://fonts.google.com/)
   - Noto Sans (Google - https://fonts.google.com/)
   - Noto Sans Mono (Google - https://fonts.google.com/)
   - TeX Gyre Pagella (TeXLive)

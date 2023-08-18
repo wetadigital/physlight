@@ -145,10 +145,8 @@
 	\setmonofont[Scale=MatchLowercase]{DejaVu Sans Mono}
 	\setmathtt[Scale=MatchLowercase]{DejaVu Sans Mono}
 
-	% for sections titling in sans, should be black 900
-	\newfontfamily\sectionsFont[LetterSpace=-5,
-	                            UprightFont={* Bold},
-	                            BoldFont={* Bold}]{Noto Sans}
+	% for sections titling
+	\newfontfamily\sectionsFont[LetterSpace=-5]{Galdeano}
 
 	% for the units
 	\newfontfamily\unitFont[Scale=MatchLowercase,NFSSFamily=unitFontFamily]{Courier Prime}
@@ -210,6 +208,7 @@
 	labeldate=year,
 	maxcitenames=2,  % max two authors in citations, then use et al.
 	maxalphanames=2, % max two authors in bibliography labels well
+	maxbibnames=20,  % max no of authors in bibliography itself
 	minalphanames=1,
 	sorting=nyt,
 	backend=biber,
@@ -362,8 +361,11 @@
 \setlength{\epigraphwidth}{.619\textwidth}
 
 % [sectsty] restyle sections with our preferred font
-\allsectionsfont{\sf}
-\chapterfont{\sectionsFont}
+\allsectionsfont{\sectionsFont}
+\partnumberfont{\fontsize{44}{52}\sectionsFont}
+\parttitlefont{\fontsize{52}{60}\sectionsFont}
+\chapternumberfont{\fontsize{36}{44}\sectionsFont}
+\chaptertitlefont{\fontsize{44}{52}\sectionsFont}
 \sectionfont{\sectionsFont}
 
 % [minted] configure minted environments
