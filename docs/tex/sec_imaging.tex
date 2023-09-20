@@ -36,8 +36,7 @@ The \textsl{\gls{imaging equation}}\footnote{
 	there it's called the \emph{measurement equation}. 
 	However several other authors don't include in their definition of the
 	\emph{measurement equation} the aspect of integration in the time domain, which is
-	of key importance for our work~\cite[p. 45, Eq 2.33]{dutre2003};~\cite{pharr2023}, so to minimize confusion
-	we chose to use a different name
+	of key importance for our work~\cite[p. 45, Eq 2.33]{dutre2003};~\cite{pharr2023}, so to minimize confusion we chose to use a different name. 
 }, relating the final color $C_{col}$ of a pixel
 $p^{img}$ to the incoming \gls{spectral} \gls{radiance} may appear daunting at first
 \begin{equation}\label{eqn:imaging1}
@@ -48,11 +47,13 @@ $p^{img}$ to the incoming \gls{spectral} \gls{radiance} may appear daunting at f
 \end{equation}
 
 In order to understand what's happening, we'll start making a simplifying assumption:
-we will ignore for the time being the dependency of $W(x,\lambda)$ on $x$, and pretend it was simply
-$W(\lambda)$. Once we have a clearer vision of how the imaging equation would work in this
-simpler case, it'll be clear what to do in the more general case. We will also explain
-what's the meaning and purpose of $W(x,\lambda)$ in~\cref{sec:filmrespfunc}, for the moment we just know we need to do
-\emph{something} to \gls{spectral} \gls{radiance} $L^{\downarrow}_{e,\lambda}$ to make
+we will ignore for the time being the dependency of $W(x,\lambda)$ on $x$, and 
+pretend it was simply $W(\lambda)$. 
+Once we have a clearer vision of how the imaging equation would work in this
+simpler case, it'll be clear what to do in the more general case. 
+We will get into the details of what's the meaning and purpose of $W(x,\lambda)$ 
+in~\cref{sec:filmrespfunc}, for the moment we just know we need to do 
+\emph{something} to the incident \gls{spectral} \gls{radiance} $L^{\downarrow}_{e,\lambda}$ to make
 pictures out of it.
 
 We've seen in~\cref{sec:lightbrightness} what's the reasoning behind a need for the values 
@@ -116,12 +117,14 @@ We've reduced it to a rather innocent looking expression
  	C_{col}(p^{img}) = H_{col}(p^{img})
 \end{displaymath}
 or in words: ``to make a picture, set the color of each pixel to the exposure there'', 
-but we'll want to pay attention to just what exactly we mean by ``exposure''.
+but we'll want to pay attention to just what exactly we mean by ``exposure'': 
+all we know so far, is that using a standard kind of exposure, say radiant exposure, or
+luminous exposure, won't help us in making pictures that are particularly useful.
 
 \subsection{The film response function}\label{sec:filmrespfunc}
 
 With the mathematical meaning of the \textsl{imaging equation} under our belt, 
-we still need to double back and understand what is the story with that original $W(p^{img},\lambda)$ term. 
+we still need to double back and understand what is the story with that original $W(x,\lambda)$ term. 
 We call this function \textsl{\gls{film response function}} 
 and we use it to capture how the film or sensor responds to incident \gls{spectral} \gls{radiance}
 (being a whole bunch of photons landing on it). 
@@ -130,9 +133,10 @@ we need to keep this weighting factor right in the heart of our integral.
 
 It will probably help gain some intuition for the purpose and meaning 
 of $W$ if we go and see what happens in a few practical cases.
-In the case in which $W(p^{img}, \lambda)$ is the identity function, the
+In the case in which $W(x, \lambda)$ is identically equal to $1$, the
 result of the integral would be measured in $[\unit{\joule\per\square\meter}]$,
-and we would have $H_{col} = H_e$. 
+and we would have $H_{col} = H_e$, or in words our images would be measuring the 
+\textsl{radiant \gls{exposure}} corresponding to each scene location in the image. 
 As discussed in~\cref{sec:lightbrightness}, images constructed this way, even 
 if they were possible\footnote{
 	As discussed before, film stock or a digital device that behaves like this across a wide region
@@ -142,27 +146,30 @@ if they were possible\footnote{
 	This makes it impossible to have values even roughly representative of $H_e$.}  
 just won't look natural, and are quite unlikely to have much practical use at all.
 
-That same discussion might inspire us to use $W(p^{img},\lambda) = K_{cd} V(\lambda)$,
+That same discussion might inspire us to use $W(x,\lambda) = K_{cd} V(\lambda)$,
 which would result in $H_{col} = H_v$: doing this would give us images where the
-pixel values are a direct readout of the scene's luminous \gls{exposure}.
-These would be images that track fairly well a human's
-sense of brightness of a scene, and provide a passable, but not very accurate, approximation of
+pixel values are a direct readout of the scene's \textsl{luminous \gls{exposure}}.
+We'd be doing much better with a choice like this: now we would have images that track 
+fairly well a human's sense of brightness of a scene, 
+and provide a passable, but not very accurate, approximation of
 an orthochromatic film stock with reduced blue sensitivity\footnote{Silver halides
 	are very sensitive to short-wavelength light, so film stock with reduced
-	sensitivity in the blues is exceptionally difficult to produce}, 
+	sensitivity in the blues is exceptionally difficult to produce with usual
+	photosensitive chemicals}, 
 the difference from the look of what we'd normally consider to be a black-and-white
 photo is illustrated in~\cref{fig:orthopanphoto}.
 
-All this being said, the reality is that in practice the film response functions 
+The reality is that in practice the film response functions 
 that one finds in common use are typically modeled as a product of
 components, each dependent either on wavelength or on position, 
 and so we decompose it as follows
 \begin{equation}
-W(p^{img},\lambda) = k_i S W_{pos}(p^{img}) W_{col}(\lambda)
+W(x,\lambda) = k_i S W_{pos}(x) W_{col}(\lambda)
 \end{equation}
 where $k_i$ is the \textsl{imaging constant} (defined in~\cref{eqn:imaging_ki}), 
 $S$ is the \gls{film speed},
-$W_{pos}(p^{img})$ describes the \textsl{local response} of the filmback and
+$W_{pos}(p^{img})$ describes the \textsl{local response} of the filmback 
+and
 $W_{col}(\lambda)$ describes its \textsl{spectral response}.
 
 \subsubsection{Spectral response}
@@ -172,11 +179,18 @@ to illustrate the purpose of the film response function as a whole.
 In order for us to make ordinary color images, we need to produce data
 suitable to convert into a color space of our liking.
 
-Color spaces are in turn normally defined using a $3\times3$ matrix, which
+Color spaces are normally defined using a so-called $3\times3$ matrix, which
 transforms data from \gls{CIE} \gls{XYZ} coordinates to the space of interest. 
 For example to obtain data appropriate for the \gls{sRGB} primaries, starting from
-a color $C_{\XYZ}$ in \gls{CIE} \gls{XYZ} coordinates stored in a column vector, 
-we would use
+a color $C_{\XYZ}$ in \gls{CIE} \gls{XYZ} coordinates stored in a column vector\footnote{
+	For what concerns geometric coordinates and in general the \emph{spatial} side of things
+	in graphics, there seems to be a relatively even split in literature between authors that prefer 
+	to represent positions stored in \textsl{row vectors} (1-row matrices) 
+	or \textsl{column vectors} (1-column matrices).
+	However when it comes to color it's quite clear that the overwhelming majority of the authors
+	store color triples as \textsl{column vectors}. 
+	We hereby take a moment to signify our gratitude for this state of things
+}, we would use
 \begin{displaymath}
 	C_{\sRGBl} = M_{\sRGBl} C_{\XYZ} = \left[\begin{array}{r@{.}lr@{.}lr@{.}l}
 		3&2404542 & -1&5371385 & -0&4985314 \\
@@ -228,19 +242,25 @@ response function that construct for us directly linear \gls{sRGB} values:
  W_{\sRGBl}(\lambda) = M_{\sRGBl} W_{\XYZ}(\lambda)
 \end{displaymath}
 
+Proceeding this way one would obtain pictures with colors that a human observer,
+or rather our mythical friend the \emph{standard observer}, could not
+distinguish from the sensation they would have had if they had been standing 
+in the scene at the moment when the image was taken.
 
+\paragraph{Camera sensitivity functions}
 Although using \gls{CIE} \gls{XYZ} spectral response is common practice
 in digital image synthesis (see for example \cite{pharr2023, jakob2022mitsuba3,
 ward1994}), we actually have in front of us a different, intriguing opportunity
 to explore. 
-In fact it's quite evident that this is not how a camera actually works,
+In fact it's quite evident that this is not how a real-life camera actually works,
 be that digital or film-based. 
 Rather, the sensing media in the device will have its own spectral response,
 defining a camera-specific \gls{RGB} space which we'll call \camRGBl.
 For analogy with how \gls{CIE} \gls{XYZ} space is defined, we'll call these
 response curves $\bar r(\lambda), \bar g(\lambda), \bar b(\lambda)$, where the 
 $r,g,b$ function names indicate these correspond to our red, green and blue photosites, and
-the overbar inidicates some normalization had been applied.
+the overbar indicates that some normalization had been applied (a common approach is for the 
+three curves to be scaled so their collective peak value, usually occuring in $\bar g$, is $1$).
 With this in hand, our spectral film response function would be
 \begin{equation}
 	W_{\camRGBl}(\lambda) = 
@@ -256,27 +276,34 @@ giving us a framework which will make our rendered images match our ``camera raw
 data.
 
 This is a valuable thing to do in the interest of matching the metamerism of the 
-camera and in general its specific ability to perceive color. 
+camera sensing element and in general its specific ability to perceive color, 
+which defines its ``look'' from a chromatic perspective. 
 In turn this will eliminate one source of discrepancies in the appearance of 
-photographed objects when compared to renders of their virtual conterparts.
+photographed objects when compared to renders of their virtual counterparts.
 
 At this point, the same image processing pipeline used for the real camera
 that is being modeled will apply unchanged to the rendered data, further 
 details are outlined in~\cref{ch:implementation}.
 
+\begin{inconstruction}
+	Discuss exposure/density response curves here
+	(or cross-reference it from elsewhere)
+\end{inconstruction}
+
 
 \subsubsection{Local response}
 As spectral radiance $L^{\downarrow img}_{\lambda}(x, \omega, \lambda, t)$ lands
 on a pixel away from the center of the image, its effect on the image decreases 
-by a factor $\cos\theta$ due to its angle of incidence on the filmback, a 
-phenomenon that dominates the appearance of vignetting. 
+by a factor $\cos\theta$ due to its angle of incidence on the \gls{filmback}, a 
+phenomenon called \textsl{vignetting}. 
 In digital image synthesis this is often compensated away using a position 
 dependent component of the sensor response function
 \begin{equation}
 	W_{pos}(x) = \frac{1}{\cos\theta_{x}}
 \end{equation}
 where $\theta_{x}$ is the angle between the incident ray and the normal to the
-filmback at $x$. 
+\gls{filmback} at $x$. 
+
 
 Note that we're using $x$ here and not $p^{img}$: this function is used within
 our innermost integral, the one we used to compute  
@@ -284,6 +311,27 @@ $\bar L^{\downarrow img}_{\lambda}(p^{img}, \omega, \lambda, t)$
 where $x$ varies over $A_p^{img}$ to compute the average of incoming
 spectral \gls{radiance} across our filmback pixel area.
 
+If a full camera lens is simulated as part of the rendering, usually the expression
+for vignetting due to purely geometric considerations comes to a loss by a 
+factor of $\cos^4\theta$. 
+This loss will compose with light lost in various internal fixed 
+diaphragms used to minimize stray light interreflections in the lens construction.
+In fact in a practical lens, the effective aperture seen by a given 
+location on the \gls{filmback} will be equal to what the aperture number would 
+imply only for the so-called \textsl{paraxial rays}: rays that are effectively parallel to 
+the lens axis (for these rays $\theta$ is effectively $0$, so the vignetting loss is also
+negligible).
+These ``barrell losses'' are usually significantly stronger than vignetting for non-paraxial
+rays, the effect increasing with $\theta$.
+This results in the common experience that wide-angle lenses have stronger vignetting
+than lenses with longer focal lengths.
+Digital cameras and digital photo processing software often include compensation 
+tables in their firmware to compensate this effect to varying degrees.  
+Dependin on the needs for accurate matching various approaches, in rendering or
+postprocessing, can be employed to counteract this effect as desired.
+
+
+\paragraph{Pixel filtering}
 The real implementation will actually have a wider integration support,
 and $W_{pos}(x)$ will normally also include a band-limiting function\footnote{
 	In rendering this is sometimes called a \textsl{\gls{pixel filter}}, and it's 
@@ -298,7 +346,7 @@ filmback and then users started complaining from the appearance of moir\'e
 patterns in their pictures. 
 To alleviate this, several of the manufacturers introduced cameras where a 
 blurring filter was mounted in front of the sensing element, 
-so that moir\'e was reduced or eliminated. 
+so that moir\'e was reduced or eliminated for most subjects. 
 However, as camera resolutions became higher and higher some users became unhappy again
 with these blurring filters, lamenting excessive blur in certain conditions, 
 and models without this filter were reintroduced as premium niche products, 
@@ -320,6 +368,15 @@ Note that as we use exact integration, our value for $C$ is close to what would 
 	Discussion covering the use of $C$ versus $K$ calibration constants and
 	the use of flat-receiver (cosine response) versus hemispherical receiver 
 	(cardioid response).
+\end{inconstruction}
+
+\subsubsection{Gradual shutter opening}
+
+\begin{inconstruction}
+	Discuss gradual shutter opening: because of how it interacts with motion blur
+	it's normally implemented before the imaging equation.
+	Note also that in~\cite{kolb95} the gradual shutter opening is implemented as part of what here
+	we call $W$, whereas we assume it'll be inside $L$
 \end{inconstruction}
 
 \section{Luminance and sensor response}

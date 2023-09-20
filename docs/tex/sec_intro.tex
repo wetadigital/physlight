@@ -3,16 +3,55 @@
 
 \chapter{Introduction}
 
-\section{Why physical units?}
 
-One of the reasons physically-based image synthesis has become such an
+\ifomit
+
+
+color responsivity in XYZ or in camera RGB?
+exposure vs density curve plots
+
+
+
+
+test: try the siggraph font styles
+test: try Libertine for body text
+
+\fi
+
+\section{Physical units and digital image synthesis}
+%
+\epigraph{%
+	\emph{Pictures shall be based on models built from Euclidean geometry
+		in three dimensions, viewed in two dimensions with Reinassance perspective
+		and use Newtonian physics. [...] 
+		there is nothing about computers or computation that forces these choices}}
+		{\textsc{Alvy Ray Smith}, \emph{The Central Dogma}}
+
+\noindent One of the reasons physically-based image synthesis has become such an
 indispensable ingredient for pushing realism and consistency in very
-complex scenarios is predictability. Material modelling is based on
-physical properties and thus allows to reproduce increasingly complex
-natural phenomena. In traditional rendering systems, control of the
-look was often owned by the shading system, often allowing artistic
-control knobs for artificial emission or non-physical behavior to
-compensate for lighting, for example missing indirect illumination.
+complex scenarios is predictability. 
+In fact it is generally assumed that what is needed is an image synthesis system
+capable of \emph{photorealism}, that is a system that \emph{given the virtual 
+	description of a scene consisting of geometry, material, light sources and cameras
+	produce a photorealistic image of it, as if it were captured by a real camera.
+	This problem is known as light transport simulation}\footnote{
+	This specific phrasing is due to Alexander Rath, during the technical talk at 
+	Siggraph 2023 presenting~\cite{rath23}}.
+
+
+Material modelling is based on physical properties and thus allows to reproduce 
+increasingly complex natural phenomena. 
+In traditional rendering systems, before the advent of physically-based light transport, 
+control of the look of a material was generally owned by the \gls{shading system}.
+The \glspl{shader} would be essentially arbitrary pieces of code in charge of computing
+the color of an object at a location requested by the renderer. 
+Their programmable nature was used for essentially three purposes:
+the first was to compute an object's appearance, for example accessing \emph{texture maps},
+the second was to compute how light would interact with the material being modeled, often including
+all sorts of approximations to overcome shortcomings in the renderer available at the time 
+(for example, missing support for indirect illumination),
+the third was to \emph{overdrive} the appearance, taking it beyond what would have been possible in a real-life
+counterpart, to achieve various kinds of artistic effects.
 
 The physically-based rendering paradigm dictates that \glspl{material model},
 lighting and camera response are independent entities and
@@ -20,6 +59,9 @@ must hence always be controlled with this separation in mind.
 This makes \gls{virtual} assets more reusable, 
 and allows to achieve better consistency when integrating 
 digitally produced content with live action \gls{footage}.
+This also reduces the scope of the shaders, that end up losing the ability
+to \emph{overdrive} and remain more connected to a physically-correct 
+model of the world.
 
 Naturally, since a wide range of different effects interplay with each
 other in complex and subtle ways, it is absolutely crucial that all
@@ -27,6 +69,9 @@ components are accurately represented by their virtual analogues to be
 able to reproduce real-world footage realistically. 
 Furthermore, the description of the \gls{virtual scene} being based on
 real-world quantities enables easier control and verification.
+
+
+
 
 In this document we focus on the specification of \gls{virtual} \glspl{illuminant} and
 \glspl{sensor} and make the case for using the same conventions and physical units as
@@ -66,7 +111,7 @@ of how \gls{spectral} data flows through the \gls{pipeline}.
 
 
 The resulting system has been in use in the
-production pipeline at W\=et\=a FX since about 2015.
+production pipeline at \companyname{W\=et\=a FX} since about 2015.
 Because of the origin of this system in the motion picture industry,
 several terms of the trade have made it into this document. 
 
@@ -96,7 +141,10 @@ Light rays are the path segments\footnote{
 	it's the origin of the \textsl{mirage} phenomenon. 
 	While there are several research projects that have built renderers able 
 	to capture this effect, the computational costs associated with this capability 
-	are high enough to make it impractical for everyday use
+	are high enough to make it impractical for everyday use, a recent example
+	of this kind of work was described in~\cite{fraboni23}.
+	Renderers and transport models built on the \emph{wave optics} model also exist,
+	a recent example being described in~\cite{yu23}
 } through space that light follows when traveling across the \gls{virtual scene}. 
 
 This document is divided in parts: \cref{part:models}

@@ -10,16 +10,20 @@
 \DeclareDatamodelFields[type=list,datatype=name]{
 	director,
 	producer,
+	cinematographer,
 }
 \DeclareDatamodelFields[type=list,datatype=literal]{	
-	studio,
+	production,
+	distribution,
 }
 \DeclareDatamodelEntryfields[movie]{
 	title,
 	producer,
 	director,
+	cinematographer,
 	year,
 	month,
 	day,
-	studio
+	production,
+	distribution,
 }

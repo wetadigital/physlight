@@ -1,0 +1,267 @@
+% SPDX-License-Identifier: Apache-2.0
+% Copyright (c) Contributors to the PhysLight Project.
+
+\chapter*{Foreword}\label{ch:foreword}
+\addcontentsline{toc}{chapter}{Foreword}
+
+\epigraph{%
+	\emph{I constantly asked myself `What would it really be like to photograph
+		this if it was a real event?' [... I wanted the] effect of making you feel
+		as if you were witnessing something real, rather than \acronym{cg}}}
+{\textsc{Jon Favreau}, 2008}
+
+\noindent This document is the result of a prolonged phase of soul-searching 
+started in the summer of 2014. As it often happens, it all started with the classic,
+seemingly innocent question, in our case in an e-mail from our supervisor Joe Letteri
+at \companyname{W\=et\=a FX} (called \companyname{Weta Digital} at the time).
+Production on \cite{hobbit3} was in its final stretch, and while the artists at the studio
+were tremendously busy with the visual effects work for the show, the research groups
+started preparing for the next wave of work. 
+
+In our opening quote\footnote{See \cite{duncan08}} director Jon Favreau summarizes one of the key 
+tenets in the aesthetic posture of \gls{VFX} work in our time; as much as he is talking
+about camera work and how a given fast-moving action ought to be portrayed in a movie, 
+there is a strong feeling from his words that the expectation is also that the integration between 
+live-action photography and \gls{CGI} should be completely seamless.
+The implication is that \gls{VFX} production is an integral part of the movie-making process and toolkit, 
+and as such it ultimately and rightfully falls under the control of the director, in charge of content, 
+performance and the overall vision for the show, and the \gls{DOP} (also known as 
+the \textsl{cinematographer}), in charge of all the photography aspects. 
+These two being the key creators of the motion picture. 
+This naturally presents a valuable opportunity to support and assist them in fulfilling the vision
+they have for the picture by providing a set of controls that under a unified language would span the 
+real world as well as the \gls{virtual} world.
+It seems that the \gls{VFX} crew should be part of the movie-making process and community supporting,
+expanding and complementing its established language and method, evolving it as appropriate.
+In particular, established photography and cinematography practice, with its huge 
+legacy captured in books such as~\cite{alton1995} and~\cite{lowell1992} as well as
+the \emph{American Cinematographer Manual}~\cite{burum2007}, would be augmented into the \gls{virtual} world
+providing software tools that felt and responded in the same way as their real-life counterparts.
+
+There is an observation to be made here, that the aesthetic of a picture (moving or not) is born from
+an act of combination where the skill and sensitivities of the artists come together with the 
+finite possibilities of the medium in use, which in a traditional motion picture context comprises 
+the characteristics of lenses, cameras, and film stock. 
+It is usually the job of the \gls{DOP} on a show to make a choice in picking which lenses, which cameras 
+and which film stocks to work with, as a result of serving the aim of the director while working with 
+what is available at the time the movie is made\footnote{This is both because of external limits such as 
+	budgetary constraints as well as inherent limits, like the availability of specific piece of equipment 
+	at a given point in history. It's clear that Orson Welles, Stanley Kubrick and Christopher Nolan, 
+	as well as their respective \glspl{DOP}, worked with very different technology, and budgets}. 
+The advancement of technology provides the \gls{DOP} with some kind of a traveling 
+window of opportunity in terms of what can be achieved: new lenses are invented that are maybe sharper,
+or exhibit more clarity, new film stock with different grain characteristics or color capability goes into
+production, and older technology is gradually retired.
+This is an element behind the evolution of the aesthetics of motion pictures, and it exists alongside the
+evolution of the taste for certain visual elements that audiences and creators go through in the course of
+history.
+So as the palette of the \gls{DOP} evolves, it is the job of the \gls{VFX} side of things to stay
+aligned with its capabilities as closely as possible, including both what might be considered
+quality elements of a given piece of equipment (for example, a lens that might be very sharp),
+as well as what could be instead considered a defect or shortcoming of it: both sides must be
+matched for the integration between live-action and digitally-generated material to be seamless. 
+
+Maybe the most obvious effect of this phenomenon where ``defects'' are turned into creative opportunities is
+the use of lens flares. 
+During the 1960's what used to be a capital sin of photography (``flaring the lens'') was gradually
+turned into a cinematic device, starting with Hiroshi Teshigahara's \cite{teshigahara64} and then through pictures 
+such as \cite{graduate67}, \cite{easyrider69}, \cite{fiveeasypieces70}, 
+establishing a new aesthetic that would then be adopted into special-effect shows such as \cite{spaceodyssey68}, 
+\cite{starwars77}, \cite{closeencounters77} and ended up becoming a staple of modern effects-heavy 
+cinematography, for example as seen in Spielberg's work such as \cite{raiders81}, \cite{et82} or even
+\cite{goonies85}, and all the way to J. J. Abrams's \cite{startrek2013}.
+
+There is certainly a tradition in photography to take what might appear to be shortcomings
+or defects in an image and turn them into creative tools in the photographer's kit.
+The classic example is working with portions of an image to be in more or less sharp focus,
+and this is certainly part of an aesthetic discourse which has seen much evolution over time: 
+in the early days of photography there was a general taste for an overall ``soft focus'' look
+to photographs, then in the 1930's Ansel Adams, Paul Strand and other giants of early American 
+still photography started making pictures that were in perfect focus over the whole frame 
+(they used very small lens apertures to achieve this, forming a current called 
+\emph{Group $\sfrac{f}{64}$} that was very influential in its time). 
+The artistic possibilities resulting from a deliberate use of the limited \gls{depth of field} 
+achievable with wider \glspl{aperture} started to be explored by more and more photographers,
+as it became more common to use smaller-format cameras inherently less capable of producing the
+ultra-sharp images typical of large-format photography.
+Shallower depth of field is typically employed as a mean to direct the observer's eye towards 
+a region or another of the picture (not necessarily the sharp one), and convey specific meaning to an image. 
+A similar evolution in the tastes of photographers and viewers has happened with regard to \gls{motion blur}:
+at first it was considered a defect and typical of amateur work, 
+but then it found its way in higher and higher levels of artistic work.
+
+For what concerns motion pictures, the cinematographer working with physical film stock has more limited 
+options when compared to the still photographer: the film contains 24 frames per second, and the motion
+picture camera needs a certain amount of time to advance the film strip to the position for the next frame,
+so usually motion picture cameras are limited to a maximum exposure time of $\sfrac1{48}$ of a second.
+Motion picture cameras mostly employ what's called a \gls{rolling shutter}, being a disk that spins 
+at constant speed interposed between the lens and the film. 
+On this disk two ``blades'' are mounted, each covering half of the circle and spanning an angle of $180$ degrees each. 
+The camera technicians on-set have provisions to mount these two blades so they leave a 
+wedge-shaped gap where light can pass through as the disk spins.
+So if for example they were to leave a gap of $90$ degrees, the film would only get light for a 
+duration of a quarter of each frame, being an exposure time of $\sfrac1{96}$ of a second.
+Because of how ubiquitous a rolling shutter is for cinema work, the language established in the field
+talks about exposure times in degrees rather than in seconds, using phrases like 
+``this take was shot on a 90 degree shutter''.
+The amount of motion blur in a shot has a specific look that audiences feel: in fact it's 
+always a balance between images being sharp, while maybe \gls{strobing} a little, versus being 
+softer with reduced \gls{strobing}. The strobing effect comes from our eyes seeing the moving objects
+jump from a position to their next, while the motion blur ``trails'' help the eye connect the 
+movement more smoothly, appeasing the visual sense of the viewer.
+Once a \gls{shutter} angle has been picked for a shot, there is a second delicate balancing act
+to have: the \gls{aperture} is chosen to allow a depth of field appropriate for the intent
+of the \gls{DOP} and director, but limited by the constraints of available light on set.
+There is certainly a possibility to pick film stock with sensitivity better matching the need
+of the moment, but film stock is only made in relatively few speeds, and often times a large change
+in sensitivity implies a change in look that may not be appropriate for the moment, as it could
+induce an undesirable visual discontinuity in the edited scene.
+
+These problems were reduced with the advent of digital movie postprocessing:
+the early experiments in \cite{pleasantville98} and \cite{whatdreams98}, exploring the possibilities
+opened by the new \gls{digital intermediate} process, solidified very quickly into a completely rebuilt
+and reconceived post-production method, allowing entirely new looks as exemplified in \cite{brother2000}
+first and then \cite{amelie2001} and \cite{moulin2001}. In fact soon after the digital intermediate process
+took hold, increasingly advanced software methods for adding motion blur and aperture blur 
+(ie. limiting the depth of field in the image) after the fact continued to appear.
+It is interestingly to observe how the two enjoyed very different adoption in practice, the origin
+of the phenomenon lying in movie-making practice. The observation is that motion blur is very
+rarely corrected in post production, while depth of field is very often modified in the late
+stages of compositing. And this comes directly from the facts that sharpness of focus is treated 
+very specifically and with great attention by the \gls{DOP}, while  motion blur is more of a 
+not-completely-welcome guest at the table. And in turn that descends from the former being
+easily consciously observable by artist and audiences, while the latter necessarily 
+passes by very quickly and remains (at least for the mainstream audience) at a less conscious
+level of perception.
+
+
+
+The important question as to whether this is, or should be, the \emph{one true way} of using \glsname{CGI} in 
+movie-making is explored with great depth in the essay \emph{The empire of effects}~\cite{turnock22}. 
+It turns out the conclusion is far from obvious, and Turnock's essay goes to great lengths to explore the
+origin of this state of things and what would be possible alternatives.
+When connecting these thoughts with the task of providing \gls{VFX} material for a movie,
+the inevitable conclusion is then that it will be highly desirable to employ as accurate a model of the 
+photographic process as possible, including the ``defects'', because in the movie-maker's hands really there
+are no ``defects'' as such, rather there are \emph{traits} of a system used to make motion pictures,
+and these are employed with conscious deliberation, much the same way as colors and their shades 
+would be picked with a brush from the physical palette of a painter.
+
+
+
+
+For what concerned our own quest at \companyname{W\=et\=a FX}, one of the recurring difficulties with 
+producing \gls{VFX} work at the time of \cite{hobbit3} was to accurately reconcile 
+the overall brightness observed in the images from the principal photography camera
+with the survey data gathered by the on-set lighting crew and
+the brightness of the lighting fixtures captured by our reference photographers.
+At that time our reference photography crew would capture essentially two data sets
+that would later be used for \gls{virtual} lighting: the first set of photographs would be 
+images of the ``faces'' of all light fixtures used for each shot. 
+These would later be used to improve the fidelity of reflections in high
+gloss materials, such as car paint and other polished surfaces, as well as anything wet, 
+including the very important case of eyes in digital character faces. 
+The second set would be wide-angle panoramas of the set as it stood just before shooting began,
+which would later be used to construct \gls{IBL} sources\footnote{ 
+	A lighting technique pioneered by Joe Letteri, John Knoll and several colleagues from
+	\gls{ILM} in the late 1990's and early 2000's on shows such as 
+	\cite{casper95}, \cite{speed297}, \cite{pearlharbor2001}, \cite{lotr-tri}}. 
+The use of \gls{IBL} sources was crucial to provide our rendered images with the finessed tones 
+of the light from the principal photography, enormously enhancing the accuracy of the \gls{virtual}
+lighting with respect to its original real-world counterpart.
+
+So as much as we had high quality, high dynamic range captures of all these elements,
+until that point it had never occurred to us (or for what we know, anyone else in our
+line of work) to also pin down their brightness with an absolute metric. 
+All the contrary: it was customary at that time to normalize these captured images so their 
+brightest point was at a known pixel value, and let the rest of these images behave linearly 
+with respect to that, in the sense that region of the real-life scene that were half as bright
+would have pixel values half as high. This would be in line with the idea that we were after 
+\gls{scene-referred} data, which is intended to be \emph{proportional} to real-world values from
+the scene~\cite{iso:12231-2:2022,iso:22028-1:2016,iec:60050-845:2020,icc:glossary}.
+
+Early in the life of a sequence, the \gls{VFX} lighting crew would set up some reference configurations
+matching the live-action state and make numerous test renders to reconcile the look of rendered
+digital elements with their corresponding counterparts from the principal photography plates. 
+Source data for this process is often seen in images about \gls{VFX} workflows: three images are captured including
+a ``grey ball'', being a matte, middle-gray sphere, a ``chrome ball'', being a mirror-reflecting
+sphere, and a ``MacBeth Chart'', a color calibration target made of 24 colorful squares of known 
+reflectance properties.
+They are used to capture various aspects of the coloration and distribution of light on set,
+and they are comparatively easy to build into \gls{virtual} assets, so that photography and renders 
+can be compared with some hopes of accuracy.
+However, due to the nature of on-set work, and the realities arising when several separate crews 
+all need to work as quickly and efficiently as possible, 
+this reconciliation process entails a substantial amount of 
+judgment to achieve a match robust enough to cover the needs of entire sequences. 
+This turns into a large amount of time spent on the task by the lighting crew, 
+made more problematic by the fact that the delicacy of the task ends up requiring
+senior crew, which would be better spent elsewhere.
+
+At some point it finally dawned on us that if we could measure the brightness
+of the lights themselves, we could simply roll the values into our survey data 
+and we would then be able to tie down one more loose string, 
+and do away with the lengthy process of manual light reconciliation. 
+And so it began, with the innocent question: ``How should we capture light 
+brightness in our surveys? Should it be watts, candelas, footlamberts?".
+
+
+The renderer in use at \companyname{W\=et\=a FX}'s, \productname{Manuka}, is a spectral renderer
+which gives it a very accurate color management pipeline. 
+So we were starting this work sitting on an opportunity to substantially improve the fidelity of 
+our \gls{virtual} lighting process, by transporting more directly information from our on-set 
+surveys all the way into the \gls{virtual} scenes.
+It felt like an important improvement to our process, because it would allow us to free up 
+senior lighting crew, enabling them to spend their time on creative work directly contributing into
+realizing the vision for the picture, rather than on what always felt like an annoying calibration step.
+There was the further added bonus that using measured data would also improve our ability to match 
+more subtle aspects of our images.
+
+It was pleasing for us to see how well the process worked out in practice: 
+after a couple years of work, this document reached its ``Version 1.0'' status, 
+and the system was adopted for work on \cite{wfpota2017} and \cite{valerian2017}. 
+The shows feature cinematography by Michael Seresin and Thierry Arbogast respectively and were shot 
+in vastly different visual styles: Seresin's photography includes long outdoor sequences in 
+snow-covered mountains featuring a very delicate, naturalistic look, while Arbogast's work 
+in \emph{Valerian} is all about different worlds from all around the galaxy, full of 
+overly saturated colors and bright, intense primaries everywhere.
+Our reference photography crew on both productions recorded absolute brightness data and spectral profiles
+for all the luminaires employed on the show, alongside the usual images of their faces, and this dataset
+was then applied during the production of the \gls{VFX} work. 
+The resulting images on both shows were produced with a more robust process with reduced guesswork, 
+and naturally fell into alignment with the live-action photography right from the get go, as is quite
+visible in the finished pieces.
+
+
+
+
+
+Once we had finished building a software system capable of very accurately simulating 
+all the aspects of a real-life camera, and having complemented it with a set of controls
+that corresponded very accurately with their real-life counterparts, we had in our hands 
+a virtual photographic camera and as much as this enabled us to match very
+closely the images our colleagues from live-action disciplines created on-set,
+we also had an opportunity to propose the use of this system for all sorts of predictive rendering applications,
+as could be useful in virtual product design work (as famously exemplified in the IKEA catalogue, for example),
+architectural rendering (especially for lighting design) and all manners of similar applications,
+inspired by the increasingly famous \emph{digital twin} concept~\cite{gelernter91},
+which over the last couple decades has been penetrating and revolutionizing the
+industrial world~\cite{grieves02}.
+Given the impact of these changes, we decided to share our findings with everybody else through an
+open-source project.
+
+
+
+\ifomit
+
+
+color responsivity in XYZ or in camera RGB?
+exposure vs density curve plots
+
+
+
+
+test: try the siggraph font styles
+test: try Libertine for body text
+
+\fi

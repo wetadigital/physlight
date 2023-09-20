@@ -4,7 +4,8 @@
 \ProvidesFile{physlight.bbx}[2023/07/23 v1.0 biblatex bibliography style for physlight]
 % TODO: add support for the @movie bib entry and supply an author-year style otherwise
 
-\RequireBibliographyStyle{alphabetic}
+%\RequireBibliographyStyle{alphabetic}
+\RequireBibliographyStyle{authoryear}
 
 \DeclareDelimFormat{nameyeardelim}{\addcomma\space}
 
@@ -32,13 +33,18 @@
 	\usebibmacro{begentry}%
 	\printfield{title}%
 	\newunit\newblock
-	\printnames{director}\printtext{\space(dir)}% dir could be a localized string via an .lbx file
+	\printtext{Directed by\space}\printnames{director}%
 	\newunit\newblock
-	\printnames{producer}\printtext{\space(prod)}% prod could be a localized string via an .lbx file
+	\printtext{Cinematography by\space}\printnames{cinematographer}%
 	\newunit\newblock
-	\printlist{studio}%
-	\newunit
-	\printdate%
+	\printtext{Produced by\space}\printnames{producer}%
+	\setunit{\space{}for\space}\printlist{production}%
+	\newblock
+	\addspace\mkbibparens{\printlist{distribution}%
+		\setunit{\addcomma\addspace}%
+		\printdate%
+	}%
 	\usebibmacro{finentry}
 }
 
+\endinput

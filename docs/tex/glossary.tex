@@ -35,7 +35,7 @@
 		the \glsname{si} system in the 1960s}, seealso={si,MKS}
 ]{CGS}{cgs}{centimeter-gram-second}
 
-\newacronym{DCC}{dcc}{Digital Content Creation}
+\newacronym{CGI}{cgi}{Computer-Generated Imagery}
 
 \newacronym[description={Commission Internationale de l'\'Eclairage 
 	(International Commission on Illumination) is the international standards body that regulates over quantities related to 
@@ -52,11 +52,21 @@
 
 \newacronym{CUDA}{cuda}{Compute Unified Device Architecture}
 
+\newacronym{DCC}{dcc}{Digital Content Creation}
+
 \newacronym{DIN}{din}{Deutsches Institut f\"ur Normung (German Institute for Standardisation)}
+
+\newacronym{DOP}{dop}{Director of Photography}
+
+\newacronym{DSC}{dsc}{Digital Still Camera}
+
+\newacronym{DSL}{dsl}{Domain-Specific Language}
 
 \newacronym[longplural=Frames per Second]{FPS}{fps}{Frame per Second}
 
 \newacronym{IBL}{ibl}{Image based lighting}
+
+\newacronym{ICC}{icc}{International Color Consortium}
 
 \newacronym{IES}{ies}{Illuminating Engineering Society of North America}
 
@@ -64,12 +74,16 @@
 
 \newacronym{IESNA}{iesna}{Illuminating Engineering Society of North America}
 
+\newacronym{ILM}{ilm}{Industrial Light \& Magic}
+
 \newacronym{ISO}{iso}{International Organization for Standardization}
 
 \newacronym{LED}{led}{Light emitting diode}
 
 \newacronym[description={The traditional name for the International System of Units,
 after meter/kilogram/second}, seealso={si,CGS}]{MKS}{mks}{meter-kilogram-second}
+
+\newacronym{OECF}{oecf}{Opto-Electronic Conversion Function}
 
 \newacronym{RGB}{rgb}{RGB color space of generic primaries}
 
@@ -87,6 +101,8 @@ $[\unit{\second}]$ (time), \textsl{meter} $[\unit{\meter}]$ (length),
 \textsl{ampere} $[\unit{\ampere}]$ (electric current)}]{si}{si}{International
 System of Units}
 
+\newacronym{SME}{sme}{Society of Manufacturing Engineers}
+
 \newacronym[see={spectral distribution}]{SPD}{spd}{Spectral Power Distribution}
 
 \newacronym{sRGB}{srgb}{sRGB color space}
@@ -94,6 +110,8 @@ System of Units}
 \newacronym{UCS}{ucs}{Uniform Chromaticity Scale}
 
 \newacronym{USD}{usd}{Universal Scene Description}
+
+\newacronym{VFX}{vfx}{Visual Effects}
 
 \newacronym{XYZ}{xyz}{CIE XYZ color space}
 
@@ -180,6 +198,13 @@ System of Units}
 		thereby \emph{altering} its color}
 }
 
+\newglossaryentry{depth of field}
+{
+	name={depth of field},
+	seealso={aperture},
+	description={TODO}
+}
+
 \newglossaryentry{diffuse}
 {
 	name={diffuse},
@@ -188,6 +213,12 @@ System of Units}
 		so that equal luminance is received by all observers in the front half-space of the
 		surface (in the case of \textsl{diffuse reflection}) or the back half-space (in the
 		case of \textsl{diffuse transmission})}
+}
+
+\newglossaryentry{digital intermediate}
+{
+	name={digital intermediate},
+	description={TODO}
 }
 
 \newglossaryentry{emission}
@@ -410,6 +441,15 @@ System of Units}
 	description={TODO}
 }
 
+\newglossaryentry{motion blur}
+{
+	name={motion blur},
+	seealso={exposure time},
+	description={The specific directional blurriness that moving objects
+		have in a photograph when their motion is rapid with respect 
+		to the \gls{exposure time}}
+}
+
 \newglossaryentry{pixel filter}
 {
 	name={pixel filter},
@@ -498,6 +538,12 @@ System of Units}
 		to use}
 }
 
+\newglossaryentry{rolling shutter}
+{
+	name={rolling shutter},
+	description={TODO}
+}
+
 \newglossaryentry{scene}
 {
     name={scene},
@@ -510,6 +556,23 @@ System of Units}
 		Digital Content Creation software.
 		In rendering, the scene will comprise all the objects to be rendered for one frame,
 		including their material models, the lights and the cameras}
+}
+
+\newglossaryentry{scene-referred}
+{
+	name={scene-referred},
+	description={A qualifier implying that the object it refers to represents estimates of the colour-space 
+		coordinates of the elements of a scene. 
+		The notes to this entry in~\cite{iso:22028-1:2016} specify that:
+		scene-referred image data can be determined from raw \gls{DSC} image data before colour-rendering is performed. Consumer-oriented \glspl{DSC} sometimes do not write scene-referred image data in image files, but some may do so in a special mode intended for this purpose. Otherwise it would be typical behaviour of \glspl{DSC} to write standard output-referred image data where colour-rendering has already been performed. Cameras intended
+		for professional use typically support this capability.
+		Scene-referred image data typically represent \emph{relative} scene colourimetry estimates. 
+		When needed, \emph{absolute} scene colourimetry estimates may be calculated using a scaling factor. 
+		The scaling factor can be derived from additional information such as the image \gls{OECF}, 
+		\gls{f-number} or \gls{aperture number}, and \gls{exposure time} or \gls{shutter speed} tags.
+		Scene-referred image data may contain inaccuracies due to the dynamic range limitations of the capture device, noise from various sources, quantization, optical blurring and flare that are not corrected for, and colour analysis errors due to capture device metamerism. In some cases, these sources of inaccuracy can be significant.
+		The transformation from raw \gls{DSC} image data to scene-referred image data depends on the relative adopted whites selected for the scene and the colour space used to encode the image data. If the chosen scene adopted white is inappropriate, additional errors will be introduced into the scene-referred image data. These errors may be correctable if the transformation used to produce the scene-referred image data are known and the colour encoding used for the incorrect scene-referred image data has adequate precision and dynamic range.
+		The scene may correspond to an actual view of the natural world or may be a computer-generated \gls{virtual} scene simulating such a view. It may also correspond to a modified scene determined by applying modifications to an original scene to produce some different desired scene. Any such scene modifications should leave the image in a scene-referred image state and should be done in the context of an expected colour-rendering transform}
 }
 
 \newglossaryentry{sensor}
@@ -537,6 +600,17 @@ System of Units}
 		In many cases shaders are written in domain specific languages, such as 
 		\glsname{RSL} or \glsname{CUDA} that facilitate certain aspects of the 
 		implementation or control of specific hardware}
+}
+
+\newglossaryentry{shading system}
+{
+	name={shading system},
+	seealso={shader},
+	description={The component of a renderer responsible for running \glspl{shader},
+		this would often comprise a \gls{DSL} and its associated compiler, as well as
+		runtime infrastructure to enable comminucation between \glspl{shader} and
+		appropriate components of the renderer
+	}
 }
 
 \newglossaryentry{shot}
@@ -596,6 +670,17 @@ System of Units}
 	name={standard air},
 	description={Standard air is defined in~\cite[clause 3]{cie:018.2019} as \textsl{dry air at $15\degree\;[\unit\celsius]$ and $101\.325\;[\unit\pascal]$, containing
 		$0.045\%$ by volume of carbon dioxide}}
+}
+
+\newglossaryentry{strobing}
+{
+	name={strobing},
+	description={An aliasing phenomenon, usually seen as an undesiable defect, where a piece of 
+		motion picture footage is perceived as ``jumpy'' or somewhat ``flashy'', having uneven
+		brightness in a temporal sense, ``flickering'', or showing uneven ``jolty'' motion.
+		It is a manifestation of the \textsl{stroboscopic effect}, which is more typically
+		associated with the appearance of wheels or propellers spinning in the opposite direction
+		as their actual motion, often at a different, much lower speed.}
 }
 
 \newglossaryentry{stop}

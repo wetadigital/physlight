@@ -206,6 +206,7 @@
 \PassOptionsToPackage{
 	style=physlight,
 	labeldate=year,
+	locallabelwidth=true, % each bibliography has its own label width
 	maxcitenames=2,  % max two authors in citations, then use et al.
 	maxalphanames=2, % max two authors in bibliography labels well
 	maxbibnames=20,  % max no of authors in bibliography itself
@@ -362,9 +363,9 @@
 
 % [sectsty] restyle sections with our preferred font
 \allsectionsfont{\sectionsFont}
-\partnumberfont{\fontsize{44}{52}\sectionsFont}
+\partnumberfont{\fontsize{36}{44}\sectionsFont}
 \parttitlefont{\fontsize{52}{60}\sectionsFont}
-\chapternumberfont{\fontsize{36}{44}\sectionsFont}
+\chapternumberfont{\fontsize{30}{36}\sectionsFont}
 \chaptertitlefont{\fontsize{44}{52}\sectionsFont}
 \sectionfont{\sectionsFont}
 
@@ -430,6 +431,7 @@
 
 % [biblatex] adjust spacing inbetween items in the bibliography
 \setlength{\bibitemsep}{\itemsep}
+\setlength{\biblabelsep}{1em}
 
 % [caption] setup styling for our captions
 \captionsetup{font=small,labelfont=bf,textfont=it}

@@ -13,7 +13,7 @@
 \usepackage{import}
 
 % our version number
-\def\physLightVersion{v 1.3 - \today}
+\def\physLightVersion{v 1.4 - \today}
 
 % load bibliographies
 \defbibheading{rad}{References}
@@ -81,7 +81,8 @@
 %\glsdisablehyper
 %\definecolor{hyperref-color}{rgb}{0.1,0.1,0.3}
 % used for debugging, makes it easier to see links, admittedly obnoxious
-\definecolor{hyperref-color}{rgb}{.8,0.3,0.1}
+%\definecolor{hyperref-color}{rgb}{.8,0.3,0.1}
+\definecolor{hyperref-color}{rgb}{.2,0.3,0.8}
 \hypersetup{
 	colorlinks,
 	citecolor=hyperref-color,
@@ -174,6 +175,7 @@
 \listoffigures
 \listoftables
 
+\include{sec_foreword}
 
 \part{Models \& Specification}\label{part:models}
 
@@ -200,10 +202,7 @@
 %\printindex[persons]
 \printglossary[title={Index and glossary}]
 
-% put this bibliography as a chapter and add it to the toc
-\clearpage
-\phantomsection
-\addcontentsline{toc}{chapter}{\bibname}
+
 \printbibliography[heading=refs,filter=refs,prenote=refs,segment=0]
 \printbiblist[env=shorthand,heading=stdbody,prenote=stdbody,filter=stdbody,segment=0]{shorthand} 
 \printbibliography[heading=movies,prenote=movies,filter=movies,segment=0]
