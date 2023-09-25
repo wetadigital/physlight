@@ -1,10 +1,8 @@
 % SPDX-License-Identifier: Apache-2.0
 % Copyright (c) Contributors to the PhysLight Project.
 
-%\newacronym{ddye}{D$_{\text{dye}}$}{donor dye, ex. Alexa 488}
-%\newacronym[description={\glslink{r0}{F\"{o}rster distance}}]{R0}{$R_{0}$}{F\"{o}rster distance}
-%\newglossaryentry{r0}{name=\glslink{R0}{\ensuremath{R_{0}}},text=F\"{o}rster distance,description={F\"{o}rster distance, where 50\% ...}, sort=R}
-%\newglossaryentry{kdeac}{name=\glslink{R0}{\ensuremath{k_{DEAC}}},text=$k_{DEAC}$, description={is the rate of deactivation from ... and emission)}, sort=k}
+% todo: in the acronym section, the acronym expansion is not provided when there is a description as well. 
+%       we should re-add it, presumably manually 
 
 \newacronym{ADC}{adc}{Analog to Digital Converter}
 
@@ -48,9 +46,13 @@
 		digital cameras}, seealso={CCD}
 ]{CMOS}{cmos}{Complementary Metal Oxide Semconductor}
 
+\newacronym{CPU}{cpu}{Central Processing Unit}
+
 \newacronym{CRI}{cri}{Color Rendering Index}
 
 \newacronym{CUDA}{cuda}{Compute Unified Device Architecture}
+
+\newacronym{DAC}{dac}{Digital to Analog Converter}
 
 \newacronym{DCC}{dcc}{Digital Content Creation}
 
@@ -58,11 +60,24 @@
 
 \newacronym{DOP}{dop}{Director of Photography}
 
+\newacronym[seealso={DOP}]{DP}{dp}{Director of Photography}
+
 \newacronym{DSC}{dsc}{Digital Still Camera}
 
 \newacronym{DSL}{dsl}{Domain-Specific Language}
 
+\newacronym[description={A single \glsname{CPU} or \glsname{GPU}
+	instruction having floating-point operands. 
+	The \acronym{flop} is often used as a measure of performance for a
+	processor in the unit \acronym{flops}, being \acronym{flop} per second.
+	Depending on the processor architecture, different instructions will 
+	require different amounts of cycles to execute, so this should only ever be
+	thought of as a very rough performance indicator to use on coarse, 
+	back-of-the-envelope calculations}]{FLOP}{flop}{Floating-point Operator}
+
 \newacronym[longplural=Frames per Second]{FPS}{fps}{Frame per Second}
+
+\newacronym{GPU}{gpu}{Graphics Processing Unit}
 
 \newacronym{IBL}{ibl}{Image based lighting}
 
@@ -105,6 +120,7 @@ System of Units}
 
 \newacronym[see={spectral distribution}]{SPD}{spd}{Spectral Power Distribution}
 
+% todo: this needs work!!
 \newacronym{sRGB}{srgb}{sRGB color space}
 
 \newacronym{UCS}{ucs}{Uniform Chromaticity Scale}
@@ -125,7 +141,7 @@ System of Units}
 		An opening through which light can pass. 
 		In an optical system such as a camera lens this is also called 
 		\textsl{entrance pupil} or \textsl{diaphragm} and is normally
-		mounted inside the barrel of the lens to admit light through it. 
+		mounted inside the barrel of the lens housing to admit light through it. 
 		When the aperture is well approximated by a circle, it is normally measured 
 		in one of two ways: either the diameter is specified directly, 
 		usually in $[\unit{\milli\meter}]$, or when discussing camera lenses, the ratio 
@@ -145,15 +161,18 @@ System of Units}
 		numbers found on most lenses are taken from this standard series:
 		$\sfrac{f}{1.4}$, $\sfrac{f}{2}$, $\sfrac{f}{2.8}$, $\sfrac{f}{4}$, $\sfrac{f}{5.6}$,
 		$\sfrac{f}{8}$, $\sfrac{f}{11}$, $\sfrac{f}{16}$, $\sfrac{f}{22}$, $\sfrac{f}{32}$,
-		each in an approximate ratio of $\sqrt{2}$ to the next one, corresponding to a doubling/halving of admitted light from the previous one.
+		each in an approximate ratio of $\sqrt{2}$ to the next one, corresponding to a doubling/halving of admitted light from the previous one. 
 	    The aperture number if also called \textsl{f-number} and indicated with the symbol
-    	$N$, where $N=8$ indicates an $\sfrac{f}{8}$ aperture}
+    	$N$, where $N=8$ indicates an $\sfrac{f}{8}$ aperture
+    	Larger \textsl{f-numbers} correspond to smaller apertures, resulting in less light 
+    	being admitted, as well as a reduced \gls{circle of confusion} resulting in a larger depth of field
+    	}
 }
 
 \newglossaryentry{black body}
 {
 	name={black body},
-	description=\nopostdesc
+	description={TODO, also figure out if we want a space or no space}
 }
 
 \newglossaryentry{brightness}
@@ -186,6 +205,12 @@ System of Units}
 \newglossaryentry{candela}
 {
 	name={candela},
+	description={TODO}
+}
+
+\newglossaryentry{circle of confusion}
+{
+	name={circle of confusion},
 	description={TODO}
 }
 
@@ -299,6 +324,13 @@ System of Units}
 	seealso={aperture number,T-stop},
 	description=\nopostdesc
 }
+
+\newglossaryentry{far-field}
+{
+	name={far-field},
+	description={TODO}
+}
+
 
 \newglossaryentry{filmback}
 {
@@ -538,9 +570,9 @@ System of Units}
 		to use}
 }
 
-\newglossaryentry{rolling shutter}
+\newglossaryentry{rotary shutter}
 {
-	name={rolling shutter},
+	name={rotary shutter},
 	description={TODO}
 }
 

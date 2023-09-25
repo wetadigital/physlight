@@ -26,7 +26,7 @@ tristimulus color values as an input and produces a spectrum that
 corresponds to the same color.
 
 The conversion from a spectrum $S(\lambda)$ to tristimulus values 
-$(X, Y, Y)$ amounts to a projection onto a basis $(\bar x, \bar y, \bar z)(\lambda)$:
+$(X, Y, Z)$ amounts to a projection onto a basis $(\bar x(\lambda), \bar y(\lambda), \bar z(\lambda))$:
 \begin{equation}
     \begin{pmatrix}X\\Y\\Z\end{pmatrix}
         = \int_\Lambda S(\lambda)\; 
@@ -38,12 +38,16 @@ $(X, Y, Y)$ amounts to a projection onto a basis $(\bar x, \bar y, \bar z)(\lamb
     \d\lambda
     \label{eqn:color_matching}
 \end{equation}
+where the integration domain $\Lambda$ is the support of the basis 
+$(\bar x(\lambda),\bar y(\lambda), \bar z(\lambda))$,
+namely the range $[360,830] [\unit{\nano\meter}]$.
 While this operation is unique in the sense that there exists exactly one
 value $(X,Y,Z)$ for any given spectrum $S(\lambda)$ and any particular basis
-$(\bar x,\bar y, \bar z)$, the inverse operation is not. This phenomenon is called
+$(\bar x(\lambda),\bar y(\lambda), \bar z(\lambda))$, the inverse operation is not. This phenomenon is called
 \emph{metamerism}: spectra that are metameric to each other correspond to the
 same tristimulus color value with respect to the given basis.
 
+% todo: plot S_i and change the names (collides with the basis for Illuminant D family)
 As a simple example, consider the family of box spectra
 \begin{equation*}
     S_i(\lambda) = \begin{cases}
@@ -52,6 +56,7 @@ As a simple example, consider the family of box spectra
     \end{cases}
 \end{equation*}
 for $i \geq 1 $ and the sensitivity function
+% todo: change the name of this sensitivity function so it's not called the same as a CIE primary
 \begin{equation*}
     \bar x(\lambda) = 1.
 \end{equation*}
@@ -70,8 +75,7 @@ correspond to any given tristimulus value, one needs to be selected.
 
 One possible selection criterion is spectrum smoothness, because naturally occurring
 reflectance spectra are generally smooth functions of wavelength~\cite{maloney86}. 
-The widely
-used technique by~\textcite{smits99} therefore attempts to find spectra that
+The widely used technique described in~\cite{smits99} therefore attempts to find spectra that
 maximize a specific smoothness criterion in an expensive precomputation.
 The precomputation is run for seven colors: the sRGB primaries 
 Red$(\lambda)$, Green$(\lambda)$, and Blue$(\lambda)$, 

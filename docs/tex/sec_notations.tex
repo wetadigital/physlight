@@ -4,6 +4,23 @@
 \chapter{Notation and symbols}\label{ch:notation}
 %\addcontentsline{toc}{chapter}{Notation}
 
+% todo: rephrase this
+The subscript $p$ indicates we are discussing \textsl{photon} quantities: 
+we will need to introduce more of these subscripts as we go along to differentiate under 
+what perspective we are considering the quantities in play: often they will apply to
+several symbols, so when we want to draw attention to the subscript itself, we'll replace
+the symbol with an empty square like this $\square_p$.
+Because in this document there are many standard symbols and units sharing the
+same symbol, we decided to always keep units inside square brackets to minimize chances of 
+confusion.
+the majority of light transport quantities are actually functions, which take values
+that depend on a given position, direction, both or several other combinations.
+Normally we would put these argument to our functions in parentheses, like when we
+write $M_e(x)$, however it will be soon quite clear that in many cases being explicit
+about these dependencies adds a lot of typed material to our equations and ends up making their
+meaning substantially more obscure (see the discussion of~\cref{eqn:imaging1} for an example).
+So we will often omit their arguments, and use a functional form for our definitions
+
 \begin{description}
 \item[ {$\square$} ] a placeholder to indicate the location of some symbol
 \item[ {$[\square]$} ] square brackets indicate the contained symbol is a unit,
@@ -137,11 +154,10 @@ $\mu(x): X\to\R^+$, this will be notated as follows
 \end{displaymath}
 it is sometimes useful to consider the $p$-norm of a function $f$:
 \begin{displaymath}
-\|f\|^p := \sqrt[p]{\int_X |f(x)|^p \d x}, \qquad \|f\|_\mu^p := \sqrt[p]{\int_X |f(x)|^p \mu(x)\d dx}.
+\|f\|^p := \sqrt[p]{\int_X |f(x)|^p \d x}, \qquad \|f\|_\mu^p := \sqrt[p]{\int_X |f(x)|^p \mu(x)\d x}.
 \end{displaymath}
 
-In the case of a function $g(x): X\to\R^n$ valued in $\R^n$ we apply the
-relations above to
+In the case of a function $g(x): X\to\R^n$ we apply the relations above to
 each component separately, for example, in the case of $n = 2$ we would have
 $g(x) = (g_1(x), g_2(x))$, where $g_1,g_2:X\to\R$
 \begin{displaymath}

@@ -10,6 +10,16 @@
 		as if you were witnessing something real, rather than \acronym{cg}}}
 {\textsc{Jon Favreau}, 2008}
 
+% todo: The paragraphs are too long, the sentences are too long. 
+%       Sharpen and tighten (or split) the sentences, and break up the big paragraphs. 
+% todo: It's very rare when it's very important to emphasize a very important point by 
+%       using "very." This is very true. same for Obviously, "it's clear that," 
+%       "apparently," "naturally," "of course,"
+\ifomit
+exposure vs density curve plots
+test: try Libertine for body text
+\fi
+
 \noindent This document is the result of a prolonged phase of soul-searching 
 started in the summer of 2014. As it often happens, it all started with the classic,
 seemingly innocent question, in our case in an e-mail from our supervisor Joe Letteri
@@ -26,8 +36,10 @@ live-action photography and \gls{CGI} should be completely seamless.
 The implication is that \gls{VFX} production is an integral part of the movie-making process and toolkit, 
 and as such it ultimately and rightfully falls under the control of the director, in charge of content, 
 performance and the overall vision for the show, and the \gls{DOP} (also known as 
-the \textsl{cinematographer}), in charge of all the photography aspects. 
-These two being the key creators of the motion picture. 
+the \textsl{cinematographer}, and sometimes abbreviated as \acronym{dp}), in charge of all the photography aspects. 
+These two being the key creators of the motion picture for what concerns the shooting stage of a production,
+working in concert with the Production Designer which is effectively the key figure during the
+pre-production stage. 
 This naturally presents a valuable opportunity to support and assist them in fulfilling the vision
 they have for the picture by providing a set of controls that under a unified language would span the 
 real world as well as the \gls{virtual} world.
@@ -69,10 +81,24 @@ such as \cite{graduate67}, \cite{easyrider69}, \cite{fiveeasypieces70},
 establishing a new aesthetic that would then be adopted into special-effect shows such as \cite{spaceodyssey68}, 
 \cite{starwars77}, \cite{closeencounters77} and ended up becoming a staple of modern effects-heavy 
 cinematography, for example as seen in Spielberg's work such as \cite{raiders81}, \cite{et82} or even
-\cite{goonies85}, and all the way to J. J. Abrams's \cite{startrek2013}.
+\cite{goonies85}, and all the way to J. J. Abrams's \cite{startrek2013}, which was accused by some
+of being self-indulgent in the abundance of all these ``pretty lights''. 
+In general the shows from \companyname{Marvel Studios} and the \companyname{DC Comics} shows from
+Warner Bros. certainly have a somewhat more balanced use of lens flares, from Favreau's 
+\cite{ironman08} to \cite{avengers_eg}, from Nolan's \cite{darkknight08} to \cite{blackadam22}.
+
 
 There is certainly a tradition in photography to take what might appear to be shortcomings
-or defects in an image and turn them into creative tools in the photographer's kit.
+or defects in an image and turn them into creative tools in the photographer's kit\footnote{
+	Arguably similar trends appear all over the domain of art, maybe the whole thing with vinyl records
+	could serve as an analogy. At first the best way to hear music was spinning records, then
+	the Compact Disc and digital sound appeared, and unprecedented purity in musical reproduction
+	was now available. Yet gradually both artists and listeners at home selectively decided that
+	certain kinds of ``feel'' were beneficial to certain pieces, and vinyl ended up making some level
+	of a comeback, much like vacuum tube amplifiers, tape-based delay decks and all sorts of other
+	analog gear. Similar thoughts apply to the current of lo-fi pop music, or the origin of the
+	use of distorted guitar sounds in blues and rock, where again what might be thought of as
+	defects are turned into creative opportunities by the artists involved}.
 The classic example is working with portions of an image to be in more or less sharp focus,
 and this is certainly part of an aesthetic discourse which has seen much evolution over time: 
 in the early days of photography there was a general taste for an overall ``soft focus'' look
@@ -94,14 +120,14 @@ For what concerns motion pictures, the cinematographer working with physical fil
 options when compared to the still photographer: the film contains 24 frames per second, and the motion
 picture camera needs a certain amount of time to advance the film strip to the position for the next frame,
 so usually motion picture cameras are limited to a maximum exposure time of $\sfrac1{48}$ of a second.
-Motion picture cameras mostly employ what's called a \gls{rolling shutter}, being a disk that spins 
+Motion picture cameras mostly employ what's called a \gls{rotary shutter}, being a disk that spins 
 at constant speed interposed between the lens and the film. 
 On this disk two ``blades'' are mounted, each covering half of the circle and spanning an angle of $180$ degrees each. 
 The camera technicians on-set have provisions to mount these two blades so they leave a 
 wedge-shaped gap where light can pass through as the disk spins.
 So if for example they were to leave a gap of $90$ degrees, the film would only get light for a 
 duration of a quarter of each frame, being an exposure time of $\sfrac1{96}$ of a second.
-Because of how ubiquitous a rolling shutter is for cinema work, the language established in the field
+Because of how ubiquitous the \gls{rotary shutter} is for cinema work, the language established in the field
 talks about exposure times in degrees rather than in seconds, using phrases like 
 ``this take was shot on a 90 degree shutter''.
 The amount of motion blur in a shot has a specific look that audiences feel: in fact it's 
@@ -116,12 +142,17 @@ There is certainly a possibility to pick film stock with sensitivity better matc
 of the moment, but film stock is only made in relatively few speeds, and often times a large change
 in sensitivity implies a change in look that may not be appropriate for the moment, as it could
 induce an undesirable visual discontinuity in the edited scene.
+For what concerns digital image synthesis, the implementation of a shutter that was an accurate 
+model of its real-life counterpart has proven to be fertile ground for work, one of the earlier
+examples is found in~\cite{glassner99} where the author covers several possible shutter constructions
+and show how the images they would produce would differ and why.
 
 These problems were reduced with the advent of digital movie postprocessing:
 the early experiments in \cite{pleasantville98} and \cite{whatdreams98}, exploring the possibilities
 opened by the new \gls{digital intermediate} process, solidified very quickly into a completely rebuilt
-and reconceived post-production method, allowing entirely new looks as exemplified in \cite{brother2000}
-first and then \cite{amelie2001} and \cite{moulin2001}. In fact soon after the digital intermediate process
+and reconceived post-production method, allowing entirely new looks as exemplified in movie such as
+\cite{matrix99}, \cite{brother2000}, \cite{amelie2001} and \cite{moulin2001}. 
+In fact soon after the digital intermediate process
 took hold, increasingly advanced software methods for adding motion blur and aperture blur 
 (ie. limiting the depth of field in the image) after the fact continued to appear.
 It is interestingly to observe how the two enjoyed very different adoption in practice, the origin
@@ -133,7 +164,6 @@ not-completely-welcome guest at the table. And in turn that descends from the fo
 easily consciously observable by artist and audiences, while the latter necessarily 
 passes by very quickly and remains (at least for the mainstream audience) at a less conscious
 level of perception.
-
 
 
 The important question as to whether this is, or should be, the \emph{one true way} of using \glsname{CGI} in 
@@ -158,8 +188,8 @@ the brightness of the lighting fixtures captured by our reference photographers.
 At that time our reference photography crew would capture essentially two data sets
 that would later be used for \gls{virtual} lighting: the first set of photographs would be 
 images of the ``faces'' of all light fixtures used for each shot. 
-These would later be used to improve the fidelity of reflections in high
-gloss materials, such as car paint and other polished surfaces, as well as anything wet, 
+These would later be used to improve the fidelity of reflections in highly 
+polished reflective surfaces, as well as anything wet, 
 including the very important case of eyes in digital character faces. 
 The second set would be wide-angle panoramas of the set as it stood just before shooting began,
 which would later be used to construct \gls{IBL} sources\footnote{ 
@@ -185,18 +215,16 @@ matching the live-action state and make numerous test renders to reconcile the l
 digital elements with their corresponding counterparts from the principal photography plates. 
 Source data for this process is often seen in images about \gls{VFX} workflows: three images are captured including
 a ``grey ball'', being a matte, middle-gray sphere, a ``chrome ball'', being a mirror-reflecting
-sphere, and a ``MacBeth Chart'', a color calibration target made of 24 colorful squares of known 
+sphere, and a ``Macbeth Chart'', a color calibration target made of 24 colorful squares of known 
 reflectance properties.
 They are used to capture various aspects of the coloration and distribution of light on set,
 and they are comparatively easy to build into \gls{virtual} assets, so that photography and renders 
 can be compared with some hopes of accuracy.
 However, due to the nature of on-set work, and the realities arising when several separate crews 
-all need to work as quickly and efficiently as possible, 
-this reconciliation process entails a substantial amount of 
-judgment to achieve a match robust enough to cover the needs of entire sequences. 
-This turns into a large amount of time spent on the task by the lighting crew, 
-made more problematic by the fact that the delicacy of the task ends up requiring
-senior crew, which would be better spent elsewhere.
+all need to work as quickly and efficiently as possible, this reconciliation process entails a 
+substantial amount of judgment to achieve a match robust enough to cover the needs of entire sequences. 
+The implication being that a large amount of time gets spent on this calibration task by 
+senior \gls{VFX} lighting crew, whose time would be better spent in more creative tasks.
 
 At some point it finally dawned on us that if we could measure the brightness
 of the lights themselves, we could simply roll the values into our survey data 
@@ -207,7 +235,7 @@ brightness in our surveys? Should it be watts, candelas, footlamberts?".
 
 
 The renderer in use at \companyname{W\=et\=a FX}'s, \productname{Manuka}, is a spectral renderer
-which gives it a very accurate color management pipeline. 
+which gives it a very precise internal handling of color. 
 So we were starting this work sitting on an opportunity to substantially improve the fidelity of 
 our \gls{virtual} lighting process, by transporting more directly information from our on-set 
 surveys all the way into the \gls{virtual} scenes.
@@ -218,22 +246,23 @@ There was the further added bonus that using measured data would also improve ou
 more subtle aspects of our images.
 
 It was pleasing for us to see how well the process worked out in practice: 
-after a couple years of work, this document reached its ``Version 1.0'' status, 
+after a couple years of work, our ideas on how to work with absolute scene-referred
+lighting data reached what we could call ``Version 1.0'' status, 
 and the system was adopted for work on \cite{wfpota2017} and \cite{valerian2017}. 
 The shows feature cinematography by Michael Seresin and Thierry Arbogast respectively and were shot 
-in vastly different visual styles: Seresin's photography includes long outdoor sequences in 
-snow-covered mountains featuring a very delicate, naturalistic look, while Arbogast's work 
-in \emph{Valerian} is all about different worlds from all around the galaxy, full of 
-overly saturated colors and bright, intense primaries everywhere.
+in vastly different visual styles, following what was prepared by the production designers
+on their respective shows: Seresin's photography includes long outdoor sequences portraying 
+snow-covered mountains featuring a very delicate, naturalistic look, while Arbogast's images 
+in \emph{Valerian} cover all manners of different worlds from all around the galaxy, and
+are chock full of overly saturated colors and bright, intense primaries everywhere.
 Our reference photography crew on both productions recorded absolute brightness data and spectral profiles
 for all the luminaires employed on the show, alongside the usual images of their faces, and this dataset
 was then applied during the production of the \gls{VFX} work. 
 The resulting images on both shows were produced with a more robust process with reduced guesswork, 
-and naturally fell into alignment with the live-action photography right from the get go, as is quite
-visible in the finished pieces.
-
-
-
+and naturally fell into alignment with the live-action photography right from the get go, 
+and the finished pieces easily attained a level of integration between graphics and live-action
+footage that until then had always been a hard-won battle for us, notwithstanding the considerable
+skill and expertise of our crew.
 
 
 Once we had finished building a software system capable of very accurately simulating 
@@ -242,7 +271,8 @@ that corresponded very accurately with their real-life counterparts, we had in o
 a virtual photographic camera and as much as this enabled us to match very
 closely the images our colleagues from live-action disciplines created on-set,
 we also had an opportunity to propose the use of this system for all sorts of predictive rendering applications,
-as could be useful in virtual product design work (as famously exemplified in the IKEA catalogue, for example),
+as could be useful in virtual product design work (for example these days the ubiquitous IKEA catalog
+is primarily made from computer graphics images, not photographs of real-life pieces),
 architectural rendering (especially for lighting design) and all manners of similar applications,
 inspired by the increasingly famous \emph{digital twin} concept~\cite{gelernter91},
 which over the last couple decades has been penetrating and revolutionizing the
@@ -252,16 +282,3 @@ open-source project.
 
 
 
-\ifomit
-
-
-color responsivity in XYZ or in camera RGB?
-exposure vs density curve plots
-
-
-
-
-test: try the siggraph font styles
-test: try Libertine for body text
-
-\fi
