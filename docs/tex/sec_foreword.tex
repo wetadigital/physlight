@@ -3,6 +3,8 @@
 
 \chapter*{Foreword}\label{ch:foreword}
 \addcontentsline{toc}{chapter}{Foreword}
+% all upper case to match the rest
+\markboth{FOREWORD}{}
 
 \epigraph{%
 	\emph{I constantly asked myself `What would it really be like to photograph
@@ -21,7 +23,7 @@ test: try Libertine for body text
 \fi
 
 \noindent This document is the result of a prolonged phase of soul-searching 
-started in the summer of 2014. As it often happens, it all started with the classic,
+started in the summer of 2014. As often happens, it all started with the classic,
 seemingly innocent question, in our case in an e-mail from our supervisor Joe Letteri
 at \companyname{W\=et\=a FX} (called \companyname{Weta Digital} at the time).
 Production on \cite{hobbit3} was in its final stretch, and while the artists at the studio
@@ -38,7 +40,7 @@ and as such it ultimately and rightfully falls under the control of the director
 performance and the overall vision for the show, and the \gls{DOP} (also known as 
 the \textsl{cinematographer}, and sometimes abbreviated as \acronym{dp}), in charge of all the photography aspects. 
 These two being the key creators of the motion picture for what concerns the shooting stage of a production,
-working in concert with the Production Designer which is effectively the key figure during the
+working in concert with the Production Designer who is effectively the key figure during the
 pre-production stage. 
 This naturally presents a valuable opportunity to support and assist them in fulfilling the vision
 they have for the picture by providing a set of controls that under a unified language would span the 
@@ -59,9 +61,9 @@ and which film stocks to work with, as a result of serving the aim of the direct
 what is available at the time the movie is made\footnote{This is both because of external limits such as 
 	budgetary constraints as well as inherent limits, like the availability of specific piece of equipment 
 	at a given point in history. It's clear that Orson Welles, Stanley Kubrick and Christopher Nolan, 
-	as well as their respective \glspl{DOP}, worked with very different technology, and budgets}. 
+	as well as their respective \glspl{DOP}, worked with very different technology and budgets}. 
 The advancement of technology provides the \gls{DOP} with some kind of a traveling 
-window of opportunity in terms of what can be achieved: new lenses are invented that are maybe sharper,
+window of opportunity in terms of what can be achieved: new lenses are invented that maybe look sharper,
 or exhibit more clarity, new film stock with different grain characteristics or color capability goes into
 production, and older technology is gradually retired.
 This is an element behind the evolution of the aesthetics of motion pictures, and it exists alongside the
@@ -89,6 +91,7 @@ Warner Bros. certainly have a somewhat more balanced use of lens flares, from Fa
 
 
 There is certainly a tradition in photography to take what might appear to be shortcomings
+\label{defects_as_opportunity}
 or defects in an image and turn them into creative tools in the photographer's kit\footnote{
 	Arguably similar trends appear all over the domain of art, maybe the whole thing with vinyl records
 	could serve as an analogy. At first the best way to hear music was spinning records, then
@@ -141,11 +144,23 @@ of the \gls{DOP} and director, but limited by the constraints of available light
 There is certainly a possibility to pick film stock with sensitivity better matching the need
 of the moment, but film stock is only made in relatively few speeds, and often times a large change
 in sensitivity implies a change in look that may not be appropriate for the moment, as it could
-induce an undesirable visual discontinuity in the edited scene.
-For what concerns digital image synthesis, the implementation of a shutter that was an accurate 
-model of its real-life counterpart has proven to be fertile ground for work, one of the earlier
-examples is found in~\cite{glassner99} where the author covers several possible shutter constructions
-and show how the images they would produce would differ and why.
+induce an undesirable visual discontinuity in the edited scene\footnote{For what concerns digital image synthesis, 
+	the implementation of a shutter that was an accurate 
+	model of its real-life counterpart has proven to be fertile ground for work, one of the earlier
+	examples is found in~\cite{glassner99} where the author covers several possible shutter constructions
+	and show how the images they would produce would differ and why}. 
+\Gls{strobing} was also employed deliberately in certain shows, in keeping with our view that
+every ``defect'' can be used effectively for artistic purposes. 
+In this case the idea started from a view that
+a sharper, less continuous look gave a stronger, more sudden sense of motion and in general
+kept the audience more restless. 
+Early examples of this use include~\cite{savingprivateryan98}, where
+\gls{DOP} Janusz Kamiński chose for the opening scene to use a mix of 45 degree or a 90 degree shutter. The tight angles reduce the length of the motion trails and combined with the use of a handheld camera give a crisper shake to the footage, imparting an added sense of reality and urgency to the scene.
+For the battle scenes in \cite{gladiator2000}, \gls{DOP} John Mathieson used a mix of very tight
+shutters as well as extremely long shutters of 180 degrees with camera rolling at 6 \gls{FPS} 
+(equivalent to 720 degrees at normal speed, the footage was then quad printed so the action would play back 
+at real-time speed), to impart a heightened sense of strength and magnitude to the action.
+
 
 These problems were reduced with the advent of digital movie postprocessing:
 the early experiments in \cite{pleasantville98} and \cite{whatdreams98}, exploring the possibilities
@@ -154,12 +169,12 @@ and reconceived post-production method, allowing entirely new looks as exemplifi
 \cite{matrix99}, \cite{brother2000}, \cite{amelie2001} and \cite{moulin2001}. 
 In fact soon after the digital intermediate process
 took hold, increasingly advanced software methods for adding motion blur and aperture blur 
-(ie. limiting the depth of field in the image) after the fact continued to appear.
-It is interestingly to observe how the two enjoyed very different adoption in practice, the origin
-of the phenomenon lying in movie-making practice. The observation is that motion blur is very
-rarely corrected in post production, while depth of field is very often modified in the late
+(i.e., limiting the depth of field in the image) after the fact continued to appear.
+It is interesting to observe how the two enjoyed different adoption in practice, the origin
+of the phenomenon lying in movie-making practice. The observation is that motion blur is 
+rarely corrected in post production, while depth of field is often modified in the late
 stages of compositing. And this comes directly from the facts that sharpness of focus is treated 
-very specifically and with great attention by the \gls{DOP}, while  motion blur is more of a 
+with great attention by the \gls{DOP}, while  motion blur is more of a 
 not-completely-welcome guest at the table. And in turn that descends from the former being
 easily consciously observable by artist and audiences, while the latter necessarily 
 passes by very quickly and remains (at least for the mainstream audience) at a less conscious
@@ -203,7 +218,7 @@ lighting with respect to its original real-world counterpart.
 So as much as we had high quality, high dynamic range captures of all these elements,
 until that point it had never occurred to us (or for what we know, anyone else in our
 line of work) to also pin down their brightness with an absolute metric. 
-All the contrary: it was customary at that time to normalize these captured images so their 
+On the contrary, it was customary at that time to normalize these captured images so their 
 brightest point was at a known pixel value, and let the rest of these images behave linearly 
 with respect to that, in the sense that region of the real-life scene that were half as bright
 would have pixel values half as high. This would be in line with the idea that we were after 
@@ -233,7 +248,7 @@ and do away with the lengthy process of manual light reconciliation.
 And so it began, with the innocent question: ``How should we capture light 
 brightness in our surveys? Should it be watts, candelas, footlamberts?".
 
-
+% todo: rephrase this color pipeline statement
 The renderer in use at \companyname{W\=et\=a FX}'s, \productname{Manuka}, is a spectral renderer
 which gives it a very precise internal handling of color. 
 So we were starting this work sitting on an opportunity to substantially improve the fidelity of 
@@ -265,14 +280,14 @@ footage that until then had always been a hard-won battle for us, notwithstandin
 skill and expertise of our crew.
 
 
-Once we had finished building a software system capable of very accurately simulating 
-all the aspects of a real-life camera, and having complemented it with a set of controls
-that corresponded very accurately with their real-life counterparts, we had in our hands 
-a virtual photographic camera and as much as this enabled us to match very
-closely the images our colleagues from live-action disciplines created on-set,
-we also had an opportunity to propose the use of this system for all sorts of predictive rendering applications,
-as could be useful in virtual product design work (for example these days the ubiquitous IKEA catalog
-is primarily made from computer graphics images, not photographs of real-life pieces),
+Once we had finished building a software system capable of accurately simulating 
+the behaviour and controls of a real-life camera, we had in our hands 
+a virtual photographic camera, enabling us to match very closely the images our 
+colleagues from live-action disciplines created on-set. 
+We also had an opportunity to propose the use of this system for all sorts of predictive 
+rendering applications, as could be useful in virtual product design work 
+(for example these days the ubiquitous IKEA catalog is primarily made from computer graphics 
+images, not photographs of real-life pieces),
 architectural rendering (especially for lighting design) and all manners of similar applications,
 inspired by the increasingly famous \emph{digital twin} concept~\cite{gelernter91},
 which over the last couple decades has been penetrating and revolutionizing the

@@ -118,8 +118,9 @@ We've reduced it to a rather innocent looking expression
 \end{displaymath}
 or in words: ``to make a picture, set the color of each pixel to the exposure there'', 
 but we'll want to pay attention to just what exactly we mean by ``exposure'': 
-all we know so far, is that using a standard kind of exposure, say radiant exposure, or
-luminous exposure, won't help us in making pictures that are particularly useful.
+all we know so far is that using a standard kind of exposure, say radiant exposure, or
+luminous exposure, won't help us in making pictures that are a good match for images
+shot with a camera loaded with film stock you'd normally buy.
 
 \subsection{The film response function}\label{sec:filmrespfunc}
 
@@ -143,7 +144,7 @@ if they were possible\footnote{
 	of the electromagnetic spectrum simply cannot be built: if nothing else because photons
 	larger than a pixel on the sensor will just ``bounce'' right off, and photons much smaller
 	than the sensor's components will simply traverse it and continue mostly undisturbed.
-	This makes it impossible to have values even roughly representative of $H_e$.}  
+	This makes it impossible to have values even roughly representative of $H_e$}  
 just won't look natural, and are quite unlikely to have much practical use at all.
 
 That same discussion might inspire us to use $W(x,\lambda) = K_{cd} V(\lambda)$,
@@ -254,7 +255,7 @@ ward1994}), we actually have in front of us a different, intriguing opportunity
 to explore. 
 In fact it's quite evident that this is not how a real-life camera actually works,
 be that digital or film-based. 
-Rather, the sensing media in the device will have its own spectral response,
+Rather, the sensing component in the device will have its own spectral response,
 defining a camera-specific \gls{RGB} space which we'll call \camRGBl.
 For analogy with how \gls{CIE} \gls{XYZ} space is defined, we'll call these
 response curves $\bar r(\lambda), \bar g(\lambda), \bar b(\lambda)$, where the 
@@ -292,17 +293,96 @@ details are outlined in~\cref{ch:implementation}.
 
 
 \subsubsection{Local response}
-As spectral radiance $L^{\downarrow img}_{\lambda}(x, \omega, \lambda, t)$ lands
-on a pixel away from the center of the image, its effect on the image decreases 
-by a factor $\cos\theta$ due to its angle of incidence on the \gls{filmback}, a 
-phenomenon called \textsl{vignetting}. 
-In digital image synthesis this is often compensated away using a position 
-dependent component of the sensor response function
+Let's look for a moment at a pixel that is away from the center of the image.
+Let's imagine that this pixel is situated so that the ray going through its center
+and the center of the iris forms an angle $\theta$ with the axis of the lens.
+There is in all photographs a darkening that is usually radial happening from the
+center of the image and increasing towards the corner, colloquially known as ``vignetting''.
+
+To talk more simply about this effect we will introduce the notion of \textsl{\gls{paraxial ray}},
+being intuitively a ray that is nearly parallel to the main axis of the lens system and running 
+close to it, so in an everyday camera, this would be a ray (or rather a path) coming from an 
+object very sitting near the center in image space. 
+If an object sits away from the center in image space, there will be ray paths that travel to the 
+image plane and do so in a manner that intersects the lens axis (called \textsl{meridional rays}, 
+these paths will entirely lie in the plane containing the lens axis, the object and its image),
+and ray paths that don't do so (called \textsl{skew rays})\footnote{ 
+	The analysis of the behaviour of these three classes of paths is of course a key element of 
+	the design process of lens systems, and is covered in depth in books such 	
+	as~\cite{kingslake2010,smith2008}. We direct readers interested in a somewhat more
+	casual treatment of the subject towards the excellent~\cite{kingslake92}}.
+We will refer to meridional and skew rays collectively as \textsl{\glspl{oblique ray}}.
+
+Vignetting happens for three broad classes of reasons: 
+	the first one is that the geometry of the problem induces a certain attenuation onto \glspl{oblique ray}; 
+	the second is that the lens system housing physically impedes certain \glspl{oblique ray} from 
+	reaching into the lens system (so it's a form of shadowing);
+	the third one is that the lenses distort the apparent image of the \gls{iris} as seen by the
+	rays (which in some designs can and does send \emph{more} light to image locations away from the
+	image center).
+
+In many renderers there no lens being modeled and the imaging process happens as if the
+lens \gls{iris} is point-sized: this is called the \textsl{\gls{pinhole camera} model}.
+Note that in a pinhole camera, the point-sized iris is still thought of a lying on a known plane,
+which gives us well-defined notion of lens axis, and lets us reason about the angle between the
+image plane and the lens system, even when in fact there are no lenses.
+In a pinhole camera all oblique rays are meridional (because the point-sized iris forces
+them to go through the lens axis), there is no shadowing by the lens system housing (as there
+is no provision in the model for it), and there are no distortions or aberrations (also because
+the is no modeling of a lens system).
+
+\todo{Resolve the $\theta$ vs $\theta_x$ thing}
+
+However, even in a pinhole camera the geometric aspects of what we've called vignetting remain, 
+and they further decompose in three phenomena:
+\begin{itemize}
+	\item as the radiance traverses the iris under an angle $\theta$,
+	      the iris's apparent size gets reduced by a factor of $\cos\theta$ (remember how we
+	      want to compute flux thinking of the aperture shape being orthogonal
+	      to the ray)
+	\item as the radiance arrives at the filmback also under an angle $\theta$
+		  (the filmback is orthogonal to the lens axis) it spreads over
+		  a larger area, decreasing its area density by a second factor $\cos\theta$
+	\item as the radiance travels \emph{obliquely} between the iris and the pixel,
+		  the distance it covers grows by a factor $1/\cos\theta$ (also if the image plane is
+		  orthogonal to the lens axis) thereby the area density
+		  at the pixel is further attenuated by a factor of $\cos^2\theta$ (this is
+		  the inverse-square law)
+\end{itemize}
+the compound effect of these three phenomena gives us the so-called ``$\cos^4$ law''\footnote{
+	This explanation follows closely the one in~\cite[Ch. 6]{kingslake92}, but there are 
+	similar derivations in many quality books on physically based rendering such 
+	as~\cite[Ch. 5.4]{pharr2023}, and obviously in treatments of lens design}, 
+stating that the irradiance (or exposure) at a pixel is reduced by a factor $\cos^4\theta$.
+
+It is usually undesirable to model the effect of the $\cos^4$ law in a \gls{renderer},
+because most workflows that use images would end up removing it with a postprocess anyways\footnote{
+Vignetting is sometimes reintroduced for artistic effect, yet another case where a ``defect'' is 
+repurposed into a creative opportunity, see discussion on page \pageref{defects_as_opportunity}},
+so it would be customary to employ a position-dependent component of the sensor 
+response function equivalent to
 \begin{equation}
-	W_{pos}(x) = \frac{1}{\cos\theta_{x}}
+	W_{pos}(x) = \frac{1}{\cos^4\theta_{x}}
 \end{equation}
-where $\theta_{x}$ is the angle between the incident ray and the normal to the
-\gls{filmback} at $x$. 
+which would compensate this effect away.
+
+When a lens system is fully modeled, the effect of the  $\cos^4$ law is usually dominated 
+by what's properly called \textsl{\gls{vignetting}}, 
+which is the phenomenon where the barrel housing of the lens system 
+normally prevents it from admitting as much light for oblique rays as it can admit for 
+paraxial rays, both because the front elements need to have a reasonable size and because of the 
+numerous baffles present internal to the barrel inbetween the various elements
+to reduce the propagation of stray light\footnote{
+	There is an interesting observation in~\cite{kingslake92} that when working with negative
+	stock that is printed on paper, usually there is passable compensation of the vignetting
+	in the negative by the vignetting coming from the optics in the enlarger itself, 
+	producing prints with significantly less darkening at the corners than one
+	might expect}.
+
+\todo{Provide pictures showing internal lens baffles. 
+	Provide a plot of attenuation due to vignetting vs $\cos^4$.
+	Show a plot of a lens with inverse vignetting (sugg Aviogon/Biogon)}
+
 
 
 Note that we're using $x$ here and not $p^{img}$: this function is used within
@@ -310,6 +390,8 @@ our innermost integral, the one we used to compute
 $\bar L^{\downarrow img}_{\lambda}(p^{img}, \omega, \lambda, t)$
 where $x$ varies over $A_p^{img}$ to compute the average of incoming
 spectral \gls{radiance} across our filmback pixel area.
+
+\todo{rephrase following and merge with previous discussion}
 
 If a full camera lens is simulated as part of the rendering, usually the expression
 for vignetting due to purely geometric considerations comes to a loss by a 
@@ -352,13 +434,14 @@ with these blurring filters, lamenting excessive blur in certain conditions,
 and models without this filter were reintroduced as premium niche products, 
 for example \companyname{Nikon}'s \productname{D800E} model from 2014.
 
+\todo{Add discussion of Airy disk and diffraction-limited imaging}
 
 \paragraph{Imaging constant}
 
 The remaining factor in the sensor response function $W(x,\lambda)$ is the
 imaging constant $k_i$, which is defined as
 \begin{equation}\label{eqn:imaging_ki}
-	k_i = \frac{4K_{cd}}{C} \simeq \frac{4\cdot683}{312.5} = 8.7424.
+	k_i = \frac{4K_{cd}}{C} = \frac{4\cdot683}{312.5} = 8.7424.
 \end{equation}
 The constant $C$ (valued at $312.5 = 100 \frac{25}8$ in this document) is sometimes called the \textsl{incident light meter
 calibration constant} and effectively defines the units for the \gls{film speed} $S$.
@@ -398,13 +481,15 @@ reality the sensor response is carried out in \textit{camera RGB}. However, the
 analysis can be carried out analogously by applying the camera
 response curves instead of $\bar y$. Furthermore, due to physical
 constraints and limited storage precision, physical camera sensors
-obey the linearity of \eqref{eqn:imaging_response} only within certain
+obey the linearity of \cref{eqn:imaging_response} only within certain
 ranges of incoming light: while most of them are very close to being linear for the
 majority of their range, they will of course stop responding at the upper limit of 
 brightness (they ``clip'') and often exhibit a mild over-sensitivity in the darkest 
 side of the range. This behavior is very specific to each device, 
 for example cameras meant for use in astrophotography contain provisions 
 to better linearize the sensitivity to dim light.
+
+\todo{Add a couple plots of responsivity curves to illustrate the point}
 
 From this it directly becomes obvious that if the aperture number $N$,
 \gls{exposure time} $\Delta t$, and \gls{film speed} $S$ are set to satisfy the

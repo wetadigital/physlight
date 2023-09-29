@@ -353,8 +353,38 @@ Putting this together, it follows
 
 Simple geometric setups like these can be reproduced in a render and are hence useful for validation purposes.
 
-\section{Other estimates}
+\section{Intuition aids}
 
-\subsection{Energy in a photon}\label{sec:energy_photon}
+This section contains various thought experiments relating the energy in one photon to 
+various every-day amounts of energy or power a reader might be more intuitively familiar with.
 
-\todo{Compute the photons-per-FLOP thing}
+\subsection{FLOPS per photon}\label{sec:energy_photon}
+
+In an imaginary world where a process could be powered by visible photons instead of electrically,
+estimate how many photons would be needed to multiply two floating-point numbers.
+At the time of writing \companyname{Nvidia}'s \productname{RTX 6000} \glsname{GPU} is a 
+$300 \unit{\watt}$ part capable of executing $91.1 \times 10^{12}$ 32-bit \glspl{FLOP} per 
+second\footnote{
+	Because the \gls{FLOP} is well known to be one of the mythical creatures of computer 
+	science we'll pretend it approximates well the cost of one multiply.
+	We refer the reader to~\cite{brooks95} for more thoughts on mythical creatures in this 
+	general area},
+equating to about $3.3 [\unit{\pico\joule}]$ per \gls{FLOP}.
+We compute the energy $Q_p(\lambda)$ for photons with a wavelength of $\lambda [\unit{\nano\meter}]$ 
+using Planck's constant $h = 6.62607015 \times 10^{-34} [\unit{\joule\per\hertz}]$ 
+and the speed of light in vacuum $c = 2.99792458 \times 10^{9}[\unit{\meter\per\second}]$ so we have
+\begin{align}
+	Q_p(400) &= \frac{hc}{\lambda} 
+		&= \frac{6.62607015 \times 10^{-34} \cdot 2.99792458 \times 10^{9}}{400\times 10^{-9}}
+	 	&= 4.9661 \times 10^{-18}\;[\unit{\joule}] \\
+	Q_p(550) &= \frac{hc}{\lambda} 
+		&= \frac{6.62607015 \times 10^{-34} \cdot 2.99792458 \times 10^{9}}{550\times 10^{-9}}
+	 	&= 3.6117 \times 10^{-18}\;[\unit{\joule}] \\
+	Q_p(680) &= \frac{hc}{\lambda} 
+		&= \frac{6.62607015 \times 10^{-34} \cdot 2.99792458 \times 10^{9}}{680\times 10^{-9}}
+	 	&= 2.9212 \times 10^{-18}\;[\unit{\joule}]
+\end{align}
+from which you can see that $3.3 [\unit{\pico\joule}] \approx Q_p(550) \times 10^{6} \pm 8\%$.
+
+
+

@@ -136,17 +136,21 @@ System of Units}
 \newglossaryentry{aperture}
 {
 	name=aperture,
-	seealso={aperture number},
+	seealso={aperture number,iris,film gate},
 	description={
 		An opening through which light can pass. 
 		In an optical system such as a camera lens this is also called 
-		\textsl{entrance pupil} or \textsl{diaphragm} and is normally
-		mounted inside the barrel of the lens housing to admit light through it. 
-		When the aperture is well approximated by a circle, it is normally measured 
+		\textsl{iris}, \textsl{entrance pupil} or \textsl{diaphragm} and is normally
+		mounted inside the barrel of the lens system housing to limit the amount of 
+		light admitted through it. 
+		When an aperture is well approximated by a circle, it is normally measured 
 		in one of two ways: either the diameter is specified directly, 
 		usually in $[\unit{\milli\meter}]$, or when discussing camera lenses, the ratio 
-		of the aperture's diameter to the focal length is given, 
-		and is called the \textsl{aperture number}}
+		of the iris's diameter to the focal length is given, 
+		and is called the \textsl{aperture number}.
+		There is also a use of this term to indicate the \textsl{film gate}, which
+		we have avoided in this document
+	}
 }
 
 \newglossaryentry{aperture number}
@@ -342,6 +346,16 @@ System of Units}
 		photosensitive film}
 }
 
+\newglossaryentry{film gate}
+{
+	name={film gate},
+	seealso={aperture},
+	description={The rectangular opening inside a motion picture camera where the 
+		film is exposed to light (or the equivalent in a projector).
+		The film is pressed against the gate from behind to hold is in a uniform
+		plane at a calibrated distance from the lens mounting reference}
+}
+
 \newglossaryentry{film response function}
 {
 	name={film response function},
@@ -439,6 +453,13 @@ System of Units}
 		flow as arriving at an object}
 }
 
+\newglossaryentry{iris}
+{
+	name=iris,
+	seealso={aperture},
+	description=\nopostdesc
+}
+
 \newglossaryentry{irradiance}
 {
 	name=irradiance,
@@ -480,6 +501,39 @@ System of Units}
 	description={The specific directional blurriness that moving objects
 		have in a photograph when their motion is rapid with respect 
 		to the \gls{exposure time}}
+}
+
+\newglossaryentry{oblique ray}
+{
+	name={oblique ray},
+	seealso={paraxial ray},
+	description={A ray path that is not paraxial. 
+		A somewhat informal term we use to indicate ray paths traveling
+		away from the axis of a lens system and/or at an angle with it}
+}
+
+\newglossaryentry{paraxial ray}
+{
+	name={paraxial ray},
+	description={Given a lens system, consider points that lie near the axis of the lens,
+		both on the image side as well as on the object side. 
+		Now restrict this set to point pairs that contain in-focus points in the image and their
+		correspoding locations in object space.
+		Paths that connect these pairs of points are called \textsl{paraxial rays} in optics
+		(the ray versus path thing is a historical artifact) and they are generally speaking
+		fairly near to the axis, and taken together tend to span a fairly shallow cone of 
+		radiation leaving the object and arriving at the image plane.
+		Paraxial rays form the paraxial region, being the region where a lens system is
+		effectively free from aberration and distortions.
+		The requirements on acceptable aberration and distortion in the analysis define what
+		the precise meaning of ``near'' above will mean in practice.
+		See~\cite{kingslake2010} for extensive discussion of this subject}
+}
+
+\newglossaryentry{pinhole camera}
+{
+	name={pinhole camera},
+	description={TODO}
 }
 
 \newglossaryentry{pixel filter}
@@ -568,6 +622,13 @@ System of Units}
 		will normally contain information about the shapes of the objects to be rendered, their
 		appearance, also called \textsl{shading}, as well as descriptions of the camera or cameras and lighting configuration
 		to use}
+}
+
+\newglossaryentry{renderer}
+{
+	name={renderer},
+	see={rendering},
+	description=\nopostdesc
 }
 
 \newglossaryentry{rotary shutter}
@@ -712,7 +773,7 @@ System of Units}
 		brightness in a temporal sense, ``flickering'', or showing uneven ``jolty'' motion.
 		It is a manifestation of the \textsl{stroboscopic effect}, which is more typically
 		associated with the appearance of wheels or propellers spinning in the opposite direction
-		as their actual motion, often at a different, much lower speed.}
+		as their actual motion, often at a different, much lower speed}
 }
 
 \newglossaryentry{stop}
@@ -742,7 +803,9 @@ System of Units}
 		transmittance.
 		Camera lenses intended for cinema use are normally calibrated with T-stops, 
 		because this enables producing footage of identical brightness independent of
-		which one camera lens is used from the cinematographer's lens kit selected for the show}
+		which one camera lens is used from the cinematographer's lens kit selected for the show.
+		The T-stop idea was first proposed in \cite{ph2290_52} and then turned into a series
+		of standards up to \cite{ansi:it3.606-1998}}
 }
 
 \newglossaryentry{tilt-shift lens}
@@ -766,6 +829,17 @@ System of Units}
 	description={A triple of values meant to represent a color}
 }
 	
+\newglossaryentry{vignetting}
+{
+	name={vignetting},
+	alias={oblique ray},
+	description={An phenomenon observable in lens systems where the radiance flowing through
+		oblique rays is attenuated differently from what the ``$\cos^4$ law'' would predict.
+		A majority of lenses exhibit extra attenuation, while lenses with strong negative front 
+		component or reversed-telephoto lenses will exhibit varying levels of brightening instead
+	}
+}
+
 \newglossaryentry{virtual}
 {    
 	name={virtual},
