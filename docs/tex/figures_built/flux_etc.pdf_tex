@@ -1,0 +1,76 @@
+%% Creator: Inkscape 1.2.2 (b0a8486, 2022-12-01), www.inkscape.org
+%% PDF/EPS/PS + LaTeX output extension by Johan Engelen, 2010
+%% Accompanies image file 'flux_etc.pdf' (pdf, eps, ps)
+%%
+%% To include the image in your LaTeX document, write
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics{<filename>.pdf}
+%% To scale the image, write
+%%   \def\svgwidth{<desired width>}
+%%   \input{<filename>.pdf_tex}
+%%  instead of
+%%   \includegraphics[width=<desired width>]{<filename>.pdf}
+%%
+%% Images with a different path to the parent latex file can
+%% be accessed with the `import' package (which may need to be
+%% installed) using
+%%   \usepackage{import}
+%% in the preamble, and then including the image with
+%%   \import{<path to file>}{<filename>.pdf_tex}
+%% Alternatively, one can specify
+%%   \graphicspath{{<path to file>/}}
+%% 
+%% For more information, please see info/svg-inkscape on CTAN:
+%%   http://tug.ctan.org/tex-archive/info/svg-inkscape
+%%
+\begingroup%
+  \makeatletter%
+  \providecommand\color[2][]{%
+    \errmessage{(Inkscape) Color is used for the text in Inkscape, but the package 'color.sty' is not loaded}%
+    \renewcommand\color[2][]{}%
+  }%
+  \providecommand\transparent[1]{%
+    \errmessage{(Inkscape) Transparency is used (non-zero) for the text in Inkscape, but the package 'transparent.sty' is not loaded}%
+    \renewcommand\transparent[1]{}%
+  }%
+  \providecommand\rotatebox[2]{#2}%
+  \newcommand*\fsize{\dimexpr\f@size pt\relax}%
+  \newcommand*\lineheight[1]{\fontsize{\fsize}{#1\fsize}\selectfont}%
+  \ifx\svgwidth\undefined%
+    \setlength{\unitlength}{566.74954632bp}%
+    \ifx\svgscale\undefined%
+      \relax%
+    \else%
+      \setlength{\unitlength}{\unitlength * \real{\svgscale}}%
+    \fi%
+  \else%
+    \setlength{\unitlength}{\svgwidth}%
+  \fi%
+  \global\let\svgwidth\undefined%
+  \global\let\svgscale\undefined%
+  \makeatother%
+  \begin{picture}(1,0.52843838)%
+    \lineheight{1}%
+    \setlength\tabcolsep{0pt}%
+    \put(0,0){\includegraphics[width=\unitlength,page=1]{flux_etc.pdf}}%
+    \put(2.07007816,-0.05984544){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.18448782\unitlength}\centering $\d x$\end{minipage}}}%
+    \put(2.64094609,-0.05984544){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.18448782\unitlength}\centering $\d x$\end{minipage}}}%
+    \put(2.07007816,0.32131334){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.18448782\unitlength}\centering $A$\end{minipage}}}%
+    \put(2.64094609,0.32131334){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.18448782\unitlength}\centering $A$\end{minipage}}}%
+    \put(2.2040929,0.62082774){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.18448782\unitlength}\centering $2\pi$\end{minipage}}}%
+    \put(2.2040929,0.23323667){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.18448782\unitlength}\centering $2\pi$\end{minipage}}}%
+    \put(2.76785506,0.62082774){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.22973953\unitlength}\centering $\d\omega$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=2]{flux_etc.pdf}}%
+    \put(2.7653937,0.23323667){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.22973953\unitlength}\centering $\d\omega$\end{minipage}}}%
+    \put(0,0){\includegraphics[width=\unitlength,page=3]{flux_etc.pdf}}%
+    \put(0.17586342,0.5191766){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246503\unitlength}\centering $\Phi_e$ \end{minipage}}}%
+    \put(0.56406479,0.51878376){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35299258\unitlength}\centering $I_e(\omega)$ \end{minipage}}}%
+    \put(0.08059975,0.23379242){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35299258\unitlength}\centering $M_e(x)$ \end{minipage}}}%
+    \put(0.56406479,0.23379242){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.35299258\unitlength}\centering $L_e(x,\omega)$ \end{minipage}}}%
+    \put(0.17586342,0.34170943){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246503\unitlength}\centering $S$ \end{minipage}}}%
+    \put(0.65932845,0.34170943){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246503\unitlength}\centering $S$ \end{minipage}}}%
+    \put(0.17586342,0.03588391){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246503\unitlength}\centering $x$ \end{minipage}}}%
+    \put(0.65932845,0.03588391){\color[rgb]{0,0,0}\makebox(0,0)[lt]{\begin{minipage}{0.16246503\unitlength}\centering $x$ \end{minipage}}}%
+  \end{picture}%
+\endgroup%

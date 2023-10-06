@@ -124,7 +124,7 @@
 \setlength{\unitlength}{.5in}
 \begin{minipage}{\unitlength}
 \begin{picture}(1,1)
-    \put(0,0){\includegraphics[width=\unitlength]{figures/construction.pdf}}
+    \put(0,0){\includegraphics[width=\unitlength]{figures_built/in_construction.pdf}}
 \end{picture}
 \end{minipage}\hfill
 \begin{minipage}{\textwidth - \unitlength - 2em}
@@ -145,7 +145,10 @@
 
 \newcommand{\todo}[1]{\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=TODO]{#1}\end{tcolorbox}}
 
-\graphicspath{{.}{figures/}}
+% paths (relative to main.tex) where to search figures to pull in
+% we use . because it makes it clearer when using \include_graphics{figures_built/foo.pdf}
+% where the image is coming from
+\graphicspath{{.}}
 
 \begin{document}
 

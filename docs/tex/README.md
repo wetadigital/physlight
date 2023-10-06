@@ -116,11 +116,31 @@ intermediates right next to the source files. TeX people like this, I do not, YM
 
 ### Windows execution
  With all the setup above in place, building on Windows should "just work"(TM) from inside TeXStudio because of
- the "magic comments" in `main.tex`
+ the "magic comments" in `main.tex`. At the time of writing the Windows build can't rebuild the `figures_built/` directory
 
 
 
 ## Illustrations
+
+The makefile uses data and figures in the `figures_src/` directory to generate the contents of the
+`figures_built/` directory.
+
+This is done with the command `make figures` and at the moment is unfortunately Linux-specific.
+(We'd welcome contributions for a Mac and Windows port, we understand this will not necessarily be an easy task).
+
+In order to regenerate the whole directory, the command `make clean_figures` will remove all the generated contents
+so that `make figures` can be run on a "fresh" state.
+
+### Dependencies
+
+The makefile depends on
+ - gv (GhostView) -> EPS -> PDF
+ - inkscape (SVG -> PDF + LaTeX pipeline)
+   At the time of writing, the 'snap' image of inkscape is broken for cmdline use, but the 'apt' one and the AppImage
+   (https://inkscape.org/release/inkscape-1.2.2/gnulinux/appimage/dl/) both work
+
+
+### The GeoGebra work
 
 > These are very old notes on how the basic starting point for some illustrations were
  generated. Be aware that a fair few of the ones we have now were redrawn

@@ -1,0 +1,38 @@
+% SPDX-License-Identifier: Apache-2.0
+% Copyright (c) Contributors to the PhysLight Project.
+\begin{tikzpicture}[line cap=round,line join=round,>=triangle 45,x=1.0cm,y=1.0cm]
+%\draw [color=cqcqcq,dash pattern=on 1pt off 1pt, xstep=1.0cm,ystep=1.0cm] (-1,-1) grid (9,4);
+%\draw[->,color=black] (-1,0) -- (9,0);
+%\foreach \x in {-1,1,2,3,4,5,6,7,8}
+%\draw[shift={(\x,0)},color=black] (0pt,2pt) -- (0pt,-2pt) node[below] {\footnotesize $\x$};
+%\draw[->,color=black] (0,-1) -- (0,4);
+%\foreach \y in {-1,1,2,3}
+%\draw[shift={(0,\y)},color=black] (2pt,0pt) -- (-2pt,0pt) node[left] {\footnotesize $\y$};
+%\draw[color=black] (0pt,-10pt) node[right] {\footnotesize $0$};
+\clip(-1,-1) rectangle (9,4);
+\draw [shift={(0,0)},color=qqwuqq,fill=qqwuqq,fill opacity=0.1] (0,0) -- (0.27:0.6) arc (0.27:22.39:0.6) -- cycle;
+\draw [shift={(4.28,0.02)},color=qqwuqq,fill=qqwuqq,fill opacity=0.1] (0,0) -- (131.12:0.5) arc (131.12:180.27:0.5) -- cycle;
+\draw[color=qqwuqq,fill=qqwuqq,fill opacity=0.1] (4.6,0.3) -- (4.32,0.62) -- (4,0.34) -- (4.28,0.02) -- cycle;
+\draw [shift={(8.06,3.32)},color=qqwuqq,fill=qqwuqq,fill opacity=0.1] (0,0) -- (-157.61:0.6) arc (-157.61:-138.88:0.6) -- cycle;
+\draw[color=qqwuqq,fill=qqwuqq,fill opacity=0.1] (3.8,1.18) -- (4.13,1.32) -- (3.99,1.64) -- (3.67,1.51) -- cycle;
+\draw [domain=-1:9] plot(\x,{(-0--0.02*\x)/4.28});
+\draw [domain=-1:9] plot(\x,{(-0--3.32*\x)/8.06});
+\draw [line width=1pt] (4.28,0.02)-- (8.06,3.32);
+\draw [shift={(4.28,0.02)},color=qqwuqq] (131.12:0.6) arc (131.12:180.27:0.6);
+\draw [shift={(4.28,0.02)},color=qqwuqq] (131.12:0.5) arc (131.12:180.27:0.5);
+\draw [->] (4.28,0.02)-- (3.71,0.67);
+\draw [dash pattern=on 1pt off 1pt,domain=-1:9] plot(\x,{(-14.05--3.3*\x)/3.78});
+\draw [dash pattern=on 1pt off 1pt on 2pt off 4pt] (4.28,0.02)-- (3.67,1.51);
+\draw [shift={(8.06,3.32)},color=qqwuqq] (-157.61:0.6) arc (-157.61:-138.88:0.6);
+\draw[color=qqwuqq] (7.6,3.04) -- (7.5,2.97);
+\begin{scriptsize}
+\draw[color=uuuuuu] (0,-0.2) node {$F$};
+\draw[color=uuuuuu] (4.38,-0.2) node {$P$};
+\draw[color=uuuuuu] (8.3,3.15) node {$P_2$};
+\draw[color=qqwuqq] (1.0,0.23) node {$\alpha_2$};
+\draw[color=uuuuuu] (3.55,0.85) node {$N$};
+\draw[color=qqwuqq] (3.65,0.3) node {$\theta$};
+\draw[color=uuuuuu] (3.52,1.75) node {$H_2$};
+\draw[color=qqwuqq] (7.3,2.85) node {$\beta_2$};
+\end{scriptsize}
+\end{tikzpicture} 

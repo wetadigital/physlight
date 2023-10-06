@@ -1,0 +1,122 @@
+{
+	"identifier": {
+		"identifier": "10.25039/CIE.DS.w7zunnny",
+		"identifierType": "DOI"
+	},
+	"creators": [
+		{
+			"name": "International Commission on Illumination (CIE)",
+			"nameType": "Organizational"
+		}
+	],
+	"titles": [
+		{
+			"title": "Components of the relative spectral distribution of daylight used in the calculation of relative spectral power distributions of CIE daylight illuminants of different correlated colour temperatures"
+		}
+	],
+	"publisher": "International Commission on Illumination (CIE), Vienna, AT",
+	"publicationYear": "2018",
+	"subjects": [
+		{
+			"subject": "Colorimetry"
+		},
+		{
+			"subject": "Colour of objects"
+		},
+		{
+			"subject": "Colour vision"
+		},
+		{
+			"subject": "Perception of colour"
+		}
+	],
+	"language": "en",
+	"alternateIdentifiers": [
+		{
+			"alternateIdentifier": "CIE_illum_Dxx_comp.csv",
+			"alternateIdentifierType": "fileName"
+		}
+	],
+	"relatedItems": [
+		{
+			"relatedItemIdentifier": "10.25039/tr.015.2018",
+			"relatedItemIdentifierType": "DOI",
+			"relationType": "IsPartOf",
+			"relatedItemType": "Report",
+			"titles": [
+				"CIE 015:2018 Colorimetry, 4th Edition"
+			]
+		}
+	],
+	"formats": [
+		"text/csv"
+	],
+	"types": {
+		"resourceType": "dataTable",
+		"resourceTypeGeneral": "Dataset"
+	},
+	"descriptions": [
+		{
+			"description": "Components S_0(lambda), S_1(lambda), S_2(lambda) of the relative spectral distribution of daylight used in the calculation of relative spectral power distributions of CIE daylight illuminants of different correlated colour temperatures, wavelength range: 360 nm to 830 nm, wavelength increment: 1 nm, original source: CIE 015:2018 Table 6",
+			"descriptionType": "Abstract"
+		}
+	],
+	"rightsList": [
+		{
+			"rights": "Creative Commons Attribution-ShareAlike 4.0 International",
+			"rightsURI": "https://creativecommons.org/licenses/by-sa/4.0/",
+			"rightsIdentifier": "CC BY-SA 4.0"
+		}
+	],
+	"checksums": [
+		{
+			"hashMethod": "md5",
+			"checksum": "3068737bc5e8561bd8b3ef9639578d18"
+		},
+		{
+			"hashMethod": "sha256",
+			"checksum": "4056cf7c1afb23fb8820ff9cbc383a80005acdffe1c0a6945c6032616e08c6be"
+		}
+	],
+	"datatableInfo": {
+		"validations": [
+			{
+				"validationType": "sumOfColumns",
+				"validationValue": "[60455,8715.51,890.13,374.95]"
+			},
+			{
+				"validationType": "sampleRow",
+				"validationParameter": "30",
+				"validationValue": "445,119.75,36.30,-2.75"
+			}
+		],
+		"interpolationMethod": "linear",
+		"extrapolationMethod": "zero",
+		"dataQuality": "approximated",
+		"columnHeaders": [
+			{
+				"title": "lambda",
+				"unit": "nm",
+				"quantity": "wavelength",
+				"wavelength_first": 300,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "S_0(lambda)",
+				"unit": "dimensionless"
+			},
+			{
+				"title": "S_1(lambda)",
+				"unit": "dimensionless"
+			},
+			{
+				"title": "S_2(lambda)",
+				"unit": "dimensionless"
+			}
+		]
+	},
+	"schemaName": "CIEmetaDigitalProduct",
+	"schemaVersion": 4,
+	"schemaURL": "https://doi.org/10.25039/CIE.SC.4taqevcd"
+}

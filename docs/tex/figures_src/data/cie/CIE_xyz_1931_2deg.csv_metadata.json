@@ -1,0 +1,149 @@
+{
+	"identifier": {
+		"identifier": "10.25039/CIE.DS.xvudnb9b",
+		"identifierType": "DOI"
+	},
+	"creators": [
+		{
+			"name": "International Commission on Illumination (CIE)",
+			"nameType": "Organizational"
+		}
+	],
+	"titles": [
+		{
+			"title": "Colour-matching functions of CIE 1931 standard colorimetric observer"
+		}
+	],
+	"publisher": "International Commission on Illumination (CIE), Vienna, AT",
+	"publicationYear": "2019",
+	"subjects": [
+		{
+			"subject": "Photometry"
+		},
+		{
+			"subject": "Objective photometry"
+		},
+		{
+			"subject": "Units. Constants"
+		}
+	],
+	"language": "en",
+	"alternateIdentifiers": [
+		{
+			"alternateIdentifier": "CIE_xyz_1931_2deg.csv",
+			"alternateIdentifierType": "fileName"
+		}
+	],
+	"relatedItems": [
+		{
+			"relatedItemIdentifier": "10.25039/IS.ISO_CIE.11664-1.2019",
+			"relatedItemIdentifierType": "DOI",
+			"relationType": "IsPartOf",
+			"relatedItemType": "Standard",
+			"titles": [
+				"ISO/CIE 11664-1:2019 Colorimetry — Part 1: CIE standard colorimetric observers"
+			]
+		},
+		{
+			"relatedItemIdentifier": "10.25039/tr.018.2019",
+			"relatedItemIdentifierType": "DOI",
+			"relationType": "IsPartOf",
+			"relatedItemType": "Report",
+			"titles": [
+				"CIE 018:2019 The Basis of Physical Photometry, 3rd Edition"
+			]
+		},
+		{
+			"relatedItemIdentifier": "10.25039/tr.015.2018",
+			"relatedItemIdentifierType": "DOI",
+			"relationType": "IsReferencedBy",
+			"relatedItemType": "Report",
+			"titles": [
+				"CIE 015:2018 Colorimetry, 4th Edition"
+			]
+		}
+	],
+	"formats": [
+		"text/csv"
+	],
+	"types": {
+		"resourceType": "dataTable",
+		"resourceTypeGeneral": "Dataset"
+	},
+	"descriptions": [
+		{
+			"description": "CIE 1931 colour-matching functions (x_bar, y_bar, z_bar), 2 degree observer, wavelength range: 360 nm to 830 nm, wavelength increment: 1 nm, original source: CIE 018:2019, Table 6.",
+			"descriptionType": "Abstract"
+		}
+	],
+	"rightsList": [
+		{
+			"rights": "Creative Commons Attribution-ShareAlike 4.0 International",
+			"rightsURI": "https://creativecommons.org/licenses/by-sa/4.0/",
+			"rightsIdentifier": "CC BY-SA 4.0"
+		}
+	],
+	"checksums": [
+		{
+			"hashMethod": "md5",
+			"checksum": "17cca777db64b17170f06f67ce9d3ab7"
+		},
+		{
+			"hashMethod": "sha256",
+			"checksum": "fa663e3535a7e0763a745993a1f0a192eb0275ac46ad2d1befd7626841e713c1"
+		}
+	],
+	"datatableInfo": {
+		"validations": [
+			{
+				"validationType": "sumOfColumns",
+				"validationValue": "[280245,106.865469489595,106.8569171011719,106.892251278636]"
+			},
+			{
+				"validationType": "sampleRow",
+				"validationParameter": "120",
+				"validationValue": "479,0.104297900000,0.1334528000000,0.856619300000"
+			}
+		],
+		"interpolationMethod": "linear",
+		"extrapolationMethod": "zero",
+		"dataQuality": "nominal",
+		"columnHeaders": [
+			{
+				"title": "lambda",
+				"unit": "nm",
+				"quantity": "wavelength",
+				"wavelength_first": 360,
+				"wavelength_last": 830,
+				"wavelength_step": 1
+			},
+			{
+				"title": "x_bar(lambda)",
+				"unit": "dimensionless",
+				"quantity": "colour-matching function",
+				"wavelength_first": 360,
+				"wavelength_last": 830,
+				"wavelength_step": 1
+			},
+			{
+				"title": "y_bar(lambda)",
+				"unit": "dimensionless",
+				"quantity": "colour-matching function",
+				"wavelength_first": 360,
+				"wavelength_last": 830,
+				"wavelength_step": 1
+			},
+			{
+				"title": "z_bar(lambda)",
+				"unit": "dimensionless",
+				"quantity": "colour-matching function",
+				"wavelength_first": 360,
+				"wavelength_last": 830,
+				"wavelength_step": 1
+			}
+		]
+	},
+	"schemaName": "CIEmetaDigitalProduct",
+	"schemaVersion": 4,
+	"schemaURL": "https://doi.org/10.25039/CIE.SC.4taqevcd"
+}

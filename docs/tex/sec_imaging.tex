@@ -36,7 +36,8 @@ The \textsl{\gls{imaging equation}}\footnote{
 	there it's called the \emph{measurement equation}. 
 	However several other authors don't include in their definition of the
 	\emph{measurement equation} the aspect of integration in the time domain, which is
-	of key importance for our work~\cite[p. 45, Eq 2.33]{dutre2003};~\cite{pharr2023}, so to minimize confusion we chose to use a different name. 
+	of key importance for our work~\cite[p. 45, Eq 2.33]{dutre2003};~\cite{pharr2023}, 
+	so to minimize confusion we chose to use a different name. 
 }, relating the final color $C_{col}$ of a pixel
 $p^{img}$ to the incoming \gls{spectral} \gls{radiance} may appear daunting at first
 \begin{equation}\label{eqn:imaging1}
@@ -45,6 +46,8 @@ $p^{img}$ to the incoming \gls{spectral} \gls{radiance} may appear daunting at f
 	  W(x, \lambda) L^{\downarrow
 		img}_{e,\lambda}(x, \omega, \lambda, t) \cos\theta\d x\d\omega\d\lambda\d t
 \end{equation}
+
+\todo{The previous footnote: the Pharr thing is incorrect, see chapter 5.4, they do have the time dimension in there}
 
 In order to understand what's happening, we'll start making a simplifying assumption:
 we will ignore for the time being the dependency of $W(x,\lambda)$ on $x$, and 
@@ -507,7 +510,7 @@ equation thus yields pixel values in a reasonable range.
 \begin{figure}[t]
     \centering
     \def\svgwidth{0.9\linewidth}
-    \import{figures/}{exposure_equation_setup.pdf_tex}
+    \import{figures_built/}{exposure_equation_setup.pdf_tex}
     \caption{\label{fig:exposure_equation_setup}%
         Setup for our proof about the exposure equation. The Lambertian reflector with albedo $\rho$ is parallel to 
         the image plane, and the incident illumination is $E_v$. }
@@ -527,12 +530,6 @@ Y(p^{img})
 \end{equation}
 The integration along the time dimension $t$ reduces to a multiplication
 by $\Delta t$ due to the illumination field being constant in time. 
-
-%\begin{figure} 
-%\input{figures/aperture_distance.tikz}
-%\caption{Entrance pupil distance}
-%\label{fig:aperture_distance}
-%\end{figure}
 
 Each point $p^{img}$ on the filmback corresponds to a point $p^{obj}$ on the
 focus plane in object space. Energy conservation demands that the luminous flux
@@ -565,7 +562,7 @@ Substituting into Equation~\eqref{eqn:imaging_y}, we obtain
 \begin{figure}[t]
     \centering
     \def\svgwidth{0.9\linewidth}
-    \import{figures/}{a_img_obj.pdf_tex} 
+    \import{figures_built/}{a_img_obj.pdf_tex} 
     \caption{\label{fig:aperture_distance}%
         Relating image and object size in a camera where the aperture is small compared to the distance
         $o-a$ between the aperture and the object.}

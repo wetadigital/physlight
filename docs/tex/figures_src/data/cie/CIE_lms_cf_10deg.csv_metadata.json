@@ -1,0 +1,128 @@
+{
+	"identifier": {
+		"identifier": "10.25039/CIE.DS.nxsqeri8",
+		"identifierType": "DOI"
+	},
+	"creators": [
+		{
+			"name": "International Commission on Illumination (CIE)",
+			"nameType": "Organizational"
+		}
+	],
+	"titles": [
+		{
+			"title": "CIE 2006 LMS cone fundamentals for 10° field size in terms of energy"
+		}
+	],
+	"publisher": "International Commission on Illumination (CIE), Vienna, AT",
+	"publicationYear": "2006",
+	"subjects": [
+		{
+			"subject": "Influence of the colour of the light"
+		},
+		{
+			"subject": "Artificial daylight"
+		}
+	],
+	"language": "en",
+	"alternateIdentifiers": [
+		{
+			"alternateIdentifier": "CIE_lms_cf_10deg.csv",
+			"alternateIdentifierType": "fileName"
+		}
+	],
+	"relatedItems": [
+		{
+			"relatedItemIdentifier": "10.25039/tr.170-1.2006",
+			"relatedItemIdentifierType": "DOI",
+			"relationType": "IsPartOf",
+			"relatedItemType": "Report",
+			"titles": [
+				"CIE 170-1:2006 Fundamental chromaticity diagram with physiological axes - Part 1"
+			]
+		}
+	],
+	"formats": [
+		"text/csv"
+	],
+	"types": {
+		"resourceType": "dataTable",
+		"resourceTypeGeneral": "Dataset"
+	},
+	"descriptions": [
+		{
+			"description": "CIE 2006 LMS cone fundamentals for 10° field size in terms of energy, wavelength range: 390 nm to 830 nm, wavelength increment: 5 nm, original source: CIE 170-1:2006 table 6.2",
+			"descriptionType": "Abstract"
+		}
+	],
+	"rightsList": [
+		{
+			"rights": "Creative Commons Attribution-ShareAlike 4.0 International",
+			"rightsURI": "https://creativecommons.org/licenses/by-sa/4.0/",
+			"rightsIdentifier": "CC BY-SA 4.0"
+		}
+	],
+	"checksums": [
+		{
+			"hashMethod": "md5",
+			"checksum": "c2e606fddac441d032c389317e6de80b"
+		},
+		{
+			"hashMethod": "sha256",
+			"checksum": "bd64f1f688a4b319c6d3fa6b3177a32eaaaaea0eed532befd0424f96304db18"
+		}
+	],
+	"datatableInfo": {
+		"validations": [
+			{
+				"validationType": "sumOfColumns",
+				"validationValue": "[54290,23.922634940648,20.3881095153302,11.04302498627]"
+			},
+			{
+				"validationType": "sampleRow",
+				"validationParameter": "32",
+				"validationValue": "545,0.92666,0.991383,0.00175573"
+			}
+		],
+		"interpolationMethod": "linear",
+		"extrapolationMethod": "zero",
+		"dataQuality": "approximated",
+		"columnHeaders": [
+			{
+				"title": "lambda",
+				"unit": "nm",
+				"quantity": "wavelength",
+				"wavelength_first": 390,
+				"wavelength_last": 830,
+				"wavelength_step": 5
+			},
+			{
+				"title": "l_bar10(lambda)",
+				"unit": "dimensionless",
+				"quantity": "spectral sensitivity",
+				"wavelength_first": 390,
+				"wavelength_last": 830,
+				"wavelength_step": 5
+			},
+			{
+				"title": "m_bar10(lambda)",
+				"unit": "dimensionless",
+				"quantity": "spectral sensitivity",
+				"wavelength_first": 390,
+				"wavelength_last": 830,
+				"wavelength_step": 5
+			},
+			{
+				"title": "s_bar10(lambda)",
+				"unit": "dimensionless",
+				"quantity": "spectral sensitivity",
+				"wavelength_first": 390,
+				"wavelength_last": 615,
+				"wavelength_step": 5
+			}
+		]
+	},
+	"schemaName": "CIEmetaDigitalProduct",
+	"schemaVersion": 4,
+	"schemaURL": "https://doi.org/10.25039/CIE.SC.4taqevcd"
+}

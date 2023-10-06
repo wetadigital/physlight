@@ -1,0 +1,357 @@
+{
+	"identifier": {
+		"identifier": "10.25039/CIE.DS.ukaymjdn",
+		"identifierType": "DOI"
+	},
+	"creators": [
+		{
+			"name": "International Commission on Illumination (CIE)",
+			"nameType": "Organizational"
+		}
+	],
+	"titles": [
+		{
+			"title": "Relative spectral power distributions of illuminants representing typical fluorescent lamps"
+		}
+	],
+	"publisher": "International Commission on Illumination (CIE), Vienna, AT",
+	"publicationYear": "2018",
+	"subjects": [
+		{
+			"subject": "Colorimetry"
+		},
+		{
+			"subject": "Colour of objects"
+		},
+		{
+			"subject": "Colour vision"
+		},
+		{
+			"subject": "Perception of colour"
+		}
+	],
+	"language": "en",
+	"alternateIdentifiers": [
+		{
+			"alternateIdentifier": "CIE_illum_FLs.csv",
+			"alternateIdentifierType": "fileName"
+		}
+	],
+	"relatedItems": [
+		{
+			"relatedItemIdentifier": "10.25039/tr.015.2018",
+			"relatedItemIdentifierType": "DOI",
+			"relationType": "IsPartOf",
+			"relatedItemType": "Report",
+			"titles": [
+				"CIE 015:2018 Colorimetry, 4th Edition"
+			]
+		}
+	],
+	"formats": [
+		"text/csv"
+	],
+	"types": {
+		"resourceType": "dataTable",
+		"resourceTypeGeneral": "Dataset"
+	},
+	"descriptions": [
+		{
+			"description": "Relative spectral power distributions of illuminants representing typical fluorescent lamps, wavelength range: 380 nm to 780 nm, wavelength increment: 5 nm, original source: CIE 015:2018 table 10.1, 10.2, 10.3",
+			"descriptionType": "Abstract"
+		}
+	],
+	"rightsList": [
+		{
+			"rights": "Creative Commons Attribution-ShareAlike 4.0 International",
+			"rightsURI": "https://creativecommons.org/licenses/by-sa/4.0/",
+			"rightsIdentifier": "CC BY-SA 4.0"
+		}
+	],
+	"checksums": [
+		{
+			"hashMethod": "md5",
+			"checksum": "441613e501ab0a58e62f2669ff005db7"
+		},
+		{
+			"hashMethod": "sha256",
+			"checksum": "24303adacbfee5e19b2123ea2c3208a993577a054abaf55ea7e19517f98e4d55"
+		}
+	],
+	"datatableInfo": {
+		"validations": [
+			{
+				"validationType": "sumOfColumns",
+				"validationValue": "[46980,684.33,594.50,556.19,540.17,664.37,565.79,788.90,789.42,743.46,615.56,594.08,566.76,2705.00,3232.05,3342.02,3891.36,3961.43,3925.64,2824.99,2930.19,3062.75,809.69,3175.14,3422.09,3520.19,3684.53,29041]"
+			},
+			{
+				"validationType": "sampleRow",
+				"validationParameter": "14",
+				"validationValue": "445,10.72,6.27,4.02,2.55,10.32,5.48,11.35,7.68,5.84,10.40,6.95,2.65,11.38,27.63,49.79,8.37,31.92,37.98,11.96,33.35,51.83,12.28,65.31,7.13,16.88,26.33,343.00"
+			},
+			{
+				"validationType": "numberOfColumns",
+				"validationValue": "28"
+			}
+		],
+		"interpolationMethod": "linear",
+		"extrapolationMethod": "zero",
+		"dataQuality": "approximated",
+		"columnHeaders": [
+			{
+				"title": "lambda",
+				"unit": "nm",
+				"quantity": "wavelength",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL1",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "standard",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL2",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "standard",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "standard",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL4",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "standard",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL5",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "standard",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL6",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "standard",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL7",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "broad-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL8",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "broad-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL9",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "broad-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL10",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "narrow-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL11",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "narrow-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL12",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "narrow-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.1",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Standard halophosphate",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.2",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Standard halophosphate",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.3",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Standard halophosphate",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.4",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "DeLuxe type",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.5",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "DeLuxe type",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.6",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "DeLuxe type",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.7",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Three-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.8",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Three-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.9",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": " Three-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.10",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": " Three-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.11",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": " Three-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.12",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Multi-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.13",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Multi-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.14",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Multi-band",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "FL3.15",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": " D65 simulator",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			}
+		]
+	},
+	"schemaName": "CIEmetaDigitalProduct",
+	"schemaVersion": 4,
+	"schemaURL": "https://doi.org/10.25039/CIE.SC.4taqevcd"
+}

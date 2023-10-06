@@ -1,0 +1,191 @@
+{
+	"identifier": {
+		"identifier": "10.25039/CIE.DS.vgssnyfg",
+		"identifierType": "DOI"
+	},
+	"creators": [
+		{
+			"name": "International Commission on Illumination (CIE)",
+			"nameType": "Organizational"
+		}
+	],
+	"titles": [
+		{
+			"title": "Relative spectral power distributions of illuminants representing typical LED lamps"
+		}
+	],
+	"publisher": "International Commission on Illumination (CIE), Vienna, AT",
+	"publicationYear": "2018",
+	"subjects": [
+		{
+			"subject": "Colorimetry"
+		},
+		{
+			"subject": "Colour of objects"
+		},
+		{
+			"subject": "Colour vision"
+		},
+		{
+			"subject": "Perception of colour"
+		}
+	],
+	"language": "en",
+	"alternateIdentifiers": [
+		{
+			"alternateIdentifier": "CIE_illum_LEDs.csv",
+			"alternateIdentifierType": "fileName"
+		}
+	],
+	"relatedItems": [
+		{
+			"relatedItemIdentifier": "10.25039/tr.015.2018",
+			"relatedItemIdentifierType": "DOI",
+			"relationType": "IsPartOf",
+			"relatedItemType": "Report",
+			"titles": [
+				"CIE 015:2018 Colorimetry, 4th Edition"
+			]
+		}
+	],
+	"formats": [
+		"text/csv"
+	],
+	"types": {
+		"resourceType": "dataTable",
+		"resourceTypeGeneral": "Dataset"
+	},
+	"descriptions": [
+		{
+			"description": "Relative spectral power distributions of illuminants representing typical LED lamps, wavelength range: 380 nm to 780 nm, wavelength increment: 5 nm, original source: CIE 015:2018 table 12.1/12.2",
+			"descriptionType": "Abstract"
+		}
+	],
+	"rightsList": [
+		{
+			"rights": "Creative Commons Attribution-ShareAlike 4.0 International",
+			"rightsURI": "https://creativecommons.org/licenses/by-sa/4.0/",
+			"rightsIdentifier": "CC BY-SA 4.0"
+		}
+	],
+	"checksums": [
+		{
+			"hashMethod": "md5",
+			"checksum": "91a73557fe319a085dd598ce96fa8ace"
+		},
+		{
+			"hashMethod": "sha256",
+			"checksum": "6147313bd1ec57ef308df222e1fe1e58115fde1ada7d4ba91fb9dcb776b267"
+		}
+	],
+	"datatableInfo": {
+		"validations": [
+			{
+				"validationType": "sumOfColumns",
+				"validationValue": "[46980,641.70,637.35,631.14,626.54,655.25,579.31,686.37,849.68,812.08]"
+			},
+			{
+				"validationType": "sampleRow",
+				"validationParameter": "29",
+				"validationValue": "520,7.98,8.74,11.51,12.11,13.38,10.82,20.57,10.06,12.74"
+			}
+		],
+		"interpolationMethod": "linear",
+		"extrapolationMethod": "zero",
+		"dataQuality": "approximated",
+		"columnHeaders": [
+			{
+				"title": "lambda",
+				"unit": "nm",
+				"quantity": "wavelength",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-B1",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Phosphor-type LEDs in different CCT categories",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-B2",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Phosphor-type LEDs in different CCT categories",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-B3",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Phosphor-type LEDs in different CCT categories",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-B4",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Phosphor-type LEDs in different CCT categories",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-B5",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Phosphor-type LEDs in different CCT categories",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-BH1",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "Hybrid-type",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-RGB1",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": " RGB-type",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-V1",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "violet-pumped phosphor-type LEDs",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			},
+			{
+				"title": "LED-V2",
+				"unit": "dimensionless",
+				"quantity": "spectral distribution",
+				"description": "violet-pumped phosphor-type LEDs",
+				"wavelength_first": 380,
+				"wavelength_last": 780,
+				"wavelength_step": 5
+			}
+		]
+	},
+	"schemaName": "CIEmetaDigitalProduct",
+	"schemaVersion": 4,
+	"schemaURL": "https://doi.org/10.25039/CIE.SC.4taqevcd"
+}

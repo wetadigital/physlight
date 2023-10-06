@@ -7,7 +7,14 @@ The physLight project was started at Weta Digital, now Wētā FX, but
 has additional contributors.
 
 The original version of the "Radiance" Appendix in the PhysLight document
-is copyright 1963 American Journal of Physics.
+is copyright 1963 American Journal of Physics. This copyright propagates
+to such appendix as well, we are grateful to AJP for allowing us this use.
+
+Some of the plots and images in the PhysLight document are licensed under
+CC-BY-SA (or based on data under such a license).
+We believe inclusion of this work in our document is compatible with
+our licensing terms and we thank the original authors for their
+contribution. A complete list is kept in docs/MANIFEST.md
 
 The employers of these individuals would have copyright claims also, these include:
 
@@ -31,3 +38,5 @@ If you know of any missing, please file a pull request or issue.
 * Seb Schmidt
 * Sehera Nawaz
 * Tom Matterson
+
+

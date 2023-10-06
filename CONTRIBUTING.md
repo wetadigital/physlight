@@ -112,6 +112,12 @@ Currently, the tex code is a work in progress extracting it from an
 internal build system. Once that is cleaned up, more will be written
 here about contributing to the documentation effort.
 
+When new images or external work is included, make sure this is tracked in
+doc/MANIFEST.md
+We have verified the following license make a work suitable for this use:
+ - CC-BY-SA
+please grow this list as more verifications happen
+
 ### Repository Structure and Commit Policy
 
 The PhysLight repository uses a simple branching and merging strategy.
