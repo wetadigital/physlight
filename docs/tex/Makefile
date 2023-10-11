@@ -45,6 +45,9 @@ FIGURES := $(FIGURE_OUTDIR)/in_construction.pdf \
 	$(FIGURE_OUTDIR)/nicodemus1963-fig1.pdf \
 	$(FIGURE_OUTDIR)/nicodemus1963-fig2.pdf \
 	$(FIGURE_OUTDIR)/nicodemus1963-fig3.pdf \
+	$(FIGURE_OUTDIR)/radiance-fig1.pdf \
+	$(FIGURE_OUTDIR)/radiance-fig2.pdf \
+	$(FIGURE_OUTDIR)/radiance-fig3.pdf \
 	$(FIGURE_OUTDIR)/emitter_surface.pdf \
 	$(FIGURE_OUTDIR)/exposure_equation_setup.pdf \
 	$(FIGURE_OUTDIR)/a_img_obj.pdf \
@@ -80,7 +83,7 @@ $(FIGURE_INTERMEDIATE):
 	mkdir -p $(FIGURE_INTERMEDIATE)
 
 clean:
-	-rm -rf $(OUTDIR)/ $(FIGURE_OUTDIR)/ $(FIGURE_INTERMEDIATE)/
+	-rm -rf $(OUTDIR)/
 	-rm -rf ./_minted-main/
 	-rm -f main.synctex.gz main.pdf main.aux main.log main.out main.toc
 	-rm -f main.bbl main.blg main.idx main.ind main.ilg main.lof main.lot
@@ -96,7 +99,7 @@ clean:
 # Note: the trailing ":" in TEXINPUTS/BIBINPUTS means "add standard searchpath here"
 # The ln cmds at the bottom set things up so TeXStudio's builtin viewer can jump into the right
 # source location
-$(OUTPUTNAME).pdf: $(FILES) Makefile | $(DIRS)
+$(OUTPUTNAME).pdf: $(FILES) figures Makefile | $(DIRS)
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
 	for f in $(OUTPUTNAME) $(BIB_AUX); do \
 	    (cd $(OUTDIR) && BIBINPUTS=..: $(BIBTEX) $$f.bcf) \
@@ -111,14 +114,14 @@ $(OUTPUTNAME).pdf: $(FILES) Makefile | $(DIRS)
 # a "compile once" quick hack for fast iteration, just meant for small changes
 .PHONY: quick quickglo
 # without glossary rebuild
-quick: $(FILES) Makefile
+quick: $(FILES) figures Makefile
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
 	cp $(OUTDIR)/$(OUTPUTNAME).pdf $(OUTPUTNAME).pdf
 	ln -sf $(OUTPUTNAME).pdf main.pdf
 	ln -sf $(OUTDIR)/$(OUTPUTNAME).synctex.gz ./main.synctex.gz
 
 # with glossary rebuild
-quickglo: $(FILES) Makefile
+quickglo: $(FILES) figures Makefile
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
 	(cd $(OUTDIR) && makeindex -s $(OUTPUTNAME).ist -o $(OUTPUTNAME).gls $(OUTPUTNAME).glo)
 	(cd $(OUTDIR) && TEXINPUTS=..: $(LATEX) $(TEXOPTS) --jobname=$(OUTPUTNAME) $(MAIN))
@@ -126,13 +129,16 @@ quickglo: $(FILES) Makefile
 	ln -sf $(OUTPUTNAME).pdf main.pdf
 	ln -sf $(OUTDIR)/$(OUTPUTNAME).synctex.gz ./main.synctex.gz
 
-.phony: figures
+.phony: figures clean_figures
 figures: ${FIGURES}
+
+clean_figures:
+	-rm -rf $(FIGURE_OUTDIR)/ $(FIGURE_INTERMEDIATE)/
 
 # the bbox for the crop was determined opening the EPS source in `gv` and using the mouse to determine the bbox coordinates
 $(FIGURE_OUTDIR)/in_construction.pdf: $(FIGURE_SRC)/images/43301396_eps_normal_none.eps | $(FIGURE_OUTDIR) $(FIGURE_INTERMEDIATE)
-	${EPSTOPDF} $(FIGURE_SRC)/43301396_eps_normal_none.eps $(FIGURE_INTERMEDIATE)/43301396_eps_normal_none.pdf
-	${PDFCROP} --bbox "365 46 461 132" $(FIGURE_INTERMEDIATE)/43301396_eps_normal_none.pdf $(realpath $(dir $@))/$(notdir $@)
+	${EPSTOPDF} $< $(FIGURE_INTERMEDIATE)/$(notdir $@)
+	${PDFCROP} --bbox "365 46 461 132" $(FIGURE_INTERMEDIATE)/$(notdir $@) $(realpath $(dir $@))/$(notdir $@)
 
 $(FIGURE_OUTDIR)/nicodemus1963-fig1.pdf: $(FIGURE_SRC)/images/nicodemus1963/nicodemus1963-fig1.pdf | $(FIGURE_OUTDIR)
 	cp $(realpath $<) $(realpath $(dir $@))/$(notdir $@)
@@ -142,6 +148,15 @@ $(FIGURE_OUTDIR)/nicodemus1963-fig2.pdf: $(FIGURE_SRC)/images/nicodemus1963/nico
 
 $(FIGURE_OUTDIR)/nicodemus1963-fig3.pdf: $(FIGURE_SRC)/images/nicodemus1963/nicodemus1963-fig3.pdf | $(FIGURE_OUTDIR)
 	cp $(realpath $<) $(realpath $(dir $@))/$(notdir $@)
+
+$(FIGURE_OUTDIR)/radiance-fig1.pdf: $(FIGURE_SRC)/images/radiance-fig1.svg | $(FIGURE_OUTDIR)
+	${INKSCAPE} --export-type=PDF --export-latex -o $(realpath $(dir $@))/$(notdir $@) $(realpath $<)
+
+$(FIGURE_OUTDIR)/radiance-fig2.pdf: $(FIGURE_SRC)/images/radiance-fig2.svg | $(FIGURE_OUTDIR)
+	${INKSCAPE} --export-type=PDF --export-latex -o $(realpath $(dir $@))/$(notdir $@) $(realpath $<)
+
+$(FIGURE_OUTDIR)/radiance-fig3.pdf: $(FIGURE_SRC)/images/radiance-fig3.svg | $(FIGURE_OUTDIR)
+	${INKSCAPE} --export-type=PDF --export-latex -o $(realpath $(dir $@))/$(notdir $@) $(realpath $<)
 
 $(FIGURE_OUTDIR)/Infrared-photo-vs-Ultraviolet-photo.jpg: $(FIGURE_SRC)/images/Infrared-photo-vs-Ultraviolet-photo.jpg | $(FIGURE_OUTDIR)
 	cp $(realpath $<) $(realpath $(dir $@))/$(notdir $@)

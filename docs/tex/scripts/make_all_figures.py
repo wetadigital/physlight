@@ -24,6 +24,8 @@ try:
 except:
     pass
 try:
+    import matplotlib as mpl
+    import mpl_toolkits.axes_grid1
     import matplotlib.pyplot as pyplot
     hasPyplot = True
 except:
@@ -131,7 +133,9 @@ def plot_spectral_locus(args, axes: pyplot.Axes):
                            cmf.ybar.sample(lnm),
                            cmf.zbar.sample(lnm)])
         if XYZ[1] > 0:
-            XYZ *= args.colorscale*.15 / XYZ[1]
+            # we make the pure-hue dots on the spectral locus half brightness
+            # because is gives more prominence to the other stuff we plot on the graph
+            XYZ *= 0.5 * args.emittancescale / XYZ[1]
             sRGB = ColorSpace.sRGB(XYZ)
             sRGB = numpy.clip(sRGB, 0, 1)
             xy = ColorSpace.xy(XYZ)
@@ -140,7 +144,7 @@ def plot_spectral_locus(args, axes: pyplot.Axes):
 
 def plot_gamut(args, axes: pyplot.Axes, pts: list[tuple[float,float]], **kwargs):
     for xy in pts:
-        col = ColorSpace.sRGB(ColorSpace.XYZ(xy, args.colorscale))
+        col = ColorSpace.sRGB(ColorSpace.XYZ(xy, args.emittancescale))
         col = numpy.clip(col, 0, 1)
         pyplot.plot([xy[0]], [xy[1]], color=col, marker='s', markersize=5)
 
@@ -149,21 +153,99 @@ def plot_gamut(args, axes: pyplot.Axes, pts: list[tuple[float,float]], **kwargs)
     pyplot.plot(*zip(*pts), **kwargs)
 
 
+def add_huebars(args, axes: pyplot.Axes, figure: pyplot.Figure):
+    """ Draw a hues gradient at the bottom of a graph """
+
+    # first thing, we make a Colormap with the hues we want
+    # these are the CIE \bar x, \bar y, \bar z curves sampled regularly
+    # to obtain the XYZ coordinates of the pure stimulus at the given wavelength
+    # and then converted from XYZ to our display space, sRGB
+    #
+    # To acquire the values at a coherent brightness that won't overdrive the
+    # gamma mapping, we first gather all the data in linear sRGB primaries,
+    # then normalize to the maximum value, and then apply the gamma after
+    # we got a brightness we're happy with
+    xlim = axes.get_xlim()
+    drawLocalBar = False
+    samplecount = 35
+    linRGBs = []
+
+    # sample the 1931 CMF's at several locations to make a pure-hues bar
+    for lnm in numpy.linspace(xlim[0], xlim[1], samplecount):
+        X = CIE.CMF_1931.xbar.sample(lnm)
+        Y = CIE.CMF_1931.ybar.sample(lnm)
+        Z = CIE.CMF_1931.zbar.sample(lnm)
+        linRGBs.append(ColorSpace.Rec709l((X, Y, Z)))
+
+    # find max and rescale so that it's our chosen max: `colorscale`
+    Rmax = max(RGB[0] for RGB in linRGBs)
+    Gmax = max(RGB[1] for RGB in linRGBs)
+    Bmax = max(RGB[2] for RGB in linRGBs)
+
+    gscale = 1.5 * args.emittancescale / max(Rmax, Gmax, Bmax)
+
+    # pure hues map, globally scaled
+    pureHuesCmap_gscale = mpl.colors.LinearSegmentedColormap.from_list(
+        "pureHues_gscale",
+        [numpy.clip(ColorSpace.sRGB_gamma(RGB * gscale), 0, 1) for RGB in linRGBs])
+    # pure hues map, locally scaled so each color has the target Y value
+    if drawLocalBar:
+        def localscale(rgb):
+            return rgb * args.emittancescale / max(rgb)
+        pureHuesCmap_lscale = mpl.colors.LinearSegmentedColormap.from_list(
+            "pureHues_lscale",
+            [numpy.clip(ColorSpace.sRGB_gamma(localscale(RGB)), 0, 1) for RGB in linRGBs])
+
+    # the range our hues correspond to
+    norm = mpl.colors.Normalize(vmin=xlim[0], vmax=xlim[1])
+
+    # place it next to the plot: we require a new set of axes to achieve this
+    divider = mpl_toolkits.axes_grid1.make_axes_locatable(axes)
+    # the added axes take space from the bottom of the current graph, pushing it up
+    # this means that they appear in the reverse order from which they are added
+    if drawLocalBar:
+        caxl = divider.append_axes("bottom", size="7.5%", pad=0.0)
+    caxg = divider.append_axes("bottom", size="7.5%", pad=0.0)
+
+    globalBar = figure.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=pureHuesCmap_gscale),
+                                cax=caxg,
+                                orientation='horizontal')
+    if drawLocalBar:
+        localBar = figure.colorbar(mpl.cm.ScalarMappable(norm=norm, cmap=pureHuesCmap_lscale),
+                               cax=caxl,
+                               orientation='horizontal')
+
+    # hide the ticks from the top graph and top color bar
+    if drawLocalBar:
+        localBar.ax.get_xaxis().set_visible(False)
+    axes.get_xaxis().set_visible(False)
+    # add two dotted lines, to represent limits of "barely visible" region (ybar < 0.1%)
+    axes.axvline(380, color=(.7,.7,.7), linewidth=.5, linestyle=":")
+    axes.axvline(720, color=(.7,.7,.7), linewidth=.5, linestyle=":")
+    axes.axvspan(xlim[0], 380, alpha=0.03, color='black')
+    axes.axvspan(720, xlim[1], alpha=0.03, color='black')
+    # add two dashed lines, to represent limits of "actually visible" region (ybar < 1%)
+    axes.axvline(420, color=(.4,.4,.4), linewidth=.5, linestyle="--")
+    axes.axvline(685, color=(.4,.4,.4), linewidth=.5, linestyle="--")
+
+
 def do_ciexyz1931(args, figure):
     """ Plot the CIE XYZ 1931 dataset into the figure """
     axes = figure.add_subplot(111)
 
-    xcol = transmittance_to_sRGB(CIE.CMF_1931.xbar, args.colorscale)
-    ycol = transmittance_to_sRGB(CIE.CMF_1931.ybar, args.colorscale)
-    zcol = transmittance_to_sRGB(CIE.CMF_1931.zbar, args.colorscale)
+    xcol = transmittance_to_sRGB(CIE.CMF_1931.xbar, args.transmittancescale)
+    ycol = transmittance_to_sRGB(CIE.CMF_1931.ybar, args.transmittancescale)
+    zcol = transmittance_to_sRGB(CIE.CMF_1931.zbar, args.transmittancescale)
 
-    plot_curve(axes, CIE.CMF_1931.xbar, color=xcol, linestyle='', marker='x', markersize=5)
-    plot_curve(axes, CIE.CMF_1931.ybar, color=ycol, linestyle='', marker='x', markersize=5)
-    plot_curve(axes, CIE.CMF_1931.zbar, color=zcol, linestyle='', marker='x', markersize=5)
+    # original CIE data was every 5nm, but current distributions use interpolated values
+    # down to 1nm spacing. For plotting we plot the original
+    plot_curve(axes, CIE.CMF_1931.xbar, color=xcol, linestyle='', marker='x', markersize=5, markevery=5)
+    plot_curve(axes, CIE.CMF_1931.ybar, color=ycol, linestyle='', marker='x', markersize=5, markevery=5)
+    plot_curve(axes, CIE.CMF_1931.zbar, color=zcol, linestyle='', marker='x', markersize=5, markevery=5)
 
-    xcol = transmittance_to_sRGB(CIE.CMF_1931_wyman.xbar, args.colorscale)
-    ycol = transmittance_to_sRGB(CIE.CMF_1931_wyman.ybar, args.colorscale)
-    zcol = transmittance_to_sRGB(CIE.CMF_1931_wyman.zbar, args.colorscale)
+    xcol = transmittance_to_sRGB(CIE.CMF_1931_wyman.xbar, args.transmittancescale)
+    ycol = transmittance_to_sRGB(CIE.CMF_1931_wyman.ybar, args.transmittancescale)
+    zcol = transmittance_to_sRGB(CIE.CMF_1931_wyman.zbar, args.transmittancescale)
 
     plot_curve(axes, CIE.CMF_1931_wyman.xbar, color=xcol, linestyle='solid', linewidth=1)
     plot_curve(axes, CIE.CMF_1931_wyman.ybar, color=ycol, linestyle='solid', linewidth=1)
@@ -171,23 +253,26 @@ def do_ciexyz1931(args, figure):
 
     # set up axes
     axes.axis([360,830,0,2])
-
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 def do_ciexyz1964(args, figure):
     """ Plot the CIE XYZ 1964 dataset into the figure """
     axes = figure.add_subplot(111)
 
-    xcol = transmittance_to_sRGB(CIE.CMF_1964.xbar, args.colorscale)
-    ycol = transmittance_to_sRGB(CIE.CMF_1964.ybar, args.colorscale)
-    zcol = transmittance_to_sRGB(CIE.CMF_1964.zbar, args.colorscale)
+    xcol = transmittance_to_sRGB(CIE.CMF_1964.xbar, args.transmittancescale)
+    ycol = transmittance_to_sRGB(CIE.CMF_1964.ybar, args.transmittancescale)
+    zcol = transmittance_to_sRGB(CIE.CMF_1964.zbar, args.transmittancescale)
 
-    plot_curve(axes, CIE.CMF_1964.xbar, color=xcol, linestyle='', marker='x', markersize=5)
-    plot_curve(axes, CIE.CMF_1964.ybar, color=ycol, linestyle='', marker='x', markersize=5)
-    plot_curve(axes, CIE.CMF_1964.zbar, color=zcol, linestyle='', marker='x', markersize=5)
+    # original CIE data was every 5nm, but current distributions use interpolated values
+    # down to 1nm spacing. For plotting we plot the original
+    plot_curve(axes, CIE.CMF_1964.xbar, color=xcol, linestyle='', marker='x', markersize=5, markevery=5)
+    plot_curve(axes, CIE.CMF_1964.ybar, color=ycol, linestyle='', marker='x', markersize=5, markevery=5)
+    plot_curve(axes, CIE.CMF_1964.zbar, color=zcol, linestyle='', marker='x', markersize=5, markevery=5)
 
-    xcol = transmittance_to_sRGB(CIE.CMF_1964_wyman.xbar, args.colorscale)
-    ycol = transmittance_to_sRGB(CIE.CMF_1964_wyman.ybar, args.colorscale)
-    zcol = transmittance_to_sRGB(CIE.CMF_1964_wyman.zbar, args.colorscale)
+    xcol = transmittance_to_sRGB(CIE.CMF_1964_wyman.xbar, args.transmittancescale)
+    ycol = transmittance_to_sRGB(CIE.CMF_1964_wyman.ybar, args.transmittancescale)
+    zcol = transmittance_to_sRGB(CIE.CMF_1964_wyman.zbar, args.transmittancescale)
 
     plot_curve(axes, CIE.CMF_1964_wyman.xbar, color=xcol, linestyle='solid', linewidth=1)
     plot_curve(axes, CIE.CMF_1964_wyman.ybar, color=ycol, linestyle='solid', linewidth=1)
@@ -195,23 +280,25 @@ def do_ciexyz1964(args, figure):
 
     # set up axes
     axes.axis([360, 830, 0, 2])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_cielms2006(args, figure):
     """ Plot the CIE LMS 2006 dataset into the figure """
     axes = figure.add_subplot(111)
 
-    xcol = transmittance_to_sRGB(CIE.LMS_2006_2deg.lbar, args.colorscale)
-    ycol = transmittance_to_sRGB(CIE.LMS_2006_2deg.mbar, args.colorscale)
-    zcol = transmittance_to_sRGB(CIE.LMS_2006_2deg.sbar, args.colorscale)
+    xcol = transmittance_to_sRGB(CIE.LMS_2006_2deg.lbar, args.transmittancescale)
+    ycol = transmittance_to_sRGB(CIE.LMS_2006_2deg.mbar, args.transmittancescale)
+    zcol = transmittance_to_sRGB(CIE.LMS_2006_2deg.sbar, args.transmittancescale)
 
     plot_curve(axes, CIE.LMS_2006_2deg.lbar, color=xcol, linestyle='solid', linewidth=1)
     plot_curve(axes, CIE.LMS_2006_2deg.mbar, color=ycol, linestyle='solid', linewidth=1)
     plot_curve(axes, CIE.LMS_2006_2deg.sbar, color=zcol, linestyle='solid', linewidth=1)
 
-    xcol = transmittance_to_sRGB(CIE.LMS_2006_10deg.lbar, args.colorscale)
-    ycol = transmittance_to_sRGB(CIE.LMS_2006_10deg.mbar, args.colorscale)
-    zcol = transmittance_to_sRGB(CIE.LMS_2006_10deg.sbar, args.colorscale)
+    xcol = transmittance_to_sRGB(CIE.LMS_2006_10deg.lbar, args.transmittancescale)
+    ycol = transmittance_to_sRGB(CIE.LMS_2006_10deg.mbar, args.transmittancescale)
+    zcol = transmittance_to_sRGB(CIE.LMS_2006_10deg.sbar, args.transmittancescale)
 
     plot_curve(axes, CIE.LMS_2006_10deg.lbar, color=xcol, linestyle='--', linewidth=1)
     plot_curve(axes, CIE.LMS_2006_10deg.mbar, color=ycol, linestyle='--', linewidth=1)
@@ -219,6 +306,8 @@ def do_cielms2006(args, figure):
 
     # set up axes
     axes.axis([360, 830, 0, 2])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_blackbody(args, figure):
@@ -242,11 +331,18 @@ def do_blackbody(args, figure):
         bb_curve = SPD.BlackBody.getCurve(lnms, T)
         bbY = ColorSpace.scalar(bb_curve, CIE.CMF_1931.ybar)
         bb_curve *= 40 / bbY
-        col = spradiance_to_sRGB(bb_curve, args.colorscale)
+        col = spradiance_to_sRGB(bb_curve, args.emittancescale)
+        print('$%.6g$ \\textcolor[rgb]{%g,%g,%g}{\\rule{1em}{1em}},' % (T, *col))
         plot_curve(axes, bb_curve, color=col, linestyle='-', linewidth=3)
 
+    plot_curve(axes, CIE.CMF_1931.ybar, color='black', linestyle='--', linewidth=.5)
+
     # set up axes
-    axes.axis([lnms[0], lnms[-1], 0, 1])
+    # data is normalized, hide vertical axis because it's meaningless
+    axes.get_yaxis().set_visible(False)
+    axes.axis([lnms[0], lnms[-1], 0, 1.05])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_chromas(args, figure):
@@ -302,18 +398,29 @@ def do_commonilluminants(args, figure):
     # prepare
     lnms = numpy.linspace(300, 830, (830-300)//5 + 1)
     bb_curve = SPD.BlackBody.getCurve(lnms, 2855.54)
+    luminance = ColorSpace.scalar(bb_curve, CIE.CMF_1931.ybar)
+    bb_curve *= 40 / luminance
     illD50 = SPD.IlluminantD.getCurve(5003)
+    luminance = ColorSpace.scalar(illD50, CIE.CMF_1931.ybar)
+    illD50 *= 40 / luminance
     illD65 = SPD.IlluminantD.getCurve(6504)
+    luminance = ColorSpace.scalar(illD65, CIE.CMF_1931.ybar)
+    illD65 *= 40 / luminance
     # Create the plot
-    col = spradiance_to_sRGB(bb_curve, args.colorscale)
-    plot_curve(axes, bb_curve, color=col,   linestyle='-')
-    colD50 = spradiance_to_sRGB(illD50, args.colorscale)
-    plot_curve(axes, illD50, color=colD50,   linestyle='-')
-    colD65 = spradiance_to_sRGB(illD65, args.colorscale)
-    plot_curve(axes, illD65, color=colD65,   linestyle='-')
+    col = spradiance_to_sRGB(bb_curve, args.emittancescale)
+    plot_curve(axes, bb_curve, color=col,   linestyle='-', linewidth=3)
+    colD50 = spradiance_to_sRGB(illD50, args.emittancescale)
+    plot_curve(axes, illD50, color=colD50,   linestyle='-', linewidth=3)
+    colD65 = spradiance_to_sRGB(illD65, args.emittancescale)
+    plot_curve(axes, illD65, color=colD65,   linestyle='-', linewidth=3)
+
+    plot_curve(axes, CIE.CMF_1931.ybar, color='black', linestyle='--', linewidth=.5)
 
     # set up axes
-    axes.axis([lnms[0], lnms[-1], 0, 800])
+    axes.get_yaxis().set_visible(False)
+    axes.axis([lnms[0], lnms[-1], 0, 1.05])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_illuminanta(args, figure):
@@ -324,11 +431,13 @@ def do_illuminanta(args, figure):
     bb_curve = SPD.BlackBody.getCurve(lnms, 2855.54)
 
     # Create the plot
-    col = spradiance_to_sRGB(bb_curve, args.colorscale)
+    col = spradiance_to_sRGB(bb_curve, args.emittancescale)
     plot_curve(axes, bb_curve, color=col,   linestyle='-')
 
     # set up axes
     axes.axis([lnms[0], lnms[-1], 0, 800])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_illuminantd(args, figure):
@@ -339,15 +448,17 @@ def do_illuminantd(args, figure):
     s0scale = 1 / max(SPD.IlluminantD.S0.data)
     s1scale = 1 / max(SPD.IlluminantD.S1.data)
     s2scale = 1 / max(SPD.IlluminantD.S2.data)
-    s0col = transmittance_to_sRGB(SPD.IlluminantD.S0 * s0scale, args.colorscale)
-    s1col = transmittance_to_sRGB(SPD.IlluminantD.S1 * s1scale, args.colorscale)
-    s2col = transmittance_to_sRGB(SPD.IlluminantD.S2 * s2scale, args.colorscale)
+    s0col = transmittance_to_sRGB(SPD.IlluminantD.S0 * s0scale, args.transmittancescale)
+    s1col = transmittance_to_sRGB(SPD.IlluminantD.S1 * s1scale, args.transmittancescale)
+    s2col = transmittance_to_sRGB(SPD.IlluminantD.S2 * s2scale, args.transmittancescale)
 
     plot_curve(axes, SPD.IlluminantD.S0, color=s0col, linestyle='-')
     plot_curve(axes, SPD.IlluminantD.S1, color=s1col, linestyle='-')
     plot_curve(axes, SPD.IlluminantD.S2, color=s2col, linestyle='-')
     # set up axes
     axes.axis([SPD.IlluminantD.S0.lnms[0], SPD.IlluminantD.S0.lnms[-1], -15, 130])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_illuminantf1_6(args, figure):
@@ -356,11 +467,13 @@ def do_illuminantf1_6(args, figure):
     # Create the plot
     for i in range(0,6):
         illFi = SPD.IlluminantF.F[i]
-        col = spradiance_to_sRGB(illFi, args.colorscale)
+        col = spradiance_to_sRGB(illFi, args.emittancescale)
         plot_curve(axes, illFi, color=col, linestyle='-', linewidth = 2)
 
     # set up axes
     axes.axis([illFi.lnms[0], illFi.lnms[-1], 0, 100])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_illuminantf7_9(args, figure):
@@ -369,11 +482,13 @@ def do_illuminantf7_9(args, figure):
     # Create the plot
     for i in range(6, 9):
         illFi = SPD.IlluminantF.F[i]
-        col = spradiance_to_sRGB(illFi, args.colorscale)
+        col = spradiance_to_sRGB(illFi, args.emittancescale)
         plot_curve(axes, illFi, color=col, linestyle='-', linewidth=2)
 
     # set up axes
     axes.axis([illFi.lnms[0], illFi.lnms[-1], 0, 100])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_illuminantf10_12(args, figure):
@@ -382,11 +497,13 @@ def do_illuminantf10_12(args, figure):
     # Create the plot
     for i in range(9, 12):
         illFi = SPD.IlluminantF.F[i]
-        col = spradiance_to_sRGB(illFi, args.colorscale)
+        col = spradiance_to_sRGB(illFi, args.emittancescale)
         plot_curve(axes, illFi, color=col, linestyle='-', linewidth=2)
 
     # set up axes
     axes.axis([illFi.lnms[0], illFi.lnms[-1], 0, 100])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_roscolux(args, figure):
@@ -396,11 +513,13 @@ def do_roscolux(args, figure):
 
     # Create the plot
     for gel in gels:
-        color = transmittance_to_sRGB(gel, args.colorscale)
+        color = transmittance_to_sRGB(gel, args.transmittancescale)
         plot_curve(axes, gel, color=color, linestyle='solid', linewidth=3)
 
     # set up axes
     axes.axis([360,740,0,1])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_Canon_1DMarkIII(args, figure):
@@ -410,11 +529,13 @@ def do_Canon_1DMarkIII(args, figure):
 
     # Create the plot
     for senscurve in senscurves:
-        color = transmittance_to_sRGB(senscurve, args.colorscale)
+        color = transmittance_to_sRGB(senscurve, args.transmittancescale)
         plot_curve(axes, senscurve, color=color, linestyle='solid', linewidth=3)
 
     # set up axes
     axes.axis([360, 740, 0, 1])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_Canon_5DMarkII(args, figure):
@@ -424,11 +545,13 @@ def do_Canon_5DMarkII(args, figure):
 
     # Create the plot
     for senscurve in senscurves:
-        color = transmittance_to_sRGB(senscurve, args.colorscale)
+        color = transmittance_to_sRGB(senscurve, args.transmittancescale)
         plot_curve(axes, senscurve, color=color, linestyle='solid', linewidth=3)
 
     # set up axes
     axes.axis([360, 740, 0, 1])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def do_Red_Mysterium_X(args, figure):
@@ -438,36 +561,43 @@ def do_Red_Mysterium_X(args, figure):
 
     # Create the plot
     for senscurve in senscurves:
-        color = transmittance_to_sRGB(senscurve, args.colorscale)
+        color = transmittance_to_sRGB(senscurve, args.transmittancescale)
         plot_curve(axes, senscurve, color=color, linestyle='solid', linewidth=3)
 
     # set up axes
     axes.axis([360, 740, 0, 1])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
 
 
 def plotData(args):
     """ Make the plot `args.plotname`, return it in a figure """
 
+    basesize = 4
+    vsize = basesize
+    hsize = vsize * 2
+    sqsize = hsize * .4
+
     plotsetup = {
-        "chromas":         (do_chromas,         (2.5, 2.5)),
-        "chromas_enlarge": (do_chromas_enlarge, (2.5, 2.5)),
+        "chromas":         (do_chromas,         (sqsize, sqsize)),
+        "chromas_enlarge": (do_chromas_enlarge, (sqsize, sqsize)),
 
-        "cielms2006": (do_cielms2006, (6, 2)),
-        "ciexyz1931": (do_ciexyz1931, (6, 2)),
-        "ciexyz1964": (do_ciexyz1964, (6, 2)),
+        "cielms2006": (do_cielms2006, (hsize, vsize)),
+        "ciexyz1931": (do_ciexyz1931, (hsize, vsize)),
+        "ciexyz1964": (do_ciexyz1964, (hsize, vsize)),
 
-        "blackbody":         (do_blackbody, (6,2)),
-        "commonilluminants": (do_commonilluminants, (6,2)),
-        #"illuminanta":       (do_illuminanta, (6,2)),
-        "illuminantd":       (do_illuminantd, (6,2)),
-        "illuminantf10-12":  (do_illuminantf10_12, (6,2)),
-        "illuminantf1-6":    (do_illuminantf1_6, (6,2)),
-        "illuminantf7-9":    (do_illuminantf7_9, (6,2)),
+        "blackbody":         (do_blackbody, (hsize,vsize)),
+        "commonilluminants": (do_commonilluminants, (hsize,vsize)),
+        #"illuminanta":       (do_illuminanta, (hsize,vsize)),
+        "illuminantd":       (do_illuminantd, (hsize,vsize)),
+        "illuminantf10-12":  (do_illuminantf10_12, (hsize,vsize)),
+        "illuminantf1-6":    (do_illuminantf1_6, (hsize,vsize)),
+        "illuminantf7-9":    (do_illuminantf7_9, (hsize,vsize)),
 
-        "roscolux":        (do_roscolux, (6, 2)),
-        "Red_Mysterium_X": (do_Red_Mysterium_X, (6,2)),
-        "Canon_1DMarkIII": (do_Canon_1DMarkIII, (6,2)),
-        "Canon_5DMarkII":  (do_Canon_5DMarkII, (6,2)),
+        "roscolux":        (do_roscolux, (hsize, vsize)),
+        "Red_Mysterium_X": (do_Red_Mysterium_X, (hsize,vsize)),
+        "Canon_1DMarkIII": (do_Canon_1DMarkIII, (hsize,vsize)),
+        "Canon_5DMarkII":  (do_Canon_5DMarkII, (hsize,vsize)),
     }
 
     if args.plotname not in plotsetup:
@@ -500,10 +630,14 @@ def parse_arguments(args = None):
     parser = argparse.ArgumentParser(
         description='Make various figures for the physLight document'
     )
-    parser.add_argument("-cs",
-                        dest='colorscale',
+    parser.add_argument("-es",
+                        dest='emittancescale',
+                        default=0.75,
+                        help='Brightness used for rendering emittance profiles')
+    parser.add_argument("-ts",
+                        dest='transmittancescale',
                         default = 0.85,
-                        help='Color scale')
+                        help='Illuminant D65 brightness for rendering transmittance profiles')
     parser.add_argument("-o",
                         dest='output',
                         help='Output filename')
@@ -522,6 +656,18 @@ def makePlotParams(args):
     params = {}
     #params = {'font.size': 10,
     #          'font.family': ''}
+
+    # fonts used for the pgf backend
+    if args.output and args.output.endswith('.pgf'):
+        params = {
+            # leave the font alone and use the document's setup
+            "font.family": "serif",
+            'font.size': 10,
+            # Use LaTeX default serif font.
+            "font.serif": [],
+            "text.usetex": True,     # use inline math for ticks
+            "pgf.rcfonts": False,    # don't setup fonts from rc parameters
+        }
     return params
 
 
