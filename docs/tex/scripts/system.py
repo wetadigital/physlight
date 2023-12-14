@@ -37,7 +37,7 @@ def resolve_path(kind, tail):
         fullpath = os.path.join(d, tail)
         if os.path.exists(fullpath):
             return fullpath
-        print('notfound ', fullpath)
+        #print('notfound ', fullpath)
     return None
 
 

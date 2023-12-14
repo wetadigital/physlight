@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) Contributors to the PhysLight Project.
 
-# this scripts creates all the plots for the physLight document
+# this script creates all the plots for the physLight document
 
 import sys
 import subprocess
