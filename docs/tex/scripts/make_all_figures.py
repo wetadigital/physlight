@@ -14,6 +14,8 @@ import math
 import csv
 import os
 
+import numpy as np
+
 hasNumpy = False
 hasPyplot = False
 
@@ -113,7 +115,10 @@ def transmittance_to_sRGB(sc: SpectralCurve.SpectralCurve, Y):
 
 def plot_curve(axes: pyplot.Axes, sc: SpectralCurve.SpectralCurve, **kwargs):
     """ Little helper to plot a SpectralCurve object into a given pyplot plot, kwargs are forwarded to pyplot.plot """
-    axes.plot(sc.lnms, sc.data, **kwargs)
+    if sc.interpolation == SpectralCurve.SpectralCurve.INTERP_LINEAR:
+        axes.plot(sc.lnms, sc.data, **kwargs)
+    elif sc.interpolation == SpectralCurve.SpectralCurve.INTERP_PREVIOUS:
+        axes.step(sc.lnms, sc.data, where="post", **kwargs)
 
 
 def plot_spectral_locus(args, axes: pyplot.Axes):
@@ -570,6 +575,49 @@ def do_Red_Mysterium_X(args, figure):
     add_huebars(args, axes, figure)
 
 
+def do_smits(args, figure, plotset):
+    axes = figure.add_subplot(111)
+    # prepare
+    numBins = 10
+    numSpectra = 7
+    minWavelength = 380.
+    maxWavelength = 720.
+    spacing = (maxWavelength - minWavelength) / numBins
+    lnms = [minWavelength + i * spacing for i in range(numBins+1)]
+
+    smits_basis = [
+            SpectralCurve.SpectralCurve("white",   lnms, [1.0000, 1.0000, 0.9999, 0.9993, 0.9992, 0.9998, 1.0000, 1.0000, 1.0000, 1.0000, 0], interpolation=SpectralCurve.SpectralCurve.INTERP_PREVIOUS),
+        ]
+
+    if plotset == "rgb":
+        smits_basis += [
+            SpectralCurve.SpectralCurve("red",     lnms, [0.1000, 0.0515, 0.0000, 0.0000, 0.0000, 0.0000, 0.8325, 1.0149, 1.0149, 1.0149, 0], interpolation=SpectralCurve.SpectralCurve.INTERP_PREVIOUS),
+            SpectralCurve.SpectralCurve("green",   lnms, [0.0000, 0.0000, 0.0273, 0.7937, 1.0000, 0.9418, 0.1719, 0.0000, 0.0000, 0.0025, 0], interpolation=SpectralCurve.SpectralCurve.INTERP_PREVIOUS),
+            SpectralCurve.SpectralCurve("blue",    lnms, [1.0000, 1.0000, 0.8916, 0.3323, 0.0000, 0.0000, 0.0003, 0.0369, 0.0483, 0.0496, 0], interpolation=SpectralCurve.SpectralCurve.INTERP_PREVIOUS)
+        ]
+    elif plotset == "cmy":
+        smits_basis += [
+            SpectralCurve.SpectralCurve("cyan",    lnms, [0.9710, 0.9426, 1.0007, 1.0007, 1.0007, 1.0007, 0.1564, 0.0000, 0.0000, 0.0000, 0], interpolation=SpectralCurve.SpectralCurve.INTERP_PREVIOUS),
+            SpectralCurve.SpectralCurve("magenta", lnms, [1.0000, 1.0000, 0.9685, 0.2229, 0.0000, 0.0458, 0.8369, 1.0000, 1.0000, 0.9959, 0], interpolation=SpectralCurve.SpectralCurve.INTERP_PREVIOUS),
+            SpectralCurve.SpectralCurve("yellow",  lnms, [0.0001, 0.0000, 0.1088, 0.6651, 1.0000, 1.0000, 0.9996, 0.9586, 0.9685, 0.9840, 0], interpolation=SpectralCurve.SpectralCurve.INTERP_PREVIOUS),
+        ]
+
+    # Create the plot
+    for smits_func in smits_basis:
+        color = transmittance_to_sRGB(smits_func, args.transmittancescale)
+        plot_curve(axes, smits_func, color=color, linestyle='solid', linewidth=2)
+
+    # set up axes
+    axes.axis([minWavelength, maxWavelength, -.05, 1.05])
+    # show pure hue bars
+    add_huebars(args, axes, figure)
+
+def do_smitsrgb(args, figure):
+    do_smits(args, figure, "rgb")
+
+def do_smitscmy(args, figure):
+    do_smits(args, figure, "cmy")
+
 def plotData(args):
     """ Make the plot `args.plotname`, return it in a figure """
 
@@ -598,6 +646,9 @@ def plotData(args):
         "Red_Mysterium_X": (do_Red_Mysterium_X, (hsize,vsize)),
         "Canon_1DMarkIII": (do_Canon_1DMarkIII, (hsize,vsize)),
         "Canon_5DMarkII":  (do_Canon_5DMarkII, (hsize,vsize)),
+
+        "smitsrgb": (do_smitsrgb, (hsize*.5, vsize*.5)),
+        "smitscmy": (do_smitscmy, (hsize*.5, vsize*.5)),
     }
 
     if args.plotname not in plotsetup:

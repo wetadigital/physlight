@@ -317,9 +317,13 @@ System of Units}
 	seealso={shutter speed,aperture number},
 	description={A number used to combine the shutter speed and aperture number into an
 		exposure setting. 
-		Symbols used are $EV$, $Ev$ and $E_v$, although when used to indicate an exposure 
-		setting it would be most correct to include the film speed associate with the value, 
-		such as $EV_{100}$ for ISO 100 stock.
+		There are three symbols commonly used to indicate exposure value: $EV$, $Ev$ and $E_v$.
+		This document always ever uses $EV$, because $Ev$ and $E_v$ look far too similar to each other, and $E_v$ is the standard symbol for \gls{illuminance}, which is a different
+		quantity altogether.
+		When used to indicate an exposure setting, it would be most correct to include 
+		the film speed associate with the value in a subscript: for example $EV_{100}$ 
+		would be used for stock rated at ISO 100. 
+		We do this when it makes the discussion clearer.
 		For an exposure time of $t$ and aperture number $N$, the relation is
 		$EV_{100} = \log_2\frac{N^2}{t}$}
 }
@@ -385,6 +389,17 @@ System of Units}
 		sensitivity rating were also available, usually along this series
 		100/21\degree, 125/22\degree, 160/23\degree, 200/24\degree\ and so on}
 }
+
+\newglossaryentry{focal plane}
+{
+	name=footage,
+	description={
+		TODO: explain that this is often used interchangeably with the more correct
+		term "image plane". In fact they are in the same place only when the lens is
+		focused at infinity
+	}
+}
+
 
 \newglossaryentry{footage}
 {

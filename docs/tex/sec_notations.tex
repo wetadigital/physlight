@@ -4,24 +4,41 @@
 \chapter{Notation and symbols}\label{ch:notation}
 %\addcontentsline{toc}{chapter}{Notation}
 
-% todo: rephrase this
-The subscript $p$ indicates we are discussing \textsl{photon} quantities: 
-we will need to introduce more of these subscripts as we go along to differentiate under 
-what perspective we are considering the quantities in play: often they will apply to
-several symbols, so when we want to draw attention to the subscript itself, we'll replace
-the symbol with an empty square like this $\square_p$.
+This document makes extensive use of subscripts because we have quantities like 
+\emph{flux} that can be measured in several ways (\emph{radiant flux}, \emph{spectral radiant flux},
+\emph{luminous flux}, to give examples of quantities we have actually encountered) and we
+want to pinpoint which one among these several perspectives we are considering at the present time,
+while also suggesting that under a broader strokes perspective these are part of the same
+kind of measurement.
+This means that these subscripts will apply to several of these quantities: we've seen
+\emph{luminous flux}, \emph{luminous energy}, \emph{luminous emittance} for example.
+For this reason, in the table that follows, given that we want to draw attention to 
+the subscript itself, and not to the specific symbol it happens to be attached to, 
+we'll present it attached to an empty square like this: $\square_v$.
+
 Because in this document there are many standard symbols and units sharing the
 same symbol, we decided to always keep units inside square brackets to minimize chances of 
-confusion.
-the majority of light transport quantities are actually functions, which take values
-that depend on a given position, direction, both or several other combinations.
-Normally we would put these argument to our functions in parentheses, like when we
-write $M_e(x)$, however it will be soon quite clear that in many cases being explicit
-about these dependencies adds a lot of typed material to our equations and ends up making their
-meaning substantially more obscure (see the discussion of~\cref{eqn:imaging1} for an example).
-So we will often omit their arguments, and use a functional form for our definitions
+confusion. Note that in this respect we deviate from standard practice.
 
-\begin{description}
+Many, if not the majority of, light transport quantities are actually functions, 
+taking as arguments values that represent maybe a given position, or a direction, or a wavelength,
+of particular interest, as the case might be. 
+Normally we would put these argument to our functions in parentheses, for example in the expression 
+$M_e(x)$. 
+However in many cases being explicit about these dependencies adds a lot of typed material 
+to our equations and ends up making their meaning more obscure because of the many symbols the reader 
+has to scan through. 
+This is a case where the benefit of added precision undermines what we think is a higher precedence goal
+of clarity in communication.
+For this reason, we have opted to omit arguments in complex expressions where the surrounding 
+text makes it clear what the expression actually means. 
+For example we would use expression like $\int f \d x$ in place of
+$\int f(x) \d x$, when it's clear that $f$ is in fact a function of $x$.
+The discussion of~\cref{eqn:imaging1} is a good example of this practice.
+
+% another possibility is to use labelwidth=\widthof{\bfseries The longest label}
+% but this would require us to update with a copy of our longest label
+\begin{description}[leftmargin=!,labelwidth={5em}]
 \item[ {$\square$} ] a placeholder to indicate the location of some symbol
 \item[ {$[\square]$} ] square brackets indicate the contained symbol is a unit,
 	brackets will be empty of \emph{pure numbers}
@@ -37,15 +54,15 @@ So we will often omit their arguments, and use a functional form for our definit
 \item[{$\omega$}] a direction, usually within the solid angle $\Omega$
 \item[$S$] a light source, or the region where its light originates
 \item[$R$] a light receiver, or the region where it receives light
-\item[ {$t\;[\unit\second]$} ] a time period
+\item[{$t\;[\unit\second]$} ] a time period
 \item[$k_i$] imaging constant: scale factor between luminous exposure and pixel values
 \item[$p^{img}$] location on the filmback or image plane
 \item[$W_{pos}(p^{img})$] local response of the filmback
 \item[$W_{col}(\lambda)$] spectral response of the filmback
 \item[$W(p^{img},\lambda)$] film response function
 
-\item[ {$\lambda\;[\unit\meter]$} ] wavelength
-\item[ {$\nu\;[\unit\hertz]$} ] frequency
+\item[{$\lambda\;[\unit\meter]$} ] wavelength
+\item[{$\nu\;[\unit\hertz]$} ] frequency
 
 % general photography quantities and constants
 \item[{$C$}] incident-light meter calibration constant $312.5 = 100 \sfrac{25}8$ for this document
@@ -60,22 +77,22 @@ So we will often omit their arguments, and use a functional form for our definit
 
 
 % from lighting standard vocabulary
-\item[ {$N_p\;[]$} ] number of photons
-\item[ {$Q_p\;[\unit\joule]$} ] energy of one photon
-\item[ {$Q_e\;[\unit\joule]$} ] radiant energy
+\item[{$N_p\;[]$} ] number of photons
+\item[{$Q_p\;[\unit\joule]$} ] energy of one photon
+\item[{$Q_e\;[\unit\joule]$} ] radiant energy
 
 
 % from SI
-\item[ {$h$} ] Planck's constant (see~\cite{bipm:si.2019})
-\item[ {$K_{cd}$} ] luminous efficacy of monochromatic radiation (see~\cite{bipm:si.2019})
+\item[{$h$} ] Planck's constant (see~\cite{bipm:si.2019})
+\item[{$K_{cd}$} ] luminous efficacy of monochromatic radiation (see~\cite{bipm:si.2019})
 
-\item[ {$\unit\joule$} ] unit: joule, measures amounts of energy
-\item[ {$\unit\watt$} ] unit: watt, measures power, being energy per 
+\item[{$\unit\joule$} ] unit: joule, measures amounts of energy
+\item[{$\unit\watt$} ] unit: watt, measures power, being energy per 
 	unit of time $[\unit\watt] = [\unit{\joule\per\second}]$
-\item[ {$\unit\hertz$} ] unit: watt, measures power, being energy per 
+\item[{$\unit\hertz$} ] unit: watt, measures power, being energy per 
 	unit of time $[\unit\hertz] = [\unit{1\per\second}]$
-\item[ {$\unit\radian$} ] 	unit: radian, measures angles
-\item[ {$\unit\steradian$} ] unit: steradian, measures solid angles
+\item[{$\unit\radian$} ] 	unit: radian, measures angles
+\item[{$\unit\steradian$} ] unit: steradian, measures solid angles
                    
 \end{description}
 

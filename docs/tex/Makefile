@@ -69,7 +69,9 @@ FIGURES := $(FIGURE_OUTDIR)/in_construction.pdf \
 	$(FIGURE_OUTDIR)/ciexyz1931.pgf \
 	$(FIGURE_OUTDIR)/Red_Mysterium_X.pgf \
 	$(FIGURE_OUTDIR)/Canon_1DMarkIII.pgf \
-	$(FIGURE_OUTDIR)/Canon_5DMarkII.pgf
+	$(FIGURE_OUTDIR)/Canon_5DMarkII.pgf \
+	$(FIGURE_OUTDIR)/smitsrgb.pgf \
+	$(FIGURE_OUTDIR)/smitscmy.pgf
 
 all: $(OUTPUTNAME).pdf
 
@@ -222,4 +224,10 @@ $(FIGURE_OUTDIR)/Canon_1DMarkIII.pgf: $(SCRIPTSDIR)/make_all_figures.py | $(FIGU
 	${SCRIPTSDIR}/make_all_figures.py -o $(realpath $(dir $@))/$(notdir $@) $(basename $(notdir $@))
 
 $(FIGURE_OUTDIR)/Canon_5DMarkII.pgf: $(SCRIPTSDIR)/make_all_figures.py | $(FIGURE_OUTDIR)
+	${SCRIPTSDIR}/make_all_figures.py -o $(realpath $(dir $@))/$(notdir $@) $(basename $(notdir $@))
+
+$(FIGURE_OUTDIR)/smitsrgb.pgf: $(SCRIPTSDIR)/make_all_figures.py | $(FIGURE_OUTDIR)
+	${SCRIPTSDIR}/make_all_figures.py -o $(realpath $(dir $@))/$(notdir $@) $(basename $(notdir $@))
+
+$(FIGURE_OUTDIR)/smitscmy.pgf: $(SCRIPTSDIR)/make_all_figures.py | $(FIGURE_OUTDIR)
 	${SCRIPTSDIR}/make_all_figures.py -o $(realpath $(dir $@))/$(notdir $@) $(basename $(notdir $@))

@@ -5,6 +5,7 @@ from typing import Union
 
 # caller sanitized this
 import numpy
+import scipy.interpolate
 
 
 class SpectralCurve(object):
@@ -15,10 +16,16 @@ class SpectralCurve(object):
      - lnms is an array containing the wavelengths of the samples
      - data is an array containing the values of the samples
     """
-    def __init__(self, name, lnms, values):
+    INTERP_PREVIOUS = 0
+    # INTERP_NEAREST = 1  -- TODO: implement me
+    # INTERP_NEXT = 2     -- TODO: implement me
+    INTERP_LINEAR = 2
+
+    def __init__(self, name, lnms, values, interpolation=INTERP_LINEAR):
         self.name = name
         self.lnms = numpy.array(lnms, float)  # copy intentional
         self.data = numpy.array(values, float) # copy intentional
+        self.interpolation = interpolation
 
     def __add__(self, other: "SpectralCurve"):
         """ Element by element addition, with resampling """
@@ -66,7 +73,10 @@ class SpectralCurve(object):
 
     def sample(self, lnm: Union[numpy.array, list[float], float]):
         """ Samples the curve at the given wavelength """
-        return numpy.interp(lnm, self.lnms, self.data, left=0, right=0)
+        if self.interpolation == SpectralCurve.INTERP_LINEAR:
+            return numpy.interp(lnm, self.lnms, self.data, left=0, right=0)
+        elif self.interpolation == SpectralCurve.INTERP_PREVIOUS:
+            return scipy.interpolate.interp1d(self.lnms, self.data, kind="previous", bounds_error=False, fill_value=0)(lnm)
 
     def resample(self, baseline: Union["SpectralCurve", numpy.array, list[float]]):
         """

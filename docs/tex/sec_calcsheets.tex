@@ -3,54 +3,71 @@
 
 \chapter{Calculation sheets}\label{ch:calcsheets}
 
-This section will list examples for the required calculations when implementing
-support for \physLight\ in a rendering pipeline.
+This section contains a series of worked-out examples covering the calculations that occur
+when implementing support for \physLight\ in a rendering pipeline.
+We put this together thinking it might help implementers in doing sanity-checks 
+of their work.
 
 \section{Imaging}\label{ch:calc_calibration}
 
-We will use the following camera Inputs for our calibration scenario described
-in \cref{ch:imaging}:
-\begin{itemize}
-\item Film speed $S = \num{100}\unit{\iso}$
-\item Focal length $f = \num{24}\unit{\milli\meter}$
-\item Focus distance $o = \num{1}\unit{\meter}$
-\item Iris aperture $N = \num{8}\unit{\fnumber}$
-\item Exposure time $t = 1/60\unit{\second}$
-\item Sensor width/height $\numproduct{27.7 x 14.6}\unit{\milli\meter}$ 
-\item Image resolution $\numproduct{5120 x 2700}\unit{\pixel}$ 
-\item Pixel area $A_{pxl} \simeq \num{29.25}\unit{\square\micro\meter}$
-\item Calibration constant $C = 312.5$
-\end{itemize}
+In this section we cover the use of the equations described in \cref{ch:imaging}.
+We will be referring to a single scenario, where a camera is set up to take a 
+well-exposed picture of a scene.
+
+The values we will use are collected in this table:
+
+\vskip 2mm
+\begin{center}
+	\begin{tabular}{r c c l}
+		Film speed           & $S$ & $\num{100}$ & $[\unit{\iso}]$ \\
+		Focal length         & $f$ & $\num{24}$ & $[\unit{\milli\meter}]$ \\
+		Focus distance       & $o$ & $\num{1}$ & $[\unit{\meter}]$ \\
+		Iris aperture        & $N$ & $\num{8}$ & $[\unit{\fnumber}]$ \\
+		Exposure time        & $\Delta t$ & $\sfrac1{60}$ & $[\unit{\second}]$ \\
+		Sensor width/height  & & $\numproduct{27.7 x 14.6}$ & $[\unit{\milli\meter}]$ \\
+		Image resolution     & & $\numproduct{5120 x 2700}$ & $[\unit{\pixel}]$  \\
+		Pixel area           & $A_{pxl}$ & $\simeq \num{29.25}$ & $[\unit{\square\micro\meter}]$ \\
+		Calibration constant & $C$ & $312.5$ & $[]$ \\
+	\end{tabular}
+\end{center}
+
+\vskip 2mm
+
 
 \paragraph{Incident Light Meter Exposure}
-Compute illuminance $E_v$ at a point $P$ given imaging parameters:
+The light meter is an instrument that returns exposure parameters $N$, $t$ and $S$ for a given
+position $P$. On most instruments, including meters built into cameras, any two of these can be  
+specified by the user and the third one is calculated by the tool.
+We use~\cref{eqn:imaging_Ev} to infer the illuminance $E_v$ at $P$ that corresponds to the 
+values specified at the start of this section, as if we had an incident light meter placed there:
 \begin{align*}
-E_v& = C\frac{N^2}{t S}\\
-&= 312.5\frac{8\cdot 8 \cdot 60}{100} = \num{12000}\unit{\lux}
+E_v& \stackrel{\eqref{eqn:imaging_Ev}}{=} C\frac{N^2}{\Delta t\, S}\\
+&= 312.5\,\frac{8^2}{\sfrac{1}{60}\cdot 100} = \num{12000}\;[\unit{\lux}]
 \end{align*}
 
 \paragraph{Reflected Luminance}
-Compute the reflected luminance with $18\%$ reflective Lambertian plane:
+After light arrived at $P$ a bounce event happens, where the light interacts with the material
+and then the light continues along its path towards the camera.
+Assuming that at $P$ we find an reflective Lambertian plane of reflectivity $\rho = 18\%$, we
+can compute the luminance after the bounce event as follows:
 \begin{align*}
 L_v& = E_v\cdot \frac{\rho}{\pi} \\
 &= \num{12000} \cdot \frac{0.18}{\pi}
-\simeq \num{687.549}\unit{\nit}
+\simeq \num{687.55}\;[\unit{\nit}]
 \end{align*}
 
-\paragraph{Entrance pupil distance}
 
-Compute the distance $a$ from the entrance pupil to the filmback given:
-\begin{itemize}
-\item Focal length $f = \num{24}\unit{\milli\meter}$
-\item Focus distance $o = \num{1}\unit{\meter}$
-\end{itemize}
+% this paragraph is incorrect in that it awkwardly confused entrance and exit pupils, 
+% and really doesn't add much anyways
+\paragraph{Entrance pupil distance}
+Compute the distance $a$ from the entrance pupil to the image plane given:
 
 The lens equation in our case has the form
 \begin{displaymath}
 \frac1f = \frac1a + \frac1{o - a}
 \end{displaymath}
 solving for $a$ gives us a quadratic equation $a^2 - a o + f o = 0$ for which we
-choose the solution closest to the filmback:
+choose the solution closest to the image plane:
 \begin{displaymath}
 a = \frac{o-\sqrt{o^2 - 4fo}}2
 \end{displaymath}
@@ -62,15 +79,6 @@ a = \frac{1-\sqrt{1 - 4 \cdot 0.024}}2 \;\unit{\meter} \simeq \num{24.6}\unit{\m
 
 \ifomit
 \subsection{Luminous energy}
-
-\begin{itemize}
-\item Sensitivity $S = \num{100}\unit{\iso}$
-\item Focal length $f = \num{24}\unit{\milli\meter}$
-\item Iris aperture $N = \num{8}\unit{\fnumber}$
-\item Exposure time $t = 1/60\unit{\second}$
-\item Calibration constant $C = 312.5$
-\end{itemize}
-
 That gives us:
 \begin{align*}
 \theta = \arctan\frac{f}{2N(o-a)}, && L_v = \frac{\rho}{\pi}\cdot
@@ -88,24 +96,14 @@ k_i = \frac{Y}{\cdots}
 \end{displaymath}
 
 \begin{figure}
-\input{figures/raydiff-1.tikz}
+\input{figures_built/raydiff-1.tikz}
 \caption{Footprint at $P$ through perspective projection}
 \end{figure}
 
 Compute luminous energy $Q_v$ at a certain pixel given the exposure parameters:
 
-\begin{itemize}
-\item Sensitivity $S = \num{100}\unit{\iso}$
-\item Aperture distance $a = \num{25}\unit{\milli\meter}$
-\item Iris aperture $N = \num{8}\unit{\fnumber}$
-\item Exposure time $t = 1/60\unit{\second}$
-\item Focus distance $o = \num{1}\unit{\meter}$
-\item Illuminance $E = \num{12480}\unit{\lux}$
-\item Pixel area $A_{pxl} = \num{18.5}\unit{\square\micro\meter}$
-\end{itemize}
-
 \begin{figure}
-\input{figures/opposite-angle.tikz}
+\input{figures_built/opposite-angle.tikz}
 \caption{Pixel footprint computation}
 \label{fig:opposite-angle}
 \end{figure}
@@ -164,20 +162,27 @@ Q_v & = L_o(\omega_o) \cdot \left( \frac{2\cos\theta\sin\alpha}{1+\cos2\theta\co
     & = 715 \cdot 18.5\cdot10^{-12} \cdot \frac{975\cdot10^{-3}}{25\cdot10^{-3}} 3.14159 \left(\frac{24}{8}\right)^2\frac{1}{975^2\cdot 10^{-6}} \frac{1}{60} \\
     & = \num{2.5574e-7}\unit{\talbot}
 \end{align*}
-
 \fi
 
 \paragraph{Solid Angle of the Aperture}
-Calculate $\Omega_{obj}$ the solid angle of the aperture seen from point in object space:
+We can use~\cref{eqn:imaging_omegapobj} to compute the solid angle $\Omega_{obj}$ spanned by the 
+aperture as seen from our point $P$ in object space:
 \begin{align*}
-\Omega_p^{obj} &\simeq \frac{\pi r^2}{(o-a)^2}\\
-&= \frac{f^2}{4N^2(o-a)^2}\\
-&\simeq  \num{2.36497}\unit{\steradian}
+\Omega_p^{obj} &\stackrel{\eqref{eqn:imaging_omegapobj}}{\simeq} \frac{\pi r^2}{(o-a)^2} 
+  = \frac{\pi f^2}{4N^2(o-a)^2}\\
+&= \frac{\pi\; 0.024^2}{4\cdot 8^2 (1-0.0246)^2}\\
+&\simeq  \num{7.43}\times 10^{-6}\;[\unit{\steradian}]
 \end{align*}
+This is the solid angle of a disk of radius $r = f / N = 3\;[\unit{\milli\meter}]$ seen 
+from a distance of approximately one meter ($975.4\;[\unit{\milli\meter}]$ to be precise). 
+It corresponds to a cone with a half aperture of $\tan^{-1}\big(\sfrac{3}{975.4}\big)\simeq 0.176\degree$
 
-\paragraph{Luminous energy from Y value}
-
-Given a pixel $Y$ value we can calculate the luminous energy density in \unit{\lux} for this pixel by
+\ifomit
+% I have no idea what I had in mind when I wrote this [lukes]
+\paragraph{Illuminance at a pixel from Y value}
+Given a pixel we can obtain its luminance $Y$ value transforming its color into 
+\gls{CIE} \gls{XYZ} coordinates. 
+From there we can calculate the luminous power density in \unit{\lux} for this pixel by
 \begin{align*}
 Y_v &= \frac{Y\cdot K_{cd}}{ k_i\cdot S \cdot \Delta t} \\
 &= \frac{Y\cdot C}{ 4\cdot S \cdot \Delta t} \left(\frac{f}{a}\right)^2
@@ -189,31 +194,47 @@ Y_v &= \frac{Y\cdot C}{ 4\cdot S \cdot \Delta t} \left(\frac{f}{a}\right)^2 \\
 &= \frac{0.18\cdot 312.5}{ 4\cdot 100 \cdot 1/60} \left(\frac{0.024}{0.0246}\right)^2 \;\unit{\lux} \\
 &= \num{8.030934}\unit{\lux}
 \end{align*}
+\fi
 
 \section{Emission constant}
 
+In this section we cover the use of the equations described in \cref{ch:lighting}.
+
 \subsection{Area Light}
-Given following input parameters for an area light:
-\begin{itemize}
-\item luminous power $\Phi_v=\num{1000}\unit{\lumen}$
-\item area $|A|= \numproduct{2 x 2}\unit{\meter} = \num{4}\unit{\square\meter}$
-\item Lambertian angular distribution $D = \frac1{\pi}$
-\item emitter: black body radiator at $T=\num{6500}\unit{\kelvin}$
-\end{itemize}
-we want to compute the light constant $k_e$. From \cref{ch:specification} we can  have:
+We will cover first the case of an area light, being a light source of finite
+extents, at a finite distance from the object.
+The values we will use are collected in this table:
+
+\vskip 2mm
+\begin{center}
+	\begin{tabular}{r c c l}
+		Luminous power                    & $\Phi_v$ & $\num{1000}$ & $[\unit{\lumen}]$ \\
+		Area                              & $|A|$ & $\numproduct{2 x 2}$ & $[\unit{\square\meter}]$ \\
+		Angular distribution (Lambertian) & $D$ & $\frac1{\pi}$ & $[]$ \\
+		Emitter black body radiator       & $T$ & $\num{6500}$ & $[\unit{\kelvin}]$ \\
+	\end{tabular}
+\end{center}
+
+\vskip 2mm
+
+we want to compute the light constant $k_e$. 
+From \cref{ch:specification}, in particular \cref{eq:k_e_closedform} we have as a starting point:
 \begin{displaymath}
  k_e = \frac{\Phi_v}{K_{cd} \cdot |A| \cdot \|D\| \cdot \langle \|T_{col}\|, \|col\cdot\hat{L}\|_{\bar y} \rangle }
 \end{displaymath}
 
-\paragraph{Area Light Without Texturing} Without a tint function this reduces to
+\paragraph{Area Light Without Texturing} 
+In the case in which there is no tint function, the expression for $k_e$ simplifies to
 \begin{displaymath}
 k_e = \frac{\Phi_v}{K_{cd} \cdot |A| \cdot \|D\| \cdot \|\hat{L}\|_{\bar y} }
 \end{displaymath}
-with $\|\hat{L}\|_{\bar y} = \|B_T\|_{\bar y}$ which can be precomputed with the
-closed-form expression in \cref{ch:illuminants}. This gives us
+
+First off, we can see that the reduced luminance $\|\hat{L}\|_{\bar y}$ can be computed using~\cref{eq:luminance_blackbody} from~\cref{ch:illuminants}, 
+where $\|B_T\|_{\bar y}$ is approximated with a closed-form expression. 
+This gives us
 \begin{align*}
-\|\hat{L}\|_{\bar y} &= \|B_{6500}\|_{\bar y} \simeq 2826.5 \\
-k_e &= \frac{1000}{683 \cdot 4 \cdot 2826.5 } \simeq 1.295 \cdot 10^{-4}
+\|\hat{L}\|_{\bar y} &= \|B_{6500}\|_{\bar y} \stackrel{\eqref{eq:luminance_blackbody}}{\simeq} 2826.5 \\
+k_e &= \frac{1000}{683 \cdot 4 \cdot \frac1\pi \cdot 2826.5 } \simeq 4.068 \times 10^{-4}
 \end{align*}
 
 \paragraph{Area Light With Texturing}
@@ -230,8 +251,8 @@ texture map scaled by the light area $A$:
 \|T_{rgb}\| = A \overline{T}_{rgb}
 \end{align*}
 where $\overline{T}_{rgb}$ is the average of the pixel values in the
-texture,
-a value that can be precomputed and stored in the header of the texture.
+texture, a value that can be precomputed and stored in the header of the texture,
+and is in fact readily available for mipmapped textures.
 
 The reduced luminous power vector $\|col\cdot \hat L\|_{\bar y}$ can also
 be precomputed for the black body radiator at the given temperature.
@@ -244,34 +265,67 @@ where $col$ are the basis functions of the space used to convert the texture's
 This gives us
 \begin{align*}
  k_e &= \frac{\Phi_v}{K_{cd} \cdot |A| \cdot \|D\| \cdot \langle \overline{T}_{rgb}, \|col\cdot\hat{L}\|_{\bar y} \rangle } \\
-&= \frac{1000}{683 \cdot 4 \cdot \langle \overline{T}_{rgb}, \|col\cdot\hat{L}\|_{\bar y} \rangle  }
+&= \frac{1000}{683 \cdot 4 \cdot \frac1\pi \cdot \langle \overline{T}_{rgb}, \|col\cdot\hat{L}\|_{\bar y} \rangle  }
 \end{align*}
-where $\langle \bar T, \phi \rangle = \bar T_r|\phi_r| + \bar T_g|\phi_g| + \bar T_b|\phi_b| $
-in the simple case of a simplistic three basis functions lifting to spectral.
+where the scalar product $\langle \overline T, \phi \rangle $ expands to  
+$ \overline T_r|\phi_r| + \overline T_g|\phi_g| + \overline T_b|\phi_b| $
+in the case of a simplistic lifting to spectral based on three basis functions 
+for which we'd have the three integrals
+$\phi_r$, $\phi_g$ and $\phi_b$.
 
-Other, more plausible ways of lifting \gls{RGB} data to the spectral domain
-are possible, as explained in \cref{sec:spec_basis}.
+Other ways of lifting \gls{RGB} data to the spectral domain are possible which result in more plausible
+spectra, as explained in~\cref{sec:spec_basis}.
 
-For example, if using the algorithm proposed by Brian Smits in~\cite{smits99},
-the expression $\langle \bar T, \phi \rangle$ this would be computed as follows:
+\begin{inconstruction}
+	Move the bulk of this discussion to~\cref{sec:spec_basis}, bring this back to an example only
+	and rephrase the other side to include the explanation we give here
+\end{inconstruction}
+
+For example, when using the algorithm proposed by Brian Smits in~\cite{smits99},
+the expression $\langle \bar T, \phi \rangle$ would be computed as follows:
 the various $col$ functions will correspond to the seven basis functions of the
-Smits basis 
+Smits basis (plotted in~\cref{fig:smitsbasis}), namely 
 \begin{equation*}
 w(λ), c(λ), m(λ), y(λ), r(λ), g(λ), b(λ) 
 \end{equation*}
 yielding seven integrals
 $\phi_w, \phi_c, \phi_m, \phi_y, \phi_r, \phi_g, \phi_b$ corresponding to
-$\phi_w =  \|w\cdot\hat{L}\|_{\bar y}$ and so on.
-
-The algorithm produces a vector $\bar T \in \R^7$ in which at most three
-components are non-zero as follows: the first entry $T_0$ is the smallest component
-of $\overline{T_{rgb}}$, say that this was the green component. Then the basis
-vector from the secondaries is chosen (cyan, magenta and yellow: $c(\lambda), m(\lambda), y(\lambda)$)
-and its corresponding value (one of $T_1, T_2, T_3$) is set to the difference
-between the smallest value and the middle value. Lastly, the primary corresponding
-to the largest value is chosen (red, green, and blue: $r(\lambda), g(\lambda), b(\lambda)$)
+a set of expressions like
+\begin{equation*}
+\phi_w =  \|w\cdot\hat{L}\|_{\bar y} = \int w(\lambda) \hat{L}(\lambda) \bar y(\lambda) \d \lambda
+\end{equation*}
+as described for~\cref{eq:redlum_integral}.
+	
+\begin{figure}
+\begin{center}
+	\noindent\resizebox{.475\linewidth}{!}{\import{figures_built/}{smitsrgb.pgf}}
+	\resizebox{.475\linewidth}{!}{\import{figures_built/}{smitscmy.pgf}}
+\end{center}
+\caption{The seven basis functions from Smits's algorithm. Left plot shows 
+	$w(λ), r(λ), g(λ), b(λ)$ (for red, green and blue) and the right plot shows
+	$c(λ), m(λ), y(λ)$ (for cyan, magenta and yellow)
+}
+\label{fig:smitsbasis}
+\end{figure}
+	
+Smits's algorithm produces a vector $\overline T \in \R^7$ in which at most three
+components are non-zero using the following procedure: 
+the first entry $T_0$ is taken from the smallest component of $\overline{T_{rgb}}$. 
+This is the coefficient for $w(\lambda)$ and takes care of the saturation (rather,
+the lack thereof) for the color we're wanting to reproduce.
+Then the basis vector from the secondaries is chosen 
+(among cyan, magenta and yellow: $c(\lambda), m(\lambda), y(\lambda)$) to
+be one that contains the two remaining primaries (if red was the smallest,
+cyan is now chosen because it contains the two remaining primaries green and blue).
+Its corresponding coordinate (one of $T_1, T_2, T_3$) is set to the difference
+between the smallest value and the middle value of the input (this is because the $T_0$ coordinate,
+pulling in the white, is already contributing to our chosen secondary in that amount, so we
+don't want to double it up). 
+Lastly, the primary corresponding to the largest value is chosen 
+(among red, green, and blue: $r(\lambda), g(\lambda), b(\lambda)$)
 and its corresponding component (one of $T_4, T_5, T_6$) is set to the difference
-between the largest and middle values.
+between the largest and middle values (for the same reason: the secondary already has pulled in
+some of this primary, all we need to do is top it up to get to its full value).
 
 For example if $\overline{T_{rgb}} = (0.3, 0.1, 0.7)$ then $T_0$ is set to $0.1$,
 then magenta is the complementary, so $T_2$ is set to $0.3-0.1 = 0.2$, then

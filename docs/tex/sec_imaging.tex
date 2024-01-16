@@ -59,6 +59,14 @@ in~\cref{sec:filmrespfunc}, for the moment we just know we need to do
 \emph{something} to the incident \gls{spectral} \gls{radiance} $L^{\downarrow}_{e,\lambda}$ to make
 pictures out of it.
 
+\begin{inconstruction}
+	Add a discussion on the difference between image plane and focal plane, and how the latter,
+	being on a cardinal point of a lens, is the location of an in-focus image (hence a good place
+	for the image plane) only for objects "at infinity". Also discuss how the normal mounting position
+	of the sensor or film in a camera is at the focal plane of the lens in its "focused at infinity"
+	state.
+\end{inconstruction}
+
 We've seen in~\cref{sec:lightbrightness} what's the reasoning behind a need for the values 
 of our pixels to be proportional to the \textsl{\glsdisp{photometry}{luminous} \gls{exposure}} there. 
 In practice two realities will manifest: one is that the pixel has a certain, 
@@ -176,7 +184,7 @@ $W_{pos}(p^{img})$ describes the \textsl{local response} of the filmback
 and
 $W_{col}(\lambda)$ describes its \textsl{spectral response}.
 
-\subsubsection{Spectral response}
+\subsubsection{Spectral response}\label{sec:spectral_response}
 We've already seen a couple examples of candidates for the spectral component
 of the \gls{film response function}. These however had mostly theoretical value,
 to illustrate the purpose of the film response function as a whole.
@@ -291,7 +299,7 @@ details are outlined in~\cref{ch:implementation}.
 
 \begin{inconstruction}
 	Discuss exposure/density response curves here
-	(or cross-reference it from elsewhere)
+	(and cross-reference it with \cref{fig:orthopanphoto})
 \end{inconstruction}
 
 
@@ -301,6 +309,10 @@ Let's imagine that this pixel is situated so that the ray going through its cent
 and the center of the iris forms an angle $\theta$ with the axis of the lens.
 There is in all photographs a darkening that is usually radial happening from the
 center of the image and increasing towards the corner, colloquially known as ``vignetting''.
+
+\begin{inconstruction}
+	Rework the rest of this subsection, probably add a few lens diagrams to illustrate the various points made throughout
+\end{inconstruction}
 
 To talk more simply about this effect we will introduce the notion of \textsl{\gls{paraxial ray}},
 being intuitively a ray that is nearly parallel to the main axis of the lens system and running 
@@ -446,7 +458,7 @@ imaging constant $k_i$, which is defined as
 \begin{equation}\label{eqn:imaging_ki}
 	k_i = \frac{4K_{cd}}{C} = \frac{4\cdot683}{312.5} = 8.7424.
 \end{equation}
-The constant $C$ (valued at $312.5 = 100 \frac{25}8$ in this document) is sometimes called the \textsl{incident light meter
+The constant $C$ (valued at $312.5 = \frac{2500}8$ in this document) is sometimes called the \textsl{incident light meter
 calibration constant} and effectively defines the units for the \gls{film speed} $S$.
 Note that as we use exact integration, our value for $C$ is close to what would be used on a meter fitted with a hemispherical receptor and somewhat lower, because our exact implementation doesn't suffer from losses at near-grazing angles as a physical device would.
 
@@ -506,6 +518,12 @@ will have luminance $Y(p^{img}) = \rho$ if the illuminance incident on
 the reflector is $E_v$. Or in other words, given a measured scene
 illuminance, camera exposure values chosen to satisfy the exposure
 equation thus yields pixel values in a reasonable range.
+
+\begin{inconstruction}
+	Place somewhere an explanation of what $EV$ means.
+	Cross-reference that with a brief summary of APEX, as described in
+	\url{exifStandard2.pdf}, Annex C and \url{https://en.wikipedia.org/wiki/Exposure_value#EV_and_APEX}
+\end{inconstruction}
 
 \begin{figure}[t]
     \centering
@@ -600,7 +618,7 @@ f \ll o \Rightarrow  f \simeq a
 \end{equation}
 and thus
 \begin{equation}
-  Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_{cd}\;} \frac{\pi\;r^2}{a^2}\; L_v^{\uparrow obj} \stackrel{\eqref{eqn:aperture_radius}}{=}
+  Y(p^{img}) =  \frac{k_i\; \Delta t \; S}{K_{cd}\;} \frac{\pi\;r^2}{f^2}\; L_v^{\uparrow obj} \stackrel{\eqref{eqn:aperture_radius}}{=}
    \frac{\pi\; k_i\; \Delta t \; S}{4\;N^2\;K_{cd}} L_v^{\uparrow obj} 
 \end{equation}
 which using Equation~\eqref{eqn:imaging_ki} concludes our proof. \hfill $\square$
@@ -617,7 +635,7 @@ which using Equation~\eqref{eqn:imaging_ki} concludes our proof. \hfill $\square
 %   \end{equation}
 %   \end{inconstruction}
 
-\paragraph{Applying white balance}
+\section{Applying white balance}
 White balance is a color correction step intended to give a certain spectral distribution 
  neutral gray coordinates in the target color space.
 The whitepoint is often specified using the \gls{CCT} of the given color,
@@ -640,6 +658,11 @@ spectral locus of the black body emitter, so that the orientation depends on the
 Further, the amount of color shift along the tint axis has various ranges such as $[0,1]$, 
 $[-100,100]$ and various interpretation as to whether the amount of apparent adjustment should be 
 uniform along the range or not.
+
+\begin{inconstruction}
+	Tie the next paragraph with the discussion on chromatic adaptation in
+	something like \cite{fairchild2013}
+\end{inconstruction}
 
 On the other hand, there seems to be consensus that white balance be implemented as a component-wise
 division performed in camera \gls{RGB} coordinates, meant to divide out the coloration of the target

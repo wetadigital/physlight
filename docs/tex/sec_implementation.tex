@@ -692,7 +692,7 @@ uint32_t bin(float wavelength)
 
     float binWidth = (c_maxWavelength - c_minWavelength) / c_numBins;
 
-    uint32_t bin = static_cast<unit32_t>(
+    uint32_t bin = static_cast<uint32_t>(
                         (wavelength - c_minWavelength) / binWidth);
 
     return min(max(bin, 0u), c_numBins - 1);
