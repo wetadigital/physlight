@@ -28,16 +28,15 @@ jobs:
     strategy:
       matrix:
         usdVersion:
-          - 21.05
+          - 24.05
         include:
-          - usdVersion: 21.05
-            usdVersionUrl: 21-05
-            pythonVersion: 3.6
-            USE_PYTHON_3: ON
+          - usdVersion: 24.05
+            usdVersionUrl: '24.05/usd.py310.linux-x86_64.usdview.release@0.24.05-tc.859+release.2864f3d0'
+            pythonVersion: '3.10'
             buildType: Release
             buildTests: 'ON'
-    runs-on: ubuntu-18.04
-    name: 'Ubuntu 18.04 NVIDIA Pre-built Binaries
+    runs-on: ubuntu-22.04
+    name: 'Ubuntu 22.04 NVIDIA Pre-built Binaries
       <USD Version=${{ matrix.usdVersion }},
        Python Version=${{ matrix.pythonVersion }},
        Build type:${{ matrix.buildType }},
@@ -45,10 +44,10 @@ jobs:
     steps:
       - name: Install dependencies (Linux)
         run: sudo apt-get install cmake python${{ matrix.pythonVersion }} python${{ matrix.pythonVersion }}-dev
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Download and extract pre-built USD binaries
         run: |
-          curl -L -o /tmp/usd-${{ matrix.usdVersion }}.7z https://developer.nvidia.com/usd-${{ matrix.usdVersionUrl }}-binary-linux-python-${{ matrix.pythonVersion }}
+          curl -L -o /tmp/usd-${{ matrix.usdVersion }}.7z https://developer.nvidia.com/downloads/usd/usd_binaries/${{ matrix.usdVersionUrl }}.zip
           mkdir -p /tmp/usd-${{ matrix.usdVersion }}
           7z x /tmp/usd-${{ matrix.usdVersion }}.7z -o/tmp/usd-${{ matrix.usdVersion }}
       - name: Create build directories
@@ -59,8 +58,7 @@ jobs:
         run: |
           cmake -DUSD_ROOT="/tmp/usd-${{ matrix.usdVersion }}/" \
                 -DTBB_ROOT="/tmp/usd-${{ matrix.usdVersion }}/" \
-                -DBOOST_ROOT="/tmp/usd-${{ matrix.usdVersion }}/" \
-                -DUSE_PYTHON_3=${{ matrix.USE_PYTHON_3 }} \
+                -DBoost_ROOT="/tmp/usd-${{ matrix.usdVersion }}/" \
                 -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} \
                 -DBUILD_TESTING=${{ matrix.buildTests }} \
                 -DCMAKE_CXX_FLAGS="-D_GLIBCXX_USE_CXX11_ABI=0" \
@@ -84,29 +82,28 @@ jobs:
     strategy:
       matrix:
         usdVersion:
-          - 21.05
+          - 24.05
         include:
-          - usdVersion: 21.05
-            usdVersionUrl: 21-05
-            pythonVersion: 3.6
-            USE_PYTHON_3: ON
+          - usdVersion: 24.05
+            usdVersionUrl: '24.05/usd.py310.windows-x86_64.usdview.release@0.24.05-tc.859+release.2864f3d0'
+            pythonVersion: '3.10'
             buildType: Release
             buildTests: ON
-    runs-on: windows-2016
-    name: 'Windows 2016 NVIDIA Pre-built Binaries
+    runs-on: windows-2019
+    name: 'Windows 2019 NVIDIA Pre-built Binaries
       <USD Version=${{ matrix.usdVersion }},
        Python Version=${{ matrix.pythonVersion }},
        Build type:${{ matrix.buildType }},
        Enable tests=${{ matrix.build-tests }}>'
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Set up Python ${{ matrix.pythonVersion }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.pythonVersion }}
       - name: Download and extract pre-built USD binaries
         run: |
-          Invoke-WebRequest https://developer.nvidia.com/usd-${{ matrix.usdVersionUrl }}-binary-windows-python-${{ matrix.pythonVersion }} -OutFile $env:TEMP/usd-${{ matrix.usdVersion }}.zip
+          Invoke-WebRequest https://developer.nvidia.com/downloads/usd/usd_binaries/${{ matrix.usdVersionUrl }}.zip -OutFile $env:TEMP/usd-${{ matrix.usdVersion }}.zip
           mkdir -Force $env:TEMP/usd-${{ matrix.usdVersion }}
           7z x $env:TEMP/usd-${{ matrix.usdVersion }}.zip $("-o" + "$env:TEMP" + "\usd-${{ matrix.usdVersion }}") -y
       - name: Create build directories
@@ -117,12 +114,11 @@ jobs:
         run: |
           cmake -DUSD_ROOT="$env:TEMP/usd-${{ matrix.usdVersion }}" `
               -DTBB_ROOT="$env:TEMP/usd-${{ matrix.usdVersion }}" `
-              -DBOOST_ROOT="$env:TEMP/usd-${{ matrix.usdVersion }}" `
-              -DUSE_PYTHON_3=${{ matrix.USE_PYTHON_3 }} `
+              -DBoost_ROOT="$env:TEMP/usd-${{ matrix.usdVersion }}" `
               -DCMAKE_BUILD_TYPE=${{ matrix.buildType }} `
               -DBUILD_TESTING=${{ matrix.buildTests }} `
               -DCMAKE_INSTALL_PREFIX="../_install" `
-              -G "Visual Studio 15 2017 Win64" `
+              -G "Visual Studio 16 2019" `
               ../usd
         working-directory: "_build"
       - name: Build
@@ -148,12 +144,12 @@ jobs:
 
   # Run automated code formatting checks.
   code-formatting-check:
-    runs-on: ubuntu-18.04 
+    runs-on: ubuntu-24.04
     steps:
       - name: Install dependencies (Linux)
         run: |
-          sudo apt-get install clang-format-10
-      - uses: actions/checkout@v2
+          sudo apt-get install clang-format-16
+      - uses: actions/checkout@v4
       - name: Run clang-format on source code
         run: |
           find . \
