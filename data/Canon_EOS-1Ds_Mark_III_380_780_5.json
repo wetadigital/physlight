@@ -1,6 +1,6 @@
 {
     "header": {
-        "catalog_number": "Canon_EOS_1DS_Mark_III_0.1.0",
+        "catalog_number": "Canon_EOS-1Ds_Mark_III_0.1.0",
         "comments": null,
         "description": "camera spectral sensitivity data",
         "document_creation_date": "2025-06-03T10:59:09.032236Z",
@@ -9,7 +9,7 @@
         "license": "Apache-2.0",
         "manufacturer": "Canon",
         "measurement_equipment": "lightsaber",
-        "model": "EOS 1DS Mark III",
+        "model": "EOS-1Ds Mark III",
         "schema_version": "0.1.0",
         "unique_identifier": "9bda6d4c-dae2-4a55-93fc-8acf1512bc8b"
     },

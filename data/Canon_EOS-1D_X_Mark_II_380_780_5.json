@@ -1,6 +1,6 @@
 {
     "header": {
-        "catalog_number": "Canon_EOS_1DX_Mark_II_0.1.0",
+        "catalog_number": "Canon_EOS-1D_X_Mark_II_0.1.0",
         "comments": null,
         "description": "camera spectral sensitivity data",
         "document_creation_date": "2025-06-03T10:59:00.955049Z",
@@ -9,7 +9,7 @@
         "license": "Apache-2.0",
         "manufacturer": "Canon",
         "measurement_equipment": "lightsaber",
-        "model": "EOS 1DX Mark II",
+        "model": "Canon EOS-1D_X Mark II",
         "schema_version": "0.1.0",
         "unique_identifier": "b9aff521-61b5-4460-ac20-be72dede545f"
     },
