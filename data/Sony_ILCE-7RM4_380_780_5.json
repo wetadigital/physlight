@@ -1,13 +1,12 @@
 {
     "header": {
-        "catalog_number": "SONY_ILCE-7RM4_0.1.0",
         "comments": null,
         "description": "camera spectral sensitivity data",
         "document_creation_date": "2025-06-07T01:12:44.552891Z",
         "document_creator": "wetadigital",
         "laboratory": "wetadigital",
         "license": "Apache-2.0",
-        "manufacturer": "SONY",
+        "manufacturer": "Sony",
         "measurement_equipment": "lightsaber",
         "model": "ILCE-7RM4",
         "schema_version": "0.1.0",

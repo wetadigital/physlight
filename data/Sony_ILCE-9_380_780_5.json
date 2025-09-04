@@ -1,13 +1,12 @@
 {
     "header": {
-        "catalog_number": "SONY_ILCE-9_0.1.0",
         "comments": null,
         "description": "camera spectral sensitivity data",
         "document_creation_date": "2025-06-06T23:10:03.771443Z",
         "document_creator": "wetadigital",
         "laboratory": "wetadigital",
         "license": "Apache-2.0",
-        "manufacturer": "SONY",
+        "manufacturer": "Sony",
         "measurement_equipment": "lightsaber",
         "model": "ILCE-9",
         "schema_version": "0.1.0",
