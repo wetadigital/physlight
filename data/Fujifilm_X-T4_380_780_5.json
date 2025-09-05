@@ -1,13 +1,12 @@
 {
     "header": {
-        "catalog_number": "FUJIFILM_X-T4_0.1.0",
         "comments": null,
         "description": "camera spectral sensitivity data",
         "document_creation_date": "2025-06-06T10:14:40.920163Z",
         "document_creator": "wetadigital",
         "laboratory": "wetadigital",
         "license": "Apache-2.0",
-        "manufacturer": "FUJIFILM",
+        "manufacturer": "Fujifilm",
         "measurement_equipment": "lightsaber",
         "model": "X-T4",
         "schema_version": "0.1.0",

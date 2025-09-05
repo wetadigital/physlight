@@ -1,13 +1,12 @@
 {
     "header": {
-        "catalog_number": "NIKON_D3300_0.1.0",
         "comments": null,
         "description": "camera spectral sensitivity data",
         "document_creation_date": "2025-06-06T21:24:28.980794Z",
         "document_creator": "wetadigital",
         "laboratory": "wetadigital",
         "license": "Apache-2.0",
-        "manufacturer": "NIKON",
+        "manufacturer": "Nikon",
         "measurement_equipment": "lightsaber",
         "model": "D3300",
         "schema_version": "0.1.0",

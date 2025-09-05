@@ -1,13 +1,12 @@
 {
     "header": {
-        "catalog_number": "NIKON_D5300_0.1.0",
         "comments": null,
         "description": "camera spectral sensitivity data",
         "document_creation_date": "2025-06-06T21:44:33.276774Z",
         "document_creator": "wetadigital",
         "laboratory": "wetadigital",
         "license": "Apache-2.0",
-        "manufacturer": "NIKON",
+        "manufacturer": "Nikon",
         "measurement_equipment": "lightsaber",
         "model": "D5300",
         "schema_version": "0.1.0",

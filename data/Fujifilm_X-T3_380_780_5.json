@@ -1,13 +1,12 @@
 {
     "header": {
-        "catalog_number": "Fuji_X-T3_0.1.0",
         "comments": null,
         "description": "camera spectral sensitivity data",
         "document_creation_date": "2025-06-06T09:52:23.249603Z",
         "document_creator": "wetadigital",
         "laboratory": "wetadigital",
         "license": "Apache-2.0",
-        "manufacturer": "FUJIFILM",
+        "manufacturer": "Fujifilm",
         "measurement_equipment": "lightsaber",
         "model": "X-T3",
         "schema_version": "0.1.0",
